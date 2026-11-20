@@ -89,6 +89,14 @@ svg.ic .tf{fill:currentColor;fill-opacity:0}
 .styles{display:flex;gap:6px;overflow-x:auto;padding-top:10px;scrollbar-width:none}
 .styles::-webkit-scrollbar{display:none}
 .stb{flex:none;height:38px;padding:0 12px 0 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:flex;align-items:center;gap:7px;font-size:14px;color:var(--muted);--ko:var(--surface)}
+.duo{display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;padding-top:10px;font-size:13px;color:var(--muted)}
+.duo[hidden]{display:none}
+.duo .sws{display:flex;gap:8px}
+.duo .sw{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);cursor:pointer;padding:0;background:linear-gradient(135deg,var(--a) 0 50%,var(--b) 50% 100%)}
+.duo .sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
+.duo label{display:flex;align-items:center;gap:7px;cursor:pointer}
+.duo input{width:30px;height:30px;padding:0;border:1px solid var(--line);border-radius:8px;background:none;cursor:pointer}
+.st-duo .ico:not(.on){color:var(--duo-ink,var(--ink))}
 .stb svg{width:18px;height:18px;stroke-width:1.75;color:var(--ink)}
 .stb[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--ink)}
 .fx{position:absolute;left:50%;top:50%;pointer-events:none;z-index:3;will-change:transform,opacity}
@@ -161,6 +169,7 @@ svg.ic *{transform-box:fill-box}
       <button class="loopbtn" id="exportBtn" aria-label="تصدير المجموعة"><i data-lucide="download"></i><span>تصدير</span></button>
     </div>
     <div class="styles" id="styles" role="group" aria-label="الستايل"></div>
+    <div class="duo" id="duo" role="group" aria-label="ألوان ثنائي اللون" hidden><span>الألوان:</span><div class="sws" id="duoSw"></div><label><input type="color" id="dInk" value="#1A1D3D">لون الخط</label><label><input type="color" id="dTone" value="#3D5AFE">لون التعبئة</label></div>
     <div class="chips" id="chips" role="group" aria-label="الأقسام"></div>
   </div>
 </div>
@@ -942,7 +951,7 @@ stWrap.querySelectorAll("svg").forEach((s,k)=>{classify(s);s.classList.add("pv-"
 stWrap.addEventListener("click",e=>{const b=e.target.closest(".stb");if(b)setStyle(b.dataset.st)});
 function resetBox(box){const svg=box&&box.querySelector("svg");if(!svg)return;svg.getAnimations({subtree:true}).forEach(a=>a.cancel());[svg,...svg.children].forEach(e=>{["transform","fill-opacity","opacity"].forEach(p=>e.style.removeProperty(p))});box._on=false;box._busy=false;box._again=null;box.classList.remove("on","busy")}
 function setStyle(st){
-  STYLE=st;ST.forEach(k=>document.body.classList.toggle("st-"+k,k===st));
+  STYLE=st;ST.forEach(k=>document.body.classList.toggle("st-"+k,k===st));document.getElementById("duo").hidden=st!=="duo";
   stWrap.querySelectorAll(".stb").forEach(b=>b.setAttribute("aria-pressed",b.dataset.st===st));
   tiles.forEach(t=>resetBox(t.querySelector(".ico")));resetBox(prev);
   if(sel>=0){code.textContent=cssOf(sel);refreshPane()}
@@ -1241,7 +1250,20 @@ async function renderLottie(){
   $("ltInfo").textContent=`ملف Lottie ‏${ar(kb)} كيلوبايت، ٦٠ فريم في الثانية. شغال في After Effects (Bodymovin) والويب والموبايل وبلجن LottieFiles في فيجما. الجزيئات اللي حوالين الأيقونة مش داخلة فيه.`;
   try{const L=await lib(LOTTIE_URL,"lottie");if(lotAnim)lotAnim.destroy();lotAnim=L.loadAnimation({container:box,renderer:"svg",loop:true,autoplay:true,animationData:JSON.parse(JSON.stringify(lastLottie))})}catch(_){box.textContent=""}
 }
-["cInk","cTone","bInk","bTone"].forEach(id=>$(id).addEventListener("input",e=>{EX[id.endsWith("Ink")?"ink":"tone"]=e.target.value;$("cInk").value=$("bInk").value=EX.ink;$("cTone").value=$("bTone").value=EX.tone;clearTimeout(window._rp);window._rp=setTimeout(refreshPane,250)}));
+/* duo colours: page, preview tiles and every export read the same pair */
+const DUO=[[null,null,"تلقائي"],["#FF4F7E","#FFA31A","وردي وبرتقالي"],["#3D5AFE","#14B886","أزرق وأخضر"],["#7C4DFF","#FF4F7E","بنفسجي ووردي"],["#0E9F77","#FFA31A","أخضر وبرتقالي"]];
+function setColors(ink,tone,save=true){
+  const auto=!ink;EX.ink=ink||"#1A1D3D";EX.tone=tone||"#3D5AFE";const b=document.body.style;
+  if(auto){b.removeProperty("--duo-ink");b.removeProperty("--tone")}else{b.setProperty("--duo-ink",EX.ink);b.setProperty("--tone",EX.tone)}
+  ["cInk","bInk","dInk"].forEach(id=>$(id).value=EX.ink);["cTone","bTone","dTone"].forEach(id=>$(id).value=EX.tone);
+  $("duoSw").querySelectorAll(".sw").forEach((w,k)=>w.setAttribute("aria-pressed",auto?k===0:(DUO[k][0]||"").toLowerCase()===EX.ink.toLowerCase()&&(DUO[k][1]||"").toLowerCase()===EX.tone.toLowerCase()));
+  if(save)try{auto?localStorage.removeItem("duoColors"):localStorage.setItem("duoColors",JSON.stringify([EX.ink,EX.tone]))}catch(_){}
+  clearTimeout(window._rp);window._rp=setTimeout(refreshPane,250);
+}
+$("duoSw").innerHTML=DUO.map(([a,b,n])=>`<button class="sw" style="--a:${a||"var(--ink)"};--b:${b||"var(--accent)"}" aria-label="${n}" title="${n}" aria-pressed="false"></button>`).join("");
+$("duoSw").querySelectorAll(".sw").forEach((w,k)=>w.addEventListener("click",()=>setColors(DUO[k][0],DUO[k][1])));
+["cInk","cTone","bInk","bTone","dInk","dTone"].forEach(id=>$(id).addEventListener("input",e=>{const ink=id.endsWith("Ink")?e.target.value:EX.ink,tone=id.endsWith("Tone")?e.target.value:EX.tone;setColors(ink,tone)}));
+{let saved=null;try{saved=JSON.parse(localStorage.getItem("duoColors"))}catch(_){}if(Array.isArray(saved))setColors(saved[0],saved[1],false);else setColors(null,null,false)}
 $("fgCopy").addEventListener("click",e=>sel>=0&&copyText(svgText(staticSvg(sel)),e.currentTarget));
 $("fgSvg").addEventListener("click",e=>sel>=0&&saveFile(slug(sel)+".svg",svgText(staticSvg(sel)),e.currentTarget));
 $("ltCopy").addEventListener("click",e=>{if(sel<0)return;copyText(JSON.stringify(lastLottie||lottieOf(sel)),e.currentTarget)});
