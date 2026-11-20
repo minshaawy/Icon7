@@ -59,7 +59,7 @@ name: { t: "Arabic description of the motion",
 
 ## Styles
 `outline, light (1.2), bold (2.5), sharp (square caps / miter), duo (tone fill 25%), solid (filled + knockouts)`.
-Duo colours: the `#duo` row (visible only in duo) sets stroke + tone via `setColors(ink,tone)`, which drives the page (`--duo-ink`, `--tone` on body), the export pickers and `EX` (so SVG/Lottie/GIF match), and remembers the pair in localStorage (`duoColors`). Preset `null,null` = theme colours.
+Duo colours: the `#duo` row (visible only in duo) shows 8 curated duotone pairs as live heart previews (dark stroke + same-family tone at 25%, each with a lighter stroke for dark mode) and sets them via `setColors(ink,tone,save,darkInk)`, which drives the page (`--duo-ink-l` / `--duo-ink-d`, `--tone` on body), the export pickers and `EX` (so SVG/Lottie/GIF match), and remembers the pair in localStorage (`duoColors`). Preset `null,null` = theme colours.
 `classify(svg)` tags children: `sh` = closed shape not inside another, `ish` = closed shape inside a filled one, `iln` = open line inside a filled one (knocked out in solid), `tf` = toggle fill. Containment = bbox inside **and** `isPointInFill` at the centre (handles concave shapes like the crescent). Filled containers are moved behind their inner details so knockouts paint on top.
 
 ## Export pipeline
