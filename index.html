@@ -1551,8 +1551,14 @@ const XCAT={fitness:"dumbbell heart-pulse activity timer flame trophy watch foot
 for(const k in XCAT)XCAT[k]=XCAT[k].split(" ");
 const inSet=(x,k)=>x[2]===k||(XCAT[k]||[]).includes(x[0]);
 const catCount=k=>I.filter(x=>inSet(x,k)).length;
-const C=Object.fromEntries(CATS.map(([k,a])=>[k,a]));
-const I=CATS.flatMap(([k,_,str])=>str.split(",").map(e=>{const[n,l]=e.split(":");return[n,l,k]}));
+
+/* ── category merge: groups are built as their own CATS rows, then folded into 23 browsable categories ── */
+const MERGE={tabbar:"ui",states:"ui",seasons:"local",culture:"local",journey:"insurance",layout:"text",design:"text",social:"talk",support:"talk",nfc:"talk",kids:"people",streaming:"media",events:"media",office:"files",fintech:"shop",ecommerce:"shop",analytics:"biz",team:"biz",hr:"biz",gov:"biz",weather:"nature",energy:"nature",pets:"nature",dev:"tech",smarthome:"tech",ai:"tech",travelbook:"travel",mobility:"travel",carcare:"travel",logistics:"travel",realestate:"home",delivery:"food",cafe:"food",healthapp:"health",fitness:"health",gaming:"sport",elearning:"edu",privacy:"security"};
+const CAT_AR={local:"محلي وتراث ومواسم",ui:"واجهة وأبلكيشن",text:"تصميم ونصوص",talk:"تواصل وسوشيال",people:"ناس وعيلة",media:"ميديا وترفيه",files:"ملفات ومكتب",shop:"تسوق وفلوس",biz:"أعمال وخدمات",nature:"طبيعة وطقس وحيوانات",tech:"تقنية وذكاء اصطناعي",home:"بيت وعقارات",food:"أكل ومطاعم",health:"صحة ولياقة",security:"أمان وخصوصية"};
+Object.assign(CAT_EN,{local:"Local, heritage & seasons",ui:"Interface & app",text:"Design & text",talk:"Communication & social",people:"People & family",media:"Media & entertainment",files:"Files & office",shop:"Shopping & money",biz:"Business & services",nature:"Nature, weather & animals",tech:"Tech & AI",home:"Home & real estate",food:"Food & restaurants",health:"Health & fitness",security:"Security & privacy"});
+for(const k in XCAT){const t=MERGE[k];if(t){XCAT[t]=[...new Set([...(XCAT[t]||[]),...XCAT[k]])];delete XCAT[k]}}
+const C=Object.fromEntries(CATS.filter(([k])=>!MERGE[k]).map(([k,a])=>[k,CAT_AR[k]||a]));
+const I=CATS.flatMap(([k,_,str])=>str.split(",").map(e=>{const[n,l]=e.split(":");return[n,l,MERGE[k]||k]}));
 const ar=n=>LANG==="ar"?String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]):String(n);
 const ez=n=>({lin:"linear",sp:SP.sp.e,sps:SP.sps.e,spb:SP.spb.e})[n]||n;
 const du=(n,o)=>o.d||({sp:SP.sp.d,sps:SP.sps.d,spb:SP.spb.d})[n]||600;
