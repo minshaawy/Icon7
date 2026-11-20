@@ -8,7 +8,7 @@ This project started in a claude.ai chat and moved here. Read this file before c
 - When the user drops files in `references/`, study them first and match their timing/easing/feel. Use paid libraries (e.g. Lordicon) only as style/timing references; never copy their drawings or exact animations.
 
 ## What it is
-A single self-contained page, `index.html` (~250 KB), that hosts a library of **1045 animated icons** in **51 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
+A single self-contained page, `index.html` (~250 KB), that hosts a library of **1045 animated icons** in **23 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
 
 - Icons: Lucide **0.460.0** (UMD from jsDelivr, pinned) + a `CUSTOM` object of extra icons:
   - from Lucide 1.59.0 (copied node data, ISC): `Mosque`, `SaudiRiyal` (official 2025 symbol), `CirclePoundSterling`
@@ -49,6 +49,7 @@ A single self-contained page, `index.html` (~250 KB), that hosts a library of **
 
 ## Data model
 - `CATS = [[key, arabicName, "lucide-name:Arabic label,..."], ...]` → parsed into `I = [[name, label, catKey], ...]`.
+- **Category merge layer** (right before `const C=`): `MERGE = {setKey: parentKey}` folds the 51+ source sets into 23 sidebar categories (e.g. `fintech`,`ecommerce`→`shop`; `ai`,`dev`,`smarthome`→`tech`). `CAT_AR` / the `CAT_EN` override rename the parents ("Health & fitness"…), and `XCAT` entries are remapped onto the parent. Keep source keys in `CATS` as they are; **every new group key must be added to `MERGE`** (or it becomes its own sidebar category).
 - Categories: local (محلي وعربي), arab (دول عربية), insurance (تأمين), ui, arrows, status, text, layout, talk, people, media, files, shop, biz, time, nature, tech, dev, travel, home, food, health, sport, edu, security.
 
 ## Motion system (the core)
