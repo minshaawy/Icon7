@@ -61,6 +61,7 @@ Duo colours: the `#duo` row (visible only in duo) sets stroke + tone via `setCol
 5. Downloads: inside claude.ai the page uses the `downloads` runtime capability; when self-hosted it falls back to normal browser downloads.
 
 ## Gotchas already solved (don't reintroduce)
+- Footer `footer.credit`: "Made with ♥ by Ahmed Elminshawy" linking to https://www.linkedin.com/in/minsh/ (bilingual via `madeWith`/`madeBy`; the heart is a CSS lub-dub beat, off under reduced motion). The grid's bottom padding moved to the footer so the open sheet never covers the last row.
 - The visible credit line was removed at the user's request; the Lucide ISC notice stays as an HTML comment in `<main>` and in README. Keep it.
 - `parseM` must strip the `matrix3d(` prefix before matching numbers (the "3" used to shift every value) and project perspective with the Jacobian at the origin. Before the fix every `perspective()` icon (cards, coins, calendars, laptop, book, fridge, door) exported broken to Lottie/GIF.
 - `transform-box: fill-box` must be scoped to `svg.ic *`. A global `svg *` rule breaks lottie-web's own transforms.

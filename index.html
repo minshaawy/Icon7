@@ -54,7 +54,7 @@ h1{font-family:"Lalezar","IBM Plex Sans Arabic",system-ui,sans-serif;font-weight
 .chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 .chip[aria-pressed="true"] b{color:var(--accent)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;padding:18px 0 370px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;padding:18px 0 8px}
 .tile{background:var(--surface);border:1px solid var(--line);border-radius:18px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;padding:8px;transition:border-color .25s,background .25s,transform .45s cubic-bezier(.34,1.56,.64,1)}
 .tile[hidden],.empty[hidden]{display:none}
 .sec{grid-column:1/-1;margin:6px 2px -2px;font-size:14px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:10px}
@@ -147,7 +147,14 @@ svg.ic *{transform-box:fill-box}
   .loopbtn span{display:none}
   .loopbtn{padding:0 12px}
 }
-@media (prefers-reduced-motion:reduce){.sheet,.tile,.stage{transition:none}}
+.credit{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;padding:28px 16px 360px;font-size:14px;color:var(--muted)}
+.credit a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--line);transition:border-color .2s,color .2s}
+.credit a:hover{color:var(--accent);border-color:var(--accent)}
+.credit .hb{display:inline-grid;place-items:center;width:18px;height:18px;color:var(--hot)}
+.credit .hb svg{width:18px;height:18px;fill:currentColor;stroke-width:1.75;animation:lubdub 1.4s cubic-bezier(.45,0,.55,1) infinite;transform-origin:50% 55%}
+.credit:hover .hb svg{animation-duration:.7s}
+@keyframes lubdub{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.22)}20%{transform:scale(.96)}28%{transform:scale(1.14)}}
+@media (prefers-reduced-motion:reduce){.sheet,.tile,.stage{transition:none}.credit .hb svg{animation:none}}
 </style>
 </head>
 <body>
@@ -179,6 +186,7 @@ svg.ic *{transform-box:fill-box}
   <div class="grid" id="grid"></div>
   <!-- Icon drawings: Lucide (https://lucide.dev), ISC License, Copyright (c) Lucide Contributors. Custom icons and all motion are original to this library. -->
 </main>
+<footer class="credit"><span data-t="madeWith">Made with</span><span class="hb" role="img" aria-label="love" data-t-aria="love"><i data-lucide="heart"></i></span><span data-t="madeBy">by</span><a href="https://www.linkedin.com/in/minsh/" target="_blank" rel="noopener">Ahmed Elminshawy</a></footer>
 
 <aside class="sheet" id="sheet" aria-live="polite">
   <button class="closex" id="close" aria-label="إغلاق" data-t-aria="close"><i data-lucide="x"></i></button>
@@ -227,7 +235,7 @@ const UI={
   lottieInfo:kb=>`Lottie file, ${kb} KB, 60 fps. Works in After Effects (Bodymovin), on the web, on mobile and in the LottieFiles plugin for Figma. The particles around the icon aren't included.`,
   gifMaking:"Working…",gifProg:p=>`Working ${p}%`,gifReady:kb=>`Ready, ${kb} KB. On mobile, long-press the image to save it.`,gifFail:"Couldn't make the GIF in this browser.",
   bulkInfo:(n,c,st)=>`${n} icons from “${c}” in the “${st}” style. The filter and search decide what gets exported.`,bulkProg:(k,n,l)=>`${k} of ${n}: ${l}`,zipping:"Compressing…",
-  styleSep:", style ",cssNote:"The particles and glow around the icon on the page are made with JS and aren't part of this code"},
+  styleSep:", style ",madeWith:"Made with",madeBy:"by",love:"love",cssNote:"The particles and glow around the icon on the page are made with JS and aren't part of this code"},
  ar:{title:"مكتبة أيقونات متحركة",stageAria:"شغّل الحركة",
   lede:"مكتبة كاملة لأي مشروع، بـ ٢٥ قسم و٦ ستايلات، فيها معلم من كل دولة عربية من الـ٢٢، وأيقونات محلية، وطقم كامل للتأمين. كل أيقونة ليها حركة خاصة بيها: الجرس بيرن، والطرد بيقع، والصاروخ بيطير. دوس على أي أيقونة وصدّرها لفيجما أو Lottie أو GIF، أو صدّر قسم كامل مرة واحدة من زرار التصدير.",
   h1:n=>`${n} أيقونة بتتحرك`,searchPh:"جرس، قلب، download…",searchAria:"ابحث في الأيقونات",playAll:"شغّل الكل",stopAll:"وقّف الكل",export:"تصدير",exportAria:"تصدير المجموعة",lang:"English",
@@ -240,7 +248,7 @@ const UI={
   lottieInfo:kb=>`ملف Lottie ‏${kb} كيلوبايت، ٦٠ فريم في الثانية. شغال في After Effects (Bodymovin) والويب والموبايل وبلجن LottieFiles في فيجما. الجزيئات اللي حوالين الأيقونة مش داخلة فيه.`,
   gifMaking:"بيتعمل…",gifProg:p=>`بيتعمل ${p}٪`,gifReady:kb=>`جاهز، ${kb} كيلوبايت. على الموبايل تقدر تدوس مطوّل على الصورة وتحفظها.`,gifFail:"معرفتش أعمل الـ GIF في المتصفح ده.",
   bulkInfo:(n,c,st)=>`${n} أيقونة من «${c}» بستايل «${st}». الفلتر والبحث بيحددوا إيه اللي يتصدّر.`,bulkProg:(k,n,l)=>`${k} من ${n}: ${l}`,zipping:"بيتضغط…",
-  styleSep:"، ستايل ",cssNote:"الجزيئات واللمعة اللي حوالين الأيقونة في الصفحة متعملة بـ JS ومش داخلة في الكود ده"}
+  styleSep:"، ستايل ",madeWith:"اتعمل بحب",madeBy:"على إيد",love:"حب",cssNote:"الجزيئات واللمعة اللي حوالين الأيقونة في الصفحة متعملة بـ JS ومش داخلة في الكود ده"}
 };
 const loc=(k,...a)=>{const v=UI[LANG][k]??UI.en[k];return typeof v==="function"?v(...a):v};
 const CAT_EN={local:"Local & Arabic",arab:"Arab countries",insurance:"Insurance",ui:"Interface",arrows:"Arrows",status:"Alerts",text:"Text & editing",layout:"Layout & shapes",talk:"Communication",people:"People & emotions",media:"Media",files:"Files",shop:"Commerce & money",biz:"Business & data",time:"Time",nature:"Nature & animals",tech:"Devices",dev:"Development",travel:"Travel & transport",home:"Home & living",food:"Food & drink",health:"Health",sport:"Sports & games",edu:"Education",security:"Security"};
