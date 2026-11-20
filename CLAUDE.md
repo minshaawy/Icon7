@@ -8,7 +8,7 @@ This project started in a claude.ai chat and moved here. Read this file before c
 - When the user drops files in `references/`, study them first and match their timing/easing/feel. Use paid libraries (e.g. Lordicon) only as style/timing references; never copy their drawings or exact animations.
 
 ## What it is
-A single self-contained page, `index.html` (~250 KB), that hosts a library of **903 animated icons** in **41 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
+A single self-contained page, `index.html` (~250 KB), that hosts a library of **960 animated icons** in **45 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
 
 - Icons: Lucide **0.460.0** (UMD from jsDelivr, pinned) + a `CUSTOM` object of extra icons:
   - from Lucide 1.59.0 (copied node data, ISC): `Mosque`, `SaudiRiyal` (official 2025 symbol), `CirclePoundSterling`
@@ -19,6 +19,7 @@ A single self-contained page, `index.html` (~250 KB), that hosts a library of **
   - sets for partner apps: `design` (Canva-like editor: 15 Lucide + `ds-bg-remove`, `ds-magic-resize`), `nfc` (digital NFC cards: 6 Lucide + `dc-nfc-card`, `dc-tap-share`, `dc-business-card`, `dc-profile-qr`), `delivery` (food delivery: 6 Lucide + `fd-scooter`, `fd-food-bag`, `fd-burger`, `fd-order-track`). `XCAT` adds existing icons to a set without duplicating them in "All" (`inSet`, `catCount`).
   - Round 1 (agents + lead): `tabbar` (8 toggle tab icons: outline → filled with cut-outs via the recipe field `kon:[n]`, which turns those elements into card-coloured cut-outs while `.on`), `ai` (16), `seasons` (14, Saudi/Gulf/Egypt campaigns, no text or emblems), `fintech` (14), `ecommerce` (14), `team` (16). Group workflow: rounds/tools in the session scratchpad (BRIEF.md, merge.py, check.mjs) — each group is a folder with icons.js, recipes.js, meta.json merged by merge.py.
   - Round 2: `healthapp` (14), `realestate` (15), `travelbook` (15), `elearning` (14), `hr` (15).
+  - Round 3: `mobility` (14), `smarthome` (15), `streaming` (14), `social` (14, no platform logos).
   - 83 more Lucide icons were added using the Phosphor Icons catalogue (phosphoricons.com) as a list of missing concepts. Phosphor drawings themselves are NOT used: they are single filled compound paths (256 grid), which break the stroke styles, DRAW trim paths and part articulation. Pick concepts from Phosphor, draw/animate them with Lucide-style stroked parts.
   - custom icons are merged with `lucide.icons` and passed to `lucide.createIcons({icons: ICONS})` (also for the second call in the style UI).
 - Fonts: IBM Plex Sans Arabic (UI) + Lalezar (headline) from Google Fonts.
