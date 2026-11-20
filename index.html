@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Animated Icon Library · Icons that move</title>
 <meta name="description" content="Free library of hand-animated icons in 6 styles, with a landmark for each of the 22 Arab countries and a full insurance set. Copy to Figma or download Lottie and GIF.">
 <meta name="theme-color" content="#3D5AFE">
+<script>try{var t=sessionStorage.getItem("theme");document.documentElement.dataset.theme=t==="dark"?"dark":"light"}catch(e){document.documentElement.dataset.theme="light"}</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="canonical" href="https://minshaawy.github.io/Icon7/">
@@ -31,19 +32,19 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Lalezar&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#EDEFF8;--surface:#FFFFFF;--ink:#1A1D3D;--muted:#5B6083;--line:#D6D9EA;
+  --bg:#EDEFF8;--surface:#FFFFFF;--ink:#161937;--muted:#4C5174;--line:#CDD1E6;--line-strong:#B1B6D2;--accent-ink:#2A43D6;
   --accent:#3D5AFE;--accent-soft:#E3E8FF;--hot:#FF4F7E;--amber:#FFA31A;--ok:#14B886;--tone:var(--accent);
   color-scheme:light;box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#10122A;--surface:#191C3B;--ink:#E9EBFA;--muted:#9BA0C6;--line:#2B2F57;
+    --bg:#10122A;--surface:#191C3B;--ink:#EEF0FC;--muted:#A9AED3;--line:#33386A;--line-strong:#4A5089;--accent-ink:#B3BCFF;
     --accent:#8C9BFF;--accent-soft:#252B5C;--hot:#FF7EA3;--amber:#FFC24D;--ok:#3DD6A6;color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#10122A;--surface:#191C3B;--ink:#E9EBFA;--muted:#9BA0C6;--line:#2B2F57;
+  --bg:#10122A;--surface:#191C3B;--ink:#EEF0FC;--muted:#A9AED3;--line:#33386A;--line-strong:#4A5089;--accent-ink:#B3BCFF;
   --accent:#8C9BFF;--accent-soft:#252B5C;--hot:#FF7EA3;--amber:#FFC24D;--ok:#3DD6A6;color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -207,7 +208,7 @@ h1 .hl{background:linear-gradient(100deg,var(--accent),#7C4DFF 60%,var(--hot));-
 .show .stage svg{width:52%;height:52%}
 .show-cap{margin:0;font-size:13px;color:var(--muted)}
 #stageName{color:var(--ink);font-weight:500}
-@media (max-width:760px){
+@media (max-width:600px){
   .hero{grid-template-columns:1fr;gap:34px;padding:36px 0 30px;justify-items:stretch}
   .show-wrap{width:100%}
   .show{max-width:340px;padding:12px;gap:8px;border-radius:26px}
@@ -223,10 +224,142 @@ h1 .hl{background:linear-gradient(100deg,var(--accent),#7C4DFF 60%,var(--hot));-
 .chips.fs.fe,.styles.fs.fe{-webkit-mask-image:linear-gradient(to right,transparent,#000 56px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(to right,transparent,#000 56px,#000 calc(100% - 56px),transparent)}
 [dir="rtl"] .chips.fe:not(.fs),[dir="rtl"] .styles.fe:not(.fs){-webkit-mask-image:linear-gradient(to left,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(to left,#000 calc(100% - 56px),transparent)}
 [dir="rtl"] .chips.fs:not(.fe),[dir="rtl"] .styles.fs:not(.fe){-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent)}
+
+/* ── v3 frame: nav, sidebar, toolbar (inspired by the big icon sites) ── */
+.wrap{max-width:1240px}
+.nav{position:sticky;top:0;z-index:12;background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1240px;margin:0 auto;padding:0 20px;height:64px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.mark{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(140deg,var(--accent),#7C4DFF);color:#fff;box-shadow:0 6px 16px -6px color-mix(in srgb,var(--accent) 70%,transparent)}
+.mark svg{width:18px;height:18px}
+.nsearch{flex:1;max-width:520px;margin-inline:auto;position:relative;display:flex;align-items:center}
+.nsearch>svg{position:absolute;inset-inline-start:12px;width:18px;height:18px;color:var(--muted);pointer-events:none}
+.nsearch .search{width:100%;height:40px;border-radius:11px;padding-inline:40px 56px;transition:border-color .2s,box-shadow .2s}
+.nsearch .search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+.nsearch kbd{position:absolute;inset-inline-end:10px;font:500 11px/1 "IBM Plex Sans Arabic",system-ui,sans-serif;color:var(--muted);border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:4px 6px;background:var(--bg)}
+.nact{display:flex;gap:6px}
+.nbtn{height:38px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:var(--ink);text-decoration:none;font-weight:500;font-size:14px;transition:border-color .2s,background .2s}
+.nbtn:hover{border-color:color-mix(in srgb,var(--ink) 30%,var(--line))}
+.nbtn.icon{width:38px;padding:0;justify-content:center}
+.nbtn svg{width:18px;height:18px}
+.t-sun{display:none}
+:root[data-theme="dark"] .t-sun{display:contents}:root[data-theme="dark"] .t-moon{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .t-sun{display:contents}:root:not([data-theme="light"]) .t-moon{display:none}}
+.hero-bg{position:relative;isolation:isolate;overflow:hidden}
+.hero-bg::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(color-mix(in srgb,var(--ink) 16%,transparent) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse 75% 70% at 60% 35%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse 75% 70% at 60% 35%,#000 30%,transparent 75%)}
+.hero-bg::after{content:"";position:absolute;z-index:-1;width:720px;height:720px;inset-inline-end:-160px;top:-280px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,#7C4DFF 22%,transparent),transparent)}
+.layout{display:grid;grid-template-columns:232px minmax(0,1fr);gap:32px;align-items:start;border-top:1px solid var(--line)}
+.side{min-width:0;position:sticky;top:64px;max-height:calc(100vh - 64px);overflow-y:auto;padding:22px 0 28px;scrollbar-width:thin}
+.side-h{margin:0 12px 8px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+:root[lang="ar"] .side-h{letter-spacing:0}
+.side .chips{flex-direction:column;overflow:visible;gap:2px;padding:0;cursor:auto;-webkit-mask-image:none!important;mask-image:none!important}
+.side .chip{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;height:36px;border:0;border-radius:10px;padding:0 12px;text-align:start;font-size:14px;color:var(--muted);transition:background .15s,color .15s}
+.side .chip:hover{background:var(--surface);color:var(--ink)}
+.side .chip[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.side .chip b{margin:0;font-weight:500;font-size:12px;color:inherit;opacity:.75;font-variant-numeric:tabular-nums}
+.content{min-width:0}
+.tools{position:sticky;top:64px;z-index:6;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px 12px;padding:16px 0 14px;background:color-mix(in srgb,var(--bg) 96%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.tools .styles{padding:3px;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:12px;min-width:0;justify-self:start;max-width:100%}
+.tools .stb{height:34px;border:0;border-radius:9px;background:transparent;padding:0 9px;gap:6px;font-size:13.5px}
+.tools .stb:hover{color:var(--ink)}
+.tools .stb[aria-pressed="true"]{background:var(--ink);color:var(--bg);box-shadow:none;--ko:var(--ink)}
+.tools .stb[aria-pressed="true"] svg{color:var(--bg)}
+.tright{display:flex;gap:8px;align-items:center}
+.tools .loopbtn{height:40px;border-radius:11px}
+.size{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--muted)}
+.size svg{width:18px;height:18px}
+.size input{width:80px;accent-color:var(--accent);cursor:pointer}
+.tools .duo{grid-column:1/-1;padding-top:2px}
+.grid{--ico:28px;padding:20px 0 8px;grid-template-columns:repeat(auto-fill,minmax(calc(var(--ico) * 2 + 48px),1fr))}
+.ico{width:calc(var(--ico) + 12px);height:calc(var(--ico) + 12px)}
+.ico svg{width:var(--ico);height:var(--ico)}
+.tile{border-radius:16px;gap:10px;transition:border-color .2s,background .2s,box-shadow .25s,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.tile:hover{transform:translateY(-2px);box-shadow:0 10px 24px -14px color-mix(in srgb,var(--accent) 60%,transparent)}
+.sec{grid-column:1/-1}
+@media (max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:0}
+  .side{position:static;max-height:none;overflow:visible;padding:14px 0 0}
+  .side-h{display:none}
+  .side .chips{flex-direction:row;overflow-x:auto;gap:8px;cursor:grab;-webkit-mask-image:revert!important;mask-image:revert!important}
+  .side .chip{width:auto;height:34px;border:1px solid var(--line);border-radius:999px;padding:0 14px;justify-content:flex-start;gap:6px;flex:none}
+  .tools{top:64px}
+}
+@media (max-width:760px){.nsearch kbd{display:none}.bname{display:none}.size{display:none}.nav-in{gap:10px}}
+@media (max-width:520px){#langBtn span{display:none}#langBtn{width:38px;padding:0;justify-content:center}.tools .loopbtn span{display:none}.tools .loopbtn{width:40px;padding:0;justify-content:center}}
+
+
+/* ── responsive pass: phones, foldables (Galaxy Fold cover 280px → unfolded), tablets, landscape, dual-screen ── */
+.nav-in,.wrap{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+@media (max-width:480px){
+  .nav-in{gap:8px}
+  .gh{display:none}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(calc(var(--ico) * 2 + 32px),1fr));gap:8px}
+  .tile{border-radius:14px;padding:6px}
+  .nm{font-size:12px}
+  .hero{padding:28px 0 26px}
+  h1{font-size:clamp(34px,11vw,48px)}
+  .lede{font-size:16px}
+  .cta .btn{flex:1 1 auto;justify-content:center}
+  .credit{padding-bottom:300px}
+}
+@media (max-width:360px){
+  .nav-in,.wrap{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  .mark{width:30px;height:30px}
+  .nsearch .search{padding-inline:34px 10px;font-size:15px}
+  .nsearch>svg{inset-inline-start:10px}
+  .nbtn.icon,#langBtn{width:34px;height:34px}
+  .stats{gap:6px 16px}.stats dt{font-size:20px}.stats dd{font-size:12px}
+  .grid{gap:6px}
+  .tile{border-radius:12px}
+  .sheet{padding-inline:14px}
+  .tab{font-size:13px}
+}
+@media (max-width:300px){.mark{display:none}.cta{flex-direction:column}}
+@media (min-width:601px) and (max-width:900px){.hero{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;justify-items:stretch}.show-wrap{width:100%}h1{font-size:clamp(38px,6.5vw,56px)}.lede{font-size:16px}}
+/* phones held sideways and other short screens: keep only the top bar pinned */
+@media (max-height:520px) and (orientation:landscape){
+  .nav-in{height:52px}
+  .tools,.side{position:static}
+  .hero{padding:22px 0 20px;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:28px}
+  .show{max-width:240px}
+  .sheet{max-height:92vh}
+}
+/* dual-screen / foldable spanning across a hinge: keep content off the fold */
+@media (horizontal-viewport-segments:2){
+  .hero-bg>.wrap,.wrap.layout{max-width:none;padding:0}
+  .hero,.layout{grid-template-columns:env(viewport-segment-width 0 0,1fr) env(viewport-segment-width 1 0,1fr);column-gap:calc(env(viewport-segment-left 1 0,0px) - env(viewport-segment-right 0 0,0px))}
+  .hero>*,.layout>*{padding-inline:24px}
+  .side{position:sticky;max-height:calc(100vh - 64px)}
+}
+
+/* ── contrast pass (WCAG AA): solid counts, darker accent text on soft accent, firmer control borders ── */
+.side .chip b{opacity:1;color:var(--muted)}
+.side .chip[aria-pressed="true"],.side .chip[aria-pressed="true"] b{color:var(--accent-ink)}
+.chip[aria-pressed="true"]{color:var(--accent-ink)}
+.tile[aria-pressed="true"] .nm{color:var(--accent-ink)}
+.search,.nbtn,.loopbtn,.btn:not(.pri),.size,.tools .styles,.act:not(.pri),.chip,.eyebrow{border-color:var(--line-strong)}
+@media (min-width:901px){.side .chip{border-color:transparent}}
+@media (max-width:900px){.side .chip{border-color:var(--line-strong)}.side .chip[aria-pressed="true"]{border-color:var(--accent)}}
+.tile{border-color:var(--line)}
+.tile:hover{border-color:var(--accent)}
+.nsearch .search::placeholder{color:var(--muted);opacity:1}
+.nsearch kbd{color:var(--muted);border-color:var(--line-strong)}
+:root[data-theme="dark"] .act.pri{color:#0F1130}
 </style>
 </head>
 <body>
-<div class="wrap">
+<nav class="nav" aria-label="Main">
+  <div class="nav-in">
+    <a class="brand" href="#top"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4M22 5h-4"/></svg></span><span class="bname" data-t="brand">Animated Icons</span></a>
+    <label class="nsearch"><i data-lucide="search"></i><input class="search" id="q" type="search" placeholder="جرس، قلب، download…" aria-label="ابحث في الأيقونات" data-t-ph="searchPh" data-t-aria="searchAria"><kbd id="kbd">⌘K</kbd></label>
+    <div class="nact">
+      <button class="nbtn" id="langBtn"><i data-lucide="languages"></i><span></span></button>
+      <button class="nbtn icon" id="themeBtn" aria-label="Dark mode" data-t-aria="themeAria"><span class="t-moon"><i data-lucide="moon"></i></span><span class="t-sun"><i data-lucide="sun"></i></span></button>
+      <a class="nbtn icon gh" href="https://github.com/minshaawy/Icon7" target="_blank" rel="noopener" aria-label="GitHub"><i data-lucide="github"></i></a>
+    </div>
+  </div>
+</nav>
+<div class="hero-bg" id="top"><div class="wrap">
   <header class="hero">
     <div class="hero-copy">
       <p class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-t="eyebrow">Free animated icon library</span></p>
@@ -249,26 +382,29 @@ h1 .hl{background:linear-gradient(100deg,var(--accent),#7C4DFF 60%,var(--hot));-
       <p class="show-cap"><span data-t="nowPlaying">Now playing</span> · <span id="stageName">Rocket</span></p>
     </div>
   </header>
-</div>
+</div></div>
 
-<div class="bar">
-  <div class="wrap">
-    <div class="row">
-      <input class="search" id="q" type="search" placeholder="جرس، قلب، download…" aria-label="ابحث في الأيقونات" data-t-ph="searchPh" data-t-aria="searchAria">
-      <button class="loopbtn" id="loop" aria-pressed="false"><i data-lucide="sparkles"></i><span>شغّل الكل</span></button>
-      <button class="loopbtn" id="exportBtn" aria-label="تصدير المجموعة" data-t-aria="exportAria"><i data-lucide="download"></i><span data-t="export">تصدير</span></button>
-      <button class="loopbtn" id="langBtn"><i data-lucide="languages"></i><span></span></button>
-    </div>
-    <div class="styles" id="styles" role="group" aria-label="الستايل" data-t-aria="stylesAria"></div>
-    <div class="duo" id="duo" role="group" aria-label="ألوان ثنائي اللون" data-t-aria="duoAria" hidden><span data-t="colorsLbl">الألوان:</span><div class="sws" id="duoSw"></div><label><input type="color" id="dInk" value="#1A1D3D"><span data-t="ink">لون الخط</span></label><label><input type="color" id="dTone" value="#3D5AFE"><span data-t="tone">لون التعبئة</span></label></div>
+<div class="wrap layout">
+  <aside class="side">
+    <p class="side-h" data-t="catsTitle">Categories</p>
     <div class="chips" id="chips" role="group" aria-label="الأقسام" data-t-aria="catsAria"></div>
-  </div>
-</div>
-
-<main class="wrap">
+  </aside>
+  <section class="content">
+    <div class="tools" id="tools">
+      <div class="styles" id="styles" role="group" aria-label="الستايل" data-t-aria="stylesAria"></div>
+      <div class="tright">
+        <label class="size"><i data-lucide="a-large-small"></i><input type="range" id="size" min="20" max="44" step="2" value="28" aria-label="Icon size" data-t-aria="sizeAria"></label>
+        <button class="loopbtn" id="loop" aria-pressed="false"><i data-lucide="sparkles"></i><span>شغّل الكل</span></button>
+        <button class="loopbtn" id="exportBtn" aria-label="تصدير المجموعة" data-t-aria="exportAria"><i data-lucide="download"></i><span data-t="export">تصدير</span></button>
+      </div>
+      <div class="duo" id="duo" role="group" aria-label="ألوان ثنائي اللون" data-t-aria="duoAria" hidden><span data-t="colorsLbl">الألوان:</span><div class="sws" id="duoSw"></div><label><input type="color" id="dInk" value="#1A1D3D"><span data-t="ink">لون الخط</span></label><label><input type="color" id="dTone" value="#3D5AFE"><span data-t="tone">لون التعبئة</span></label></div>
+    </div>
+<main class="main">
   <div class="grid" id="grid"></div>
   <!-- Icon drawings: Lucide (https://lucide.dev), ISC License, Copyright (c) Lucide Contributors. Custom icons and all motion are original to this library. -->
 </main>
+  </section>
+</div>
 <footer class="credit"><span data-t="madeWith">Made with</span><span class="hb" role="img" aria-label="love" data-t-aria="love"><i data-lucide="heart"></i></span><span data-t="madeBy">by</span><a href="https://www.linkedin.com/in/minsh/" target="_blank" rel="noopener">Ahmed Elminshawy</a></footer>
 
 <aside class="sheet" id="sheet" aria-live="polite">
@@ -318,7 +454,7 @@ const UI={
   lottieInfo:kb=>`Lottie file, ${kb} KB, 60 fps. Works in After Effects (Bodymovin), on the web, on mobile and in the LottieFiles plugin for Figma. The particles around the icon aren't included.`,
   gifMaking:"Working…",gifProg:p=>`Working ${p}%`,gifReady:kb=>`Ready, ${kb} KB. On mobile, long-press the image to save it.`,gifFail:"Couldn't make the GIF in this browser.",
   bulkInfo:(n,c,st)=>`${n} icons from “${c}” in the “${st}” style. The filter and search decide what gets exported.`,bulkProg:(k,n,l)=>`${k} of ${n}: ${l}`,zipping:"Compressing…",
-  styleSep:", style ",madeWith:"Made with",madeBy:"by",love:"love",cssNote:"The particles and glow around the icon on the page are made with JS and aren't part of this code"},
+  styleSep:", style ",brand:"Animated Icons",catsTitle:"Categories",themeAria:"Toggle dark mode",sizeAria:"Icon size",madeWith:"Made with",madeBy:"by",love:"love",cssNote:"The particles and glow around the icon on the page are made with JS and aren't part of this code"},
  ar:{title:"مكتبة أيقونات متحركة",stageAria:"شغّل الحركة",
   lede:"كل أيقونة ليها حركة معمولة بإيد، بـ ٦ ستايلات، ومعاهم معلم لكل دولة من الـ٢٢ دولة عربية وطقم كامل للتأمين. دوس على أي أيقونة وانسخها لفيجما أو نزّلها Lottie أو GIF.",eyebrow:"مكتبة أيقونات متحركة ببلاش",stIcons:"أيقونة",stCats:"قسم",stStyles:"ستايلات",stFormats:"صيغ تصدير",browse:"اتفرج على الأيقونات",ctaExport:"صدّر مجموعة",nowPlaying:"شغالة دلوقتي",
   h1:()=>`أيقونات <span class="hl">بتتحرك</span>.`,searchPh:"جرس، قلب، download…",searchAria:"ابحث في الأيقونات",playAll:"شغّل الكل",stopAll:"وقّف الكل",export:"تصدير",exportAria:"تصدير المجموعة",lang:"English",
@@ -331,7 +467,7 @@ const UI={
   lottieInfo:kb=>`ملف Lottie ‏${kb} كيلوبايت، ٦٠ فريم في الثانية. شغال في After Effects (Bodymovin) والويب والموبايل وبلجن LottieFiles في فيجما. الجزيئات اللي حوالين الأيقونة مش داخلة فيه.`,
   gifMaking:"بيتعمل…",gifProg:p=>`بيتعمل ${p}٪`,gifReady:kb=>`جاهز، ${kb} كيلوبايت. على الموبايل تقدر تدوس مطوّل على الصورة وتحفظها.`,gifFail:"معرفتش أعمل الـ GIF في المتصفح ده.",
   bulkInfo:(n,c,st)=>`${n} أيقونة من «${c}» بستايل «${st}». الفلتر والبحث بيحددوا إيه اللي يتصدّر.`,bulkProg:(k,n,l)=>`${k} من ${n}: ${l}`,zipping:"بيتضغط…",
-  styleSep:"، ستايل ",madeWith:"اتعمل بحب",madeBy:"على إيد",love:"حب",cssNote:"الجزيئات واللمعة اللي حوالين الأيقونة في الصفحة متعملة بـ JS ومش داخلة في الكود ده"}
+  styleSep:"، ستايل ",brand:"أيقونات متحركة",catsTitle:"الأقسام",themeAria:"الوضع الليلي",sizeAria:"حجم الأيقونات",madeWith:"اتعمل بحب",madeBy:"على إيد",love:"حب",cssNote:"الجزيئات واللمعة اللي حوالين الأيقونة في الصفحة متعملة بـ JS ومش داخلة في الكود ده"}
 };
 const loc=(k,...a)=>{const v=UI[LANG][k]??UI.en[k];return typeof v==="function"?v(...a):v};
 const CAT_EN={local:"Local & Arabic",arab:"Arab countries",insurance:"Insurance",ui:"Interface",arrows:"Arrows",status:"Alerts",text:"Text & editing",layout:"Layout & shapes",talk:"Communication",people:"People & emotions",media:"Media",files:"Files",shop:"Commerce & money",biz:"Business & data",time:"Time",nature:"Nature & animals",tech:"Devices",dev:"Development",travel:"Travel & transport",home:"Home & living",food:"Food & drink",health:"Health",sport:"Sports & games",edu:"Education",security:"Security"};
@@ -1565,7 +1701,7 @@ const showBoxes=[...document.querySelectorAll("#show .sbox")];
 showBoxes.forEach((b,k)=>{const i=SHOW[k];if(i==null)return;const sv=cleanSvg(i,true,true);sv.setAttribute("class","ic");b.appendChild(sv);b._i=i;
   b.addEventListener("click",()=>{play(b,i);pick(i)});b.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")play(b,i,{soft:1})})});
 {let sk=0;const showEl=document.getElementById("show");if(!RM)setInterval(()=>{if(document.hidden)return;const r=showEl.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const b=showBoxes[sk++%showBoxes.length];if(b&&b._i!=null)play(b,b._i,{soft:1})},700)}
-$("ctaBrowse").addEventListener("click",()=>{const y=grid.getBoundingClientRect().top+scrollY-document.querySelector(".bar").offsetHeight-8;scrollTo({top:y,behavior:RM?"auto":"smooth"})});
+$("ctaBrowse").addEventListener("click",()=>{const y=grid.getBoundingClientRect().top+scrollY-document.querySelector(".nav").offsetHeight-$("tools").offsetHeight+2;scrollTo({top:y,behavior:RM?"auto":"smooth"})});
 $("ctaExport").addEventListener("click",()=>openBulk());
 /* ── rows that scroll sideways: drag with the mouse, wheel scrolls them, edges fade when there is more ── */
 function edges(el){const max=el.scrollWidth-el.clientWidth,p=Math.abs(el.scrollLeft);el.classList.toggle("fs",p>2);el.classList.toggle("fe",max>2&&p<max-2)}
@@ -1578,6 +1714,11 @@ function dragRow(el){let down=false,moved=false,sx=0,sl=0;
   el.addEventListener("wheel",e=>{if(el.scrollWidth<=el.clientWidth||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;el.scrollLeft+=(document.documentElement.dir==="rtl"?-1:1)*e.deltaY;e.preventDefault()},{passive:false});
   el.addEventListener("scroll",()=>edges(el),{passive:true});addEventListener("resize",()=>edges(el));edges(el)}
 dragRow(chips);dragRow(stWrap);
+/* ── v3 controls: theme toggle, ⌘K / "/" to search, icon size ── */
+$("themeBtn").addEventListener("click",()=>{const r=document.documentElement,cur=r.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),next=cur==="dark"?"light":"dark";r.dataset.theme=next;try{sessionStorage.setItem("theme",next)}catch(_){}});
+$("kbd").textContent=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent)?"⌘K":"Ctrl K";
+addEventListener("keydown",e=>{const typing=/INPUT|TEXTAREA/.test(document.activeElement.tagName);if(((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k")||(e.key==="/"&&!typing)){e.preventDefault();$("q").focus();$("q").select()}else if(e.key==="Escape"&&document.activeElement===$("q")){$("q").blur()}});
+{const sz=$("size"),setSz=v=>{grid.style.setProperty("--ico",v+"px");try{localStorage.setItem("icoSize",v)}catch(_){}};let v=28;try{v=+localStorage.getItem("icoSize")||28}catch(_){}sz.value=v;grid.style.setProperty("--ico",v+"px");sz.addEventListener("input",()=>setSz(sz.value))}
 /* ── language switch: re-labels everything in place, flips direction, remembers the choice ── */
 function applyLang(){
   const h=document.documentElement;h.lang=LANG;h.dir=LANG==="ar"?"rtl":"ltr";document.title=loc("title");

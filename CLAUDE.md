@@ -20,6 +20,14 @@ A single self-contained page, `index.html` (~250 KB), that hosts a library of **
 - Fonts: IBM Plex Sans Arabic (UI) + Lalezar (headline) from Google Fonts.
 - Lazy libs (cdnjs, pinned): lottie-web 5.12.2 (Lottie preview), JSZip 3.10.1 (bulk ZIP).
 
+## Page frame and design (v3)
+- Inspired by the big icon sites (Lucide, Phosphor, Tabler, Lordicon): sticky `.nav` (brand, ⌘K / "/" search `#q`, `#langBtn`, `#themeBtn`, GitHub), hero with dotted backdrop and the animated showcase card, then `.layout` = sticky `.side` (categories `#chips` as a vertical list with counts) + `.content` (sticky `.tools`: segmented `#styles`, `#size` slider → `--ico` on `#grid`, play all, export, `#duo` row) and the grid.
+- Below 900px the sidebar becomes a draggable chip row (`dragRow`), the toolbar keeps styles scrollable next to icon-only buttons. Hero stacks below 600px. Short landscape screens unpin the toolbar. `horizontal-viewport-segments:2` keeps hero/layout off a hinge. Tested at 280 (Galaxy Fold cover) → 1440 with no horizontal scroll.
+- Always starts in LIGHT mode (`<html data-theme="light">`); the toggle is remembered only for the tab (sessionStorage), on purpose.
+- Contrast: all text passes WCAG AA in light and dark (audit script: walk text nodes, blend background, check 4.5/3). Use `--accent-ink` for text on `--accent-soft`, `--line-strong` for control borders; never fade text with opacity.
+- Share preview: `og.png` (1200×630, rendered from an HTML mock), Open Graph + Twitter tags in `<head>`, `favicon.svg`, `apple-touch-icon.png`. Re-render `og.png` when the icon count changes. WhatsApp caches previews per URL.
+- Local preview: `../.claude/launch.json` runs a tiny Node static server (macOS blocks Xcode's python from Downloads).
+
 ## Language (i18n)
 - `LANG` (default `"en"`, `?lang=ar|en`, remembered in localStorage `lang`). `loc(key,...args)` reads the `UI.en` / `UI.ar` dictionary (do NOT name it `tx`: that is the translateX motion helper).
 - Static markup uses `data-t` (text), `data-t-aria`, `data-t-ph`, `data-t-alt`; `applyLang()` re-labels everything in place, flips `dir`, and runs `filter()`. The `#langBtn` toggles.
