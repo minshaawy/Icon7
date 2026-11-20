@@ -6,7 +6,7 @@
 <title>مكتبة أيقونات متحركة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Lalezar&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Lalezar&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#EDEFF8;--surface:#FFFFFF;--ink:#1A1D3D;--muted:#5B6083;--line:#D6D9EA;
@@ -155,15 +155,76 @@ svg.ic *{transform-box:fill-box}
 .credit:hover .hb svg{animation-duration:.7s}
 @keyframes lubdub{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.22)}20%{transform:scale(.96)}28%{transform:scale(1.14)}}
 @media (prefers-reduced-motion:reduce){.sheet,.tile,.stage{transition:none}.credit .hb svg{animation:none}}
+
+/* hero v2 */
+.hero{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;padding:64px 0 52px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0 0 18px;padding:5px 12px 5px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:500;color:var(--muted)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 60%,transparent);animation:pulse 2s ease-out infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+h1{font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;font-weight:700;font-size:clamp(42px,6.4vw,72px);line-height:1.02;margin:0 0 18px}
+:root[lang="en"] h1{letter-spacing:-.03em}
+h1 .hl{background:linear-gradient(100deg,var(--accent),#7C4DFF 60%,var(--hot));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:17px;line-height:1.65;max-width:46ch}
+.stats{display:flex;gap:10px 30px;flex-wrap:wrap;margin:26px 0 0;padding:0}
+.stats div{display:flex;flex-direction:column}
+.stats dt{font-size:26px;font-weight:700;line-height:1.1;color:var(--ink)}
+.stats dd{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.btn{height:46px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-weight:600;transition:transform .2s,box-shadow .2s,background .2s}
+.btn svg{width:18px;height:18px}
+.btn.pri{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px -8px color-mix(in srgb,var(--ink) 45%,transparent)}
+.btn:active{transform:scale(.97)}
+.show-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+.show{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:400px;padding:16px;border-radius:32px;background:linear-gradient(140deg,var(--accent),#7C4DFF 70%,#9b5cff);box-shadow:0 30px 60px -30px color-mix(in srgb,var(--accent) 70%,transparent)}
+.sbox,.show .stage{aspect-ratio:1;border-radius:22px;display:grid;place-items:center;position:relative;cursor:pointer;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.12);color:#fff;--ko:#5b57ff;--tone:#fff;transition:background .25s,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.sbox:hover{background:rgba(255,255,255,.2)}
+.sbox:active,.show .stage:active{transform:scale(.93)}
+.sbox svg{width:42%;height:42%;stroke-width:1.75;overflow:visible}
+.show .stage{width:auto;height:auto;background:#fff;color:var(--accent);border-color:#fff;--ko:#fff;--tone:var(--accent);box-shadow:0 10px 30px -10px rgba(20,10,80,.45)}
+.show .stage svg{width:52%;height:52%}
+.show-cap{margin:0;font-size:13px;color:var(--muted)}
+#stageName{color:var(--ink);font-weight:500}
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;gap:34px;padding:36px 0 30px;justify-items:stretch}
+  .show-wrap{width:100%}
+  .show{max-width:340px;padding:12px;gap:8px;border-radius:26px}
+  .sbox,.show .stage{border-radius:18px}
+  .stats{gap:8px 22px}.stats dt{font-size:22px}
+}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+/* draggable rows */
+.chips,.styles{cursor:grab;-webkit-user-select:none;user-select:none}
+.chips.dragging,.styles.dragging{cursor:grabbing}
+.chips.fe,.styles.fe{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent)}
+.chips.fs,.styles.fs{-webkit-mask-image:linear-gradient(to left,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(to left,#000 calc(100% - 56px),transparent)}
+.chips.fs.fe,.styles.fs.fe{-webkit-mask-image:linear-gradient(to right,transparent,#000 56px,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(to right,transparent,#000 56px,#000 calc(100% - 56px),transparent)}
+[dir="rtl"] .chips.fe:not(.fs),[dir="rtl"] .styles.fe:not(.fs){-webkit-mask-image:linear-gradient(to left,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(to left,#000 calc(100% - 56px),transparent)}
+[dir="rtl"] .chips.fs:not(.fe),[dir="rtl"] .styles.fs:not(.fe){-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 56px),transparent)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="hero">
-    <button class="stage" id="stage" aria-label="شغّل الحركة" data-t-aria="stageAria"><i data-lucide="rocket"></i><span class="stage-name" id="stageName">صاروخ</span></button>
-    <div>
-      <h1 id="h1">+٥٥٠ أيقونة بتتحرك</h1>
-      <p class="lede" data-t="lede">مكتبة كاملة لأي مشروع، بـ ٢٥ قسم و٦ ستايلات، فيها معلم من كل دولة عربية من الـ٢٢، وأيقونات محلية، وطقم كامل للتأمين. كل أيقونة ليها حركة خاصة بيها: الجرس بيرن، والطرد بيقع، والصاروخ بيطير. دوس على أي أيقونة وصدّرها لفيجما أو Lottie أو GIF، أو صدّر قسم كامل مرة واحدة من زرار التصدير.</p>
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-t="eyebrow">Free animated icon library</span></p>
+      <h1 id="h1"></h1>
+      <p class="lede" data-t="lede"></p>
+      <dl class="stats">
+        <div><dt id="stN">657</dt><dd data-t="stIcons">icons</dd></div>
+        <div><dt id="stC">25</dt><dd data-t="stCats">categories</dd></div>
+        <div><dt id="stS">6</dt><dd data-t="stStyles">styles</dd></div>
+        <div><dt id="stF">3</dt><dd data-t="stFormats">export formats</dd></div>
+      </dl>
+      <div class="cta"><button class="btn pri" id="ctaBrowse"><span data-t="browse">Browse icons</span><i data-lucide="arrow-down"></i></button><button class="btn" id="ctaExport"><i data-lucide="download"></i><span data-t="ctaExport">Export a set</span></button></div>
+    </div>
+    <div class="show-wrap">
+      <div class="show" id="show">
+        <button class="sbox"></button><button class="sbox"></button><button class="sbox"></button><button class="sbox"></button>
+        <button class="stage" id="stage" aria-label="شغّل الحركة" data-t-aria="stageAria"><i data-lucide="rocket"></i></button>
+        <button class="sbox"></button><button class="sbox"></button><button class="sbox"></button><button class="sbox"></button>
+      </div>
+      <p class="show-cap"><span data-t="nowPlaying">Now playing</span> · <span id="stageName">Rocket</span></p>
     </div>
   </header>
 </div>
@@ -224,8 +285,8 @@ svg.ic *{transform-box:fill-box}
 let LANG=(()=>{try{const q=new URLSearchParams(location.search).get("lang");if(q==="ar"||q==="en")return q;const v=localStorage.getItem("lang");return v==="ar"?"ar":"en"}catch(_){return"en"}})();
 const UI={
  en:{title:"Animated Icon Library",stageAria:"Play the animation",
-  lede:"A complete icon library for any project: 25 categories and 6 styles, with a landmark from each of the 22 Arab countries, local icons and a full insurance set. Every icon has its own motion: the bell rings, the parcel drops, the rocket takes off. Click any icon to export it to Figma, Lottie or GIF, or export a whole category at once with Export.",
-  h1:n=>`${n} animated icons`,searchPh:"bell, heart, download…",searchAria:"Search icons",playAll:"Play all",stopAll:"Stop all",export:"Export",exportAria:"Export set",lang:"العربية",
+  lede:"Every icon has its own hand-tuned motion, in 6 styles, with a landmark for each of the 22 Arab countries and a full insurance set. Click any icon to copy it to Figma or download it as Lottie or GIF.",eyebrow:"Free animated icon library",stIcons:"icons",stCats:"categories",stStyles:"styles",stFormats:"export formats",browse:"Browse icons",ctaExport:"Export a set",nowPlaying:"Now playing",
+  h1:()=>`Icons that <span class="hl">move</span>.`,searchPh:"bell, heart, download…",searchAria:"Search icons",playAll:"Play all",stopAll:"Stop all",export:"Export",exportAria:"Export set",lang:"العربية",
   stylesAria:"Style",duoAria:"Two-tone colors",colorsLbl:"Colors:",ink:"Stroke",tone:"Fill",catsAria:"Categories",close:"Close",replay:"Play again",nameSep:" · name",tabFigma:"Figma",
   copyFigma:"Copy for Figma",dlSvg:"Download SVG",copyJson:"Copy JSON",dlJson:"Download JSON",gifAlt:"GIF preview",bgWhite:"White",bgTransparent:"Transparent",bgDark:"Dark",makeGif:"Make GIF",dlGif:"Download GIF",copyCode:"Copy code",copySvg:"Copy SVG",showCode:"Show code",hideCode:"Hide code",
   bulkTitle:"Export set",bulkHint:"The Figma copy is a sheet with every icon named, each on its own layer. GIFs are made on your device with the GIF background you picked, so a big set can take a while.",
@@ -237,8 +298,8 @@ const UI={
   bulkInfo:(n,c,st)=>`${n} icons from “${c}” in the “${st}” style. The filter and search decide what gets exported.`,bulkProg:(k,n,l)=>`${k} of ${n}: ${l}`,zipping:"Compressing…",
   styleSep:", style ",madeWith:"Made with",madeBy:"by",love:"love",cssNote:"The particles and glow around the icon on the page are made with JS and aren't part of this code"},
  ar:{title:"مكتبة أيقونات متحركة",stageAria:"شغّل الحركة",
-  lede:"مكتبة كاملة لأي مشروع، بـ ٢٥ قسم و٦ ستايلات، فيها معلم من كل دولة عربية من الـ٢٢، وأيقونات محلية، وطقم كامل للتأمين. كل أيقونة ليها حركة خاصة بيها: الجرس بيرن، والطرد بيقع، والصاروخ بيطير. دوس على أي أيقونة وصدّرها لفيجما أو Lottie أو GIF، أو صدّر قسم كامل مرة واحدة من زرار التصدير.",
-  h1:n=>`${n} أيقونة بتتحرك`,searchPh:"جرس، قلب، download…",searchAria:"ابحث في الأيقونات",playAll:"شغّل الكل",stopAll:"وقّف الكل",export:"تصدير",exportAria:"تصدير المجموعة",lang:"English",
+  lede:"كل أيقونة ليها حركة معمولة بإيد، بـ ٦ ستايلات، ومعاهم معلم لكل دولة من الـ٢٢ دولة عربية وطقم كامل للتأمين. دوس على أي أيقونة وانسخها لفيجما أو نزّلها Lottie أو GIF.",eyebrow:"مكتبة أيقونات متحركة ببلاش",stIcons:"أيقونة",stCats:"قسم",stStyles:"ستايلات",stFormats:"صيغ تصدير",browse:"اتفرج على الأيقونات",ctaExport:"صدّر مجموعة",nowPlaying:"شغالة دلوقتي",
+  h1:()=>`أيقونات <span class="hl">بتتحرك</span>.`,searchPh:"جرس، قلب، download…",searchAria:"ابحث في الأيقونات",playAll:"شغّل الكل",stopAll:"وقّف الكل",export:"تصدير",exportAria:"تصدير المجموعة",lang:"English",
   stylesAria:"الستايل",duoAria:"ألوان ثنائي اللون",colorsLbl:"الألوان:",ink:"لون الخط",tone:"لون التعبئة",catsAria:"الأقسام",close:"إغلاق",replay:"شغّل الحركة تاني",nameSep:"، الاسم",tabFigma:"فيجما",
   copyFigma:"انسخ لفيجما",dlSvg:"حمّل SVG",copyJson:"انسخ JSON",dlJson:"حمّل JSON",gifAlt:"معاينة GIF",bgWhite:"خلفية بيضا",bgTransparent:"شفافة",bgDark:"داكنة",makeGif:"اعمل GIF",dlGif:"حمّل GIF",copyCode:"انسخ الكود",copySvg:"انسخ SVG",showCode:"اعرض الكود",hideCode:"اخفي الكود",
   bulkTitle:"تصدير المجموعة",bulkHint:"نسخة فيجما بتطلع شيت فيه كل الأيقونات بأساميها، كل أيقونة طبقة لوحدها. الـ GIF بيتعمل على جهازك بخلفية الـ GIF اللي اخترتها، فممكن ياخد شوية لو العدد كبير.",
@@ -1065,7 +1126,7 @@ const ICONS={...lucide.icons},DEFA=lucide.icons.Heart[1];for(const k in CUSTOM)I
 lucide.createIcons({icons:ICONS});
 const ST=["outline","light","bold","sharp","duo","solid"];
 document.body.classList.add("st-outline");
-document.getElementById("h1").textContent=loc("h1",ar(I.length));
+document.getElementById("h1").innerHTML=loc("h1");
 const stWrap=document.getElementById("styles");
 stWrap.innerHTML=ST.map(k=>`<button class="stb" data-st="${k}" aria-pressed="${k===STYLE}"><i data-lucide="heart"></i>${stn(k)}</button>`).join("");
 lucide.createIcons({icons:ICONS});
@@ -1426,6 +1487,25 @@ $("bSvg").addEventListener("click",e=>zipAll("svg",e.currentTarget));
 $("bLottie").addEventListener("click",e=>zipAll("lottie",e.currentTarget));
 $("bGif").addEventListener("click",e=>zipAll("gif",e.currentTarget));
 
+/* ── hero showcase: eight icons that take turns, the stage in the middle keeps its own reel ── */
+const SHOW=["bell","send","download","car-shield","arab-uae","flame","mail","gift"].map(n=>I.findIndex(x=>x[0]===n)).filter(i=>i>=0);
+const showBoxes=[...document.querySelectorAll("#show .sbox")];
+showBoxes.forEach((b,k)=>{const i=SHOW[k];if(i==null)return;const sv=cleanSvg(i,true,true);sv.setAttribute("class","ic");b.appendChild(sv);b._i=i;
+  b.addEventListener("click",()=>{play(b,i);pick(i)});b.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")play(b,i,{soft:1})})});
+{let sk=0;const showEl=document.getElementById("show");if(!RM)setInterval(()=>{if(document.hidden)return;const r=showEl.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const b=showBoxes[sk++%showBoxes.length];if(b&&b._i!=null)play(b,b._i,{soft:1})},700)}
+$("ctaBrowse").addEventListener("click",()=>{const y=grid.getBoundingClientRect().top+scrollY-document.querySelector(".bar").offsetHeight-8;scrollTo({top:y,behavior:RM?"auto":"smooth"})});
+$("ctaExport").addEventListener("click",()=>openBulk());
+/* ── rows that scroll sideways: drag with the mouse, wheel scrolls them, edges fade when there is more ── */
+function edges(el){const max=el.scrollWidth-el.clientWidth,p=Math.abs(el.scrollLeft);el.classList.toggle("fs",p>2);el.classList.toggle("fe",max>2&&p<max-2)}
+function dragRow(el){let down=false,moved=false,sx=0,sl=0;
+  el.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse"||e.button!==0)return;down=true;moved=false;sx=e.clientX;sl=el.scrollLeft});
+  el.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-sx;if(!moved&&Math.abs(dx)>5){moved=true;el.classList.add("dragging");try{el.setPointerCapture(e.pointerId)}catch(_){}}if(moved){el.scrollLeft=sl-dx;e.preventDefault()}});
+  const up=()=>{if(!down)return;down=false;if(moved){el.classList.remove("dragging");el._justDragged=true;setTimeout(()=>el._justDragged=false,0)}};
+  el.addEventListener("pointerup",up);el.addEventListener("pointercancel",up);el.addEventListener("lostpointercapture",up);
+  el.addEventListener("click",e=>{if(el._justDragged){e.stopPropagation();e.preventDefault()}},true);
+  el.addEventListener("wheel",e=>{if(el.scrollWidth<=el.clientWidth||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;el.scrollLeft+=(document.documentElement.dir==="rtl"?-1:1)*e.deltaY;e.preventDefault()},{passive:false});
+  el.addEventListener("scroll",()=>edges(el),{passive:true});addEventListener("resize",()=>edges(el));edges(el)}
+dragRow(chips);dragRow(stWrap);
 /* ── language switch: re-labels everything in place, flips direction, remembers the choice ── */
 function applyLang(){
   const h=document.documentElement;h.lang=LANG;h.dir=LANG==="ar"?"rtl":"ltr";document.title=loc("title");
@@ -1434,7 +1514,7 @@ function applyLang(){
   document.querySelectorAll("[data-t-ph]").forEach(e=>e.setAttribute("placeholder",loc(e.dataset.tPh)));
   document.querySelectorAll("[data-t-alt]").forEach(e=>e.setAttribute("alt",loc(e.dataset.tAlt)));
   $("langBtn").querySelector("span").textContent=loc("lang");$("langBtn").setAttribute("lang",LANG==="en"?"ar":"en");
-  $("h1").textContent=loc("h1",ar(I.length));
+  $("h1").innerHTML=loc("h1");$("stN").textContent=ar(I.length);$("stC").textContent=ar(Object.keys(C).length);$("stS").textContent=ar(ST.length);$("stF").textContent=ar(3);showBoxes.forEach(b=>{if(b._i!=null)b.setAttribute("aria-label",lbl(b._i))});edges(chips);edges(stWrap);
   chips.querySelectorAll(".chip").forEach(c=>{const k=c.dataset.c;c.firstChild.textContent=k==="all"?loc("all"):catName(k);c.querySelector("b").textContent=ar(k==="all"?I.length:I.filter(x=>x[2]===k).length)});
   tiles.forEach((t,i)=>{const l=lbl(i);t.setAttribute("aria-label",l);t.querySelector(".nm").textContent=l});
   grid.querySelector(".empty").textContent=loc("empty");secTop.textContent=loc("secTop");secRest.textContent=loc("secRest");
