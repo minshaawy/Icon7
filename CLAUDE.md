@@ -1,0 +1,71 @@
+# Animated Icon Library — project brief for Claude Code
+
+This project started in a claude.ai chat and moved here. Read this file before changing anything.
+
+## Talk to the user
+- Reply in Egyptian Arabic. Keep UI copy in Egyptian Arabic (RTL page).
+- The user is a designer-minded manager: show results (screenshots, previews) before long explanations.
+- When the user drops files in `references/`, study them first and match their timing/easing/feel. Use paid libraries (e.g. Lordicon) only as style/timing references; never copy their drawings or exact animations.
+
+## What it is
+A single self-contained page, `index.html` (~185 KB), that hosts a library of **574 animated icons** in **25 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
+
+- Icons: Lucide **0.460.0** (UMD from jsDelivr, pinned) + a `CUSTOM` object of extra icons:
+  - from Lucide 1.59.0 (copied node data, ISC): `Mosque`, `SaudiRiyal` (official 2025 symbol), `CirclePoundSterling`
+  - hand-drawn on the 24×24 Lucide grid: `Lantern`, `PrayerRug`, `Quran`, `Kaaba`, `Pyramids`, `Camel`, `Dallah`, and the insurance set `CarShield`, `HouseShield`, `HeartShield`, `GlobeShield`, `FileClaim`, `FilePolicy`
+  - hand-drawn Arab-countries set (category `arab`, one landmark per country, 22): `ArabEgypt` (Sphinx), `ArabSaudi` (Kingdom Centre), `ArabUae` (Burj Al Arab), `ArabKuwait` (Kuwait Towers), `ArabQatar` (Museum of Islamic Art), `ArabBahrain` (Pearl Monument), `ArabOman` (khanjar), `ArabYemen` (Shibam), `ArabJordan` (Petra Treasury), `ArabPalestine` (Dome of the Rock), `ArabLebanon` (cedar), `ArabSyria` (Palmyra arch), `ArabIraq` (Malwiya), `ArabMorocco` (Koutoubia), `ArabAlgeria` (Maqam Echahid), `ArabTunisia` (Sidi Bou Said door), `ArabLibya` (Arch of Marcus Aurelius), `ArabSudan` (Meroë pyramids), `ArabMauritania` (Chinguetti minaret), `ArabSomalia` (aqal hut), `ArabDjibouti` (Lake Abbé chimneys), `ArabComoros` (crescent + 4 stars). Labels are the country names; the landmark name is in the recipe `t` so search finds it.
+  - custom icons are merged with `lucide.icons` and passed to `lucide.createIcons({icons: ICONS})` (also for the second call in the style UI).
+- Fonts: IBM Plex Sans Arabic (UI) + Lalezar (headline) from Google Fonts.
+- Lazy libs (cdnjs, pinned): lottie-web 5.12.2 (Lottie preview), JSZip 3.10.1 (bulk ZIP).
+
+## Data model
+- `CATS = [[key, arabicName, "lucide-name:Arabic label,..."], ...]` → parsed into `I = [[name, label, catKey], ...]`.
+- Categories: local (محلي وعربي), arab (دول عربية), insurance (تأمين), ui, arrows, status, text, layout, talk, people, media, files, shop, biz, time, nature, tech, dev, travel, home, food, health, sport, edu, security.
+
+## Motion system (the core)
+Every icon has a recipe. `rec(name, svg)` returns `R[name]` (hand-made, ~440 icons) or `auto(name, svg)` (pattern families: arrows, chevrons, charts, text lines, calendars, `-off` slash, badges, files, users, signal bars, faces…). There are **no generic fallbacks left**: keep it that way when adding icons.
+
+Recipe shape:
+```js
+name: { t: "Arabic description of the motion",
+        p: [[target, keyframes, easing, opts], ...],   // parts
+        fx: [[effectName, arg, delayMs], ...],          // optional DOM/SVG particles
+        tog: 1, on: [...], off: [...], c: "hot", fill: [1] } // toggles (heart, star, menu…)
+```
+- `target`: `0` = whole svg, `n` or `[n, m]` = child by **original index** (`data-o`, 1-based). Children are tagged `data-o` before any reordering, so indices stay stable.
+- easing: `"lin"` (per-keyframe easings inside frames), `"sp" | "sps" | "spb"` = generated spring `linear()` easings (`spring(k, c)`), or any CSS easing (`E.o`, `E.io`, `E.sm`, `E.in`, `E.ant`).
+- opts: `d` duration, `dl` delay, `st` stagger, `it` iterations, `o` transform-origin, `box: "view-box"` (origin in icon px), `keep` (commit end state; toggles keep automatically).
+- Helpers: `K, W, POP, HOP, SQ, J, OUT, FLY, DRAW, DRAWR, FADEPOP, NUDGE, SL, GROW, STEAM, JELLY, rot, tx`.
+- Principles kit (v2), prefer these for new work: `DV(a,n,decay)` damped-oscillation values (follow-through, e.g. `rot(DV(11,4,.5))`), `BLINK(at)` eyelid, `PUSH(x,y)` anticipation → thrust → spring settle, `LEAP(h,lean)` crouch/launch/fall/land squash, `DRAG(a)` a dangling part that lags and overshoots. Articulate parts (overlap with small `dl` offsets) instead of moving the whole svg as one block; whole-svg-only motion is reserved for single-path icons.
+- `DRAW` uses `pathLength="1"` + dasharray/dashoffset.
+- FX (page only, not exported): burst, sparkle, ripple, rings, glow, land, snap, trail, confetti, dust, splash, drip, notes, zzz, embers, coins, dropin, buzz, tint, scanline, bubbles, typing, mercury, screen, rec, slash, scribble.
+- Playback runs on the Web Animations API. A click while animating queues one replay (`box._again`) instead of cutting the animation.
+
+## Styles
+`outline, light (1.2), bold (2.5), sharp (square caps / miter), duo (tone fill 25%), solid (filled + knockouts)`.
+`classify(svg)` tags children: `sh` = closed shape not inside another, `ish` = closed shape inside a filled one, `iln` = open line inside a filled one (knocked out in solid), `tf` = toggle fill. Containment = bbox inside **and** `isPointInFill` at the centre (handles concave shapes like the crescent). Filled containers are moved behind their inner details so knockouts paint on top.
+
+## Export pipeline
+1. `sample(i, fps)`: clone the icon into the hidden `#lab`, run its real recipe paused, step `currentTime` frame by frame and read computed `transform`, `opacity`, `fill-opacity`, dash → trim range.
+2. **Lottie** (`lottieOf`): one shape layer per part, root transform baked into each layer (no parenting), trim paths for drawing, 60 fps, comp 128×128 with a 4-unit margin (`LK = 4`). SVG paths → Lottie beziers by `dToSubs` (full path parser incl. arcs).
+3. **GIF** (`gifOf` + `encodeGIF` + `lzw`): frames rendered from the sampled transforms into SVG → canvas, own palette + LZW encoder, 33 fps, 256 px, white / transparent / dark background, loop with an end hold.
+4. **Figma**: `staticSvg(i)` with explicit colours; bulk "sheet" puts every visible icon in a named grid.
+5. Downloads: inside claude.ai the page uses the `downloads` runtime capability; when self-hosted it falls back to normal browser downloads.
+
+## Gotchas already solved (don't reintroduce)
+- `parseM` must strip the `matrix3d(` prefix before matching numbers (the "3" used to shift every value) and project perspective with the Jacobian at the origin. Before the fix every `perspective()` icon (cards, coins, calendars, laptop, book, fridge, door) exported broken to Lottie/GIF.
+- `transform-box: fill-box` must be scoped to `svg.ic *`. A global `svg *` rule breaks lottie-web's own transforms.
+- Elements with `display: flex/grid` ignore `[hidden]`: add explicit `[hidden]{display:none}` rules.
+- The page is RTL: don't park hidden helpers at `left: -9999px` (it creates sideways scroll). `#lab` sits at `top:0; right:0; opacity:0`.
+- lottie-web mutates `animationData`: pass a copy.
+
+## Testing
+- Use Playwright: open `index.html`, click every tile (catches runtime errors), take screenshots per style.
+- Lottie fidelity check: render `lottieOf(i)` with lottie-web at frame k next to the sampled frame k and compare.
+- Motion review: render each icon as a frame strip (8–10 frames from `sample(i,60)` + an onion-skin cell) to judge motion visually. `staticSvg(i)` returns an SVG element, not a string.
+
+## Good next steps
+- Use `references/` to retune motions (Lottie JSON references are the most precise; for video/GIF, extract frames with ffmpeg).
+- Higher-quality GIF with gifski, plus MP4/WebM via ffmpeg.
+- Split into source files (icons, recipes, export) with a build step that still outputs one `index.html`.
+- Package as an npm library / React components, or a Figma plugin.

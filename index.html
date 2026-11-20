@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مكتبة أيقونات متحركة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Lalezar&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDEFF8;--surface:#FFFFFF;--ink:#1A1D3D;--muted:#5B6083;--line:#D6D9EA;
+  --accent:#3D5AFE;--accent-soft:#E3E8FF;--hot:#FF4F7E;--amber:#FFA31A;--ok:#14B886;--tone:var(--accent);
+  color-scheme:light;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#10122A;--surface:#191C3B;--ink:#E9EBFA;--muted:#9BA0C6;--line:#2B2F57;
+    --accent:#8C9BFF;--accent-soft:#252B5C;--hot:#FF7EA3;--amber:#FFC24D;--ok:#3DD6A6;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10122A;--surface:#191C3B;--ink:#E9EBFA;--muted:#9BA0C6;--line:#2B2F57;
+  --accent:#8C9BFF;--accent-soft:#252B5C;--hot:#FF7EA3;--amber:#FFC24D;--ok:#3DD6A6;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+.hero{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center;padding:44px 0 32px}
+.stage{width:156px;height:156px;border-radius:46px;background:var(--accent);display:grid;place-items:center;color:#fff;position:relative;cursor:pointer;border:0;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.stage:active{transform:scale(.94)}
+.stage svg{width:74px;height:74px;stroke-width:1.75;overflow:visible}
+.stage-name{position:absolute;bottom:-30px;inset-inline:0;text-align:center;font-size:13px;color:var(--muted)}
+h1{font-family:"Lalezar","IBM Plex Sans Arabic",system-ui,sans-serif;font-weight:400;font-size:clamp(40px,7vw,68px);line-height:1.05;margin:0 0 10px}
+.lede{margin:0;color:var(--muted);max-width:48ch}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:12px 0 10px;border-bottom:1px solid var(--line)}
+.row{display:flex;gap:10px;align-items:center}
+.search{flex:1;min-width:0;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px;font:inherit}
+.search::placeholder{color:var(--muted)}
+.loopbtn{height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;font-weight:500}
+.loopbtn svg{width:18px;height:18px}
+.loopbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-top:10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:14px;color:var(--muted)}
+.chip b{font-weight:500;color:var(--ink);margin-inline-start:4px}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.chip[aria-pressed="true"] b{color:var(--accent)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;padding:18px 0 370px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:18px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;padding:8px;transition:border-color .25s,background .25s,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.tile[hidden],.empty[hidden]{display:none}
+.sec{grid-column:1/-1;margin:6px 2px -2px;font-size:14px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:10px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.sec[hidden]{display:none}
+.tile:hover{border-color:var(--accent)}
+.tile:active{transform:scale(.93)}
+.tile[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.ico{display:grid;place-items:center;width:40px;height:40px;color:var(--ink);transition:color .3s;position:relative}
+.ico svg{width:28px;height:28px;stroke-width:1.75;overflow:visible}
+.ico.busy{color:var(--accent)}
+.ico.on{color:var(--c,var(--accent))}
+.nm{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.3}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0}
+.tile{--ko:var(--surface)}
+.tile[aria-pressed="true"]{--ko:var(--accent-soft)}
+.prev{--ko:var(--accent-soft)}
+.stage{--ko:var(--accent);--tone:#fff}
+svg.ic .tf{fill:currentColor;fill-opacity:0}
+:is(.st-light svg.ic,svg.pv-light){stroke-width:1.2}
+:is(.st-bold svg.ic,svg.pv-bold){stroke-width:2.5}
+:is(.st-sharp svg.ic,svg.pv-sharp){stroke-linecap:square;stroke-linejoin:miter}
+:is(.st-duo svg.ic,svg.pv-duo) .sh{fill:var(--tone);fill-opacity:.25}
+.st-duo svg.ic .tf{fill-opacity:.25}
+.st-duo .ico:not(.on) svg.ic .tf,.st-duo .prev:not(.on) svg.ic .tf{fill:var(--tone)}
+:is(.st-solid svg.ic,svg.pv-solid) .sh{fill:currentColor}
+:is(.st-solid svg.ic,svg.pv-solid) .ish{fill:var(--ko);stroke:var(--ko)}
+:is(.st-solid svg.ic,svg.pv-solid) .iln{stroke:var(--ko)}
+.st-solid svg.ic .tf{fill-opacity:1}
+.st-duo .on svg.ic .tf{fill:currentColor}
+.st-solid svg.ic .fxel.dot{fill:var(--ko)}
+.styles{display:flex;gap:6px;overflow-x:auto;padding-top:10px;scrollbar-width:none}
+.styles::-webkit-scrollbar{display:none}
+.stb{flex:none;height:38px;padding:0 12px 0 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:flex;align-items:center;gap:7px;font-size:14px;color:var(--muted);--ko:var(--surface)}
+.stb svg{width:18px;height:18px;stroke-width:1.75;color:var(--ink)}
+.stb[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);font-weight:500;box-shadow:inset 0 0 0 1px var(--ink)}
+.fx{position:absolute;left:50%;top:50%;pointer-events:none;z-index:3;will-change:transform,opacity}
+svg.ic *{transform-box:fill-box}
+
+.sheet{position:fixed;bottom:0;inset-inline:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .45s cubic-bezier(.2,.9,.25,1)}
+.sheet.open{transform:none}
+.sheet-in{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
+.prev{width:68px;height:68px;border-radius:20px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;border:0;cursor:pointer;position:relative}
+.prev svg{width:36px;height:36px;stroke-width:1.75;overflow:visible}
+.meta h2{margin:0;font-size:18px;font-weight:600;line-height:1.3}
+.meta p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.meta code{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;unicode-bidi:isolate}
+.acts{display:flex;gap:8px}
+.act{height:40px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:14px;font-weight:500;white-space:nowrap}
+.act.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.closex{position:absolute;top:8px;left:12px;width:32px;height:32px;border:0;background:transparent;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+.closex svg{width:18px;height:18px}
+.code{grid-column:1/-1;margin:0;max-height:160px;overflow:auto;background:var(--bg);border-radius:10px;padding:10px 12px;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;white-space:pre;color:var(--muted)}
+.foot{color:var(--muted);font-size:13px;text-align:center;padding:0 0 24px;margin-top:-340px}
+.sheet{max-height:82vh;overflow-y:auto}
+.tabs{grid-column:1/-1;display:flex;border-bottom:1px solid var(--line)}
+.tab{flex:1;height:40px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);font-weight:500;cursor:pointer;font-size:14px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.colors{grid-column:1/-1;display:flex;gap:18px;font-size:13px;color:var(--muted)}
+.colors label{display:flex;align-items:center;gap:7px;cursor:pointer}
+.colors input{width:30px;height:30px;padding:0;border:1px solid var(--line);border-radius:8px;background:none;cursor:pointer}
+.pane{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+.pane[hidden],.colors[hidden],#gifImg[hidden],.act[hidden]{display:none}
+.pcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.prow{display:flex;gap:8px;flex-wrap:wrap}
+.hint{margin:0;font-size:12.5px;line-height:1.6;color:var(--muted);flex-basis:100%}
+.lp,#gifImg{width:88px;height:88px;border-radius:16px;background:#fff;border:1px solid var(--line);flex:none;object-fit:contain}
+.act:disabled{opacity:.6;cursor:default}
+.prog{flex-basis:100%;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.bulk-in{grid-template-columns:1fr}
+#lab{position:absolute;top:0;right:0;width:24px;height:24px;overflow:hidden;opacity:0;pointer-events:none;z-index:-1}
+.foot a{color:inherit}
+@media (max-width:640px){
+  .hero{grid-template-columns:1fr;gap:44px;padding-top:28px;justify-items:start}
+  .stage{width:120px;height:120px;border-radius:36px}
+  .stage svg{width:58px;height:58px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+  .sheet-in{grid-template-columns:auto 1fr}
+  .acts{grid-column:1/-1}
+  .act{flex:1}
+  .loopbtn span{display:none}
+  .loopbtn{padding:0 12px}
+}
+@media (prefers-reduced-motion:reduce){.sheet,.tile,.stage{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <button class="stage" id="stage" aria-label="شغّل الحركة"><i data-lucide="rocket"></i><span class="stage-name" id="stageName">صاروخ</span></button>
+    <div>
+      <h1 id="h1">+٥٥٠ أيقونة بتتحرك</h1>
+      <p class="lede">مكتبة كاملة لأي مشروع، بـ ٢٥ قسم و٦ ستايلات، فيها معلم من كل دولة عربية من الـ٢٢، وأيقونات محلية، وطقم كامل للتأمين. كل أيقونة ليها حركة خاصة بيها: الجرس بيرن، والطرد بيقع، والصاروخ بيطير. دوس على أي أيقونة وصدّرها لفيجما أو Lottie أو GIF، أو صدّر قسم كامل مرة واحدة من زرار التصدير.</p>
+    </div>
+  </header>
+</div>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="row">
+      <input class="search" id="q" type="search" placeholder="جرس، قلب، download…" aria-label="ابحث في الأيقونات">
+      <button class="loopbtn" id="loop" aria-pressed="false"><i data-lucide="sparkles"></i><span>شغّل الكل</span></button>
+      <button class="loopbtn" id="exportBtn" aria-label="تصدير المجموعة"><i data-lucide="download"></i><span>تصدير</span></button>
+    </div>
+    <div class="styles" id="styles" role="group" aria-label="الستايل"></div>
+    <div class="chips" id="chips" role="group" aria-label="الأقسام"></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+  <p class="foot">الرسومات من <a href="https://lucide.dev" target="_blank" rel="noopener">Lucide</a> برخصة ISC، والحركات مكتوبة بـ Web Animations من غير مكتبات.</p>
+</main>
+
+<aside class="sheet" id="sheet" aria-live="polite">
+  <button class="closex" id="close" aria-label="إغلاق"><i data-lucide="x"></i></button>
+  <div class="sheet-in">
+    <button class="prev" id="prev" aria-label="شغّل الحركة تاني"></button>
+    <div class="meta"><h2 id="pName"></h2><p><span id="pAnim"></span>، الاسم <code id="pId"></code></p></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="figma" aria-selected="true">فيجما</button>
+      <button class="tab" role="tab" data-tab="lottie" aria-selected="false">Lottie</button>
+      <button class="tab" role="tab" data-tab="gif" aria-selected="false">GIF</button>
+      <button class="tab" role="tab" data-tab="css" aria-selected="false">CSS</button>
+    </div>
+    <div class="colors" id="colors"><label><input type="color" id="cInk" value="#1A1D3D">لون الخط</label><label><input type="color" id="cTone" value="#3D5AFE">لون التعبئة</label></div>
+    <div class="pane" data-pane="figma"><button class="act pri" id="fgCopy">انسخ لفيجما</button><button class="act" id="fgSvg" data-dl hidden>حمّل SVG</button><p class="hint" id="fgInfo"></p></div>
+    <div class="pane" data-pane="lottie" hidden><div class="lp" id="lotPrev"></div><div class="pcol"><div class="prow"><button class="act pri" id="ltCopy">انسخ JSON</button><button class="act" id="ltDl" data-dl hidden>حمّل JSON</button></div><p class="hint" id="ltInfo"></p></div></div>
+    <div class="pane" data-pane="gif" hidden><img id="gifImg" alt="معاينة GIF" hidden><div class="pcol"><div class="prow" id="gifBg"><button class="chip" data-bg="white" aria-pressed="true">خلفية بيضا</button><button class="chip" data-bg="transparent" aria-pressed="false">شفافة</button><button class="chip" data-bg="dark" aria-pressed="false">داكنة</button></div><div class="prow"><button class="act pri" id="gifMake">اعمل GIF</button><button class="act" id="gifDl" data-dl data-wait="1" hidden>حمّل GIF</button></div><p class="hint" id="gifHint"></p></div></div>
+    <div class="pane" data-pane="css" hidden><button class="act pri" id="cpCss">انسخ الكود</button><button class="act" id="cpSvg">انسخ SVG</button><button class="act" id="tgCode">اعرض الكود</button></div>
+    <pre class="code" id="code" hidden></pre>
+  </div>
+</aside>
+<aside class="sheet" id="bulk" aria-live="polite">
+  <button class="closex" id="bClose" aria-label="إغلاق"><i data-lucide="x"></i></button>
+  <div class="sheet-in bulk-in">
+    <div class="meta"><h2>تصدير المجموعة</h2><p id="bInfo"></p></div>
+    <div class="colors"><label><input type="color" id="bInk" value="#1A1D3D">لون الخط</label><label><input type="color" id="bTone" value="#3D5AFE">لون التعبئة</label></div>
+    <div class="pane"><button class="act pri" id="bFigma">انسخ لفيجما</button><button class="act" id="bSvg" data-dl hidden>SVG ‏(ZIP)</button><button class="act" id="bLottie" data-dl hidden>Lottie ‏(ZIP)</button><button class="act" id="bGif" data-dl hidden>GIF ‏(ZIP)</button>
+      <div class="prog"><i id="bBar"></i></div><p class="hint" id="bStatus">نسخة فيجما بتطلع شيت فيه كل الأيقونات بأساميها، كل أيقونة طبقة لوحدها. الـ GIF بيتعمل على جهازك بخلفية الـ GIF اللي اخترتها، فممكن ياخد شوية لو العدد كبير.</p></div>
+  </div>
+</aside>
+<div id="lab" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>
+const LIN=CSS.supports("transition-timing-function","linear(0, 1)");
+function spring(k,c){
+  const w0=Math.sqrt(k),z=c/(2*w0),wd=w0*Math.sqrt(1-z*z),T=Math.min(1.4,-Math.log(.002)/(z*w0)),N=64,v=[];
+  for(let i=0;i<=N;i++){const t=T*i/N;v.push(i===N?1:+(1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+z*w0/wd*Math.sin(wd*t))).toFixed(4))}
+  return LIN?{e:`linear(${v.join(",")})`,d:Math.round(T*1000)}:{e:"cubic-bezier(.34,1.56,.64,1)",d:650};
+}
+const SP={sp:spring(260,15),sps:spring(220,19),spb:spring(330,11)};
+const SPS=SP.sps.e;
+const E={o:"cubic-bezier(.22,1,.36,1)",io:"cubic-bezier(.65,0,.35,1)",sm:"cubic-bezier(.45,0,.55,1)",in:"cubic-bezier(.55,0,.8,.35)",ant:"cubic-bezier(.6,-.35,.3,1.25)"};
+
+const K=(...t)=>t.map(x=>({transform:x}));
+const W=(f,a)=>a.map(x=>({transform:f(x),easing:E.sm}));
+const POP=s=>[{transform:`scale(${s})`},{transform:"scale(1)"}];
+const HOP=h=>[{transform:"translateY(0)",easing:"cubic-bezier(.2,.6,.35,1)"},{offset:.4,transform:`translateY(${-h}px)`,easing:"cubic-bezier(.6,0,.8,.4)"},{offset:.72,transform:"translateY(0)",easing:"cubic-bezier(.2,.6,.35,1)"},{offset:.86,transform:`translateY(${-h*.22}px)`,easing:"cubic-bezier(.6,0,.8,.4)"},{transform:"translateY(0)"}];
+const SQ=()=>[{transform:"scale(1)",easing:E.sm},{offset:.4,transform:"scale(.95,1.05)",easing:E.sm},{offset:.72,transform:"scale(1.09,.9)",easing:E.sm},{offset:.86,transform:"scale(.98,1.02)",easing:E.sm},{transform:"scale(1)"}];
+const J=h=>[{transform:"translateY(0) scale(1)",easing:"cubic-bezier(.2,.6,.35,1)"},{offset:.12,transform:"translateY(0) scale(1.08,.9)",easing:"cubic-bezier(.2,.6,.35,1)"},{offset:.42,transform:`translateY(${-h}px) scale(.94,1.07)`,easing:"cubic-bezier(.6,0,.8,.4)"},{offset:.68,transform:"translateY(0) scale(1.12,.86)",easing:SPS},{transform:"translateY(0) scale(1)"}];
+const OUT=(dx,dy)=>[{transform:"translate(0,0)",opacity:1,easing:E.in},{offset:.4,transform:`translate(${dx}px,${dy}px)`,opacity:0,easing:"step-end"},{offset:.42,transform:`translate(${-dx}px,${-dy}px)`,opacity:0,easing:SPS},{transform:"translate(0,0)",opacity:1}];
+const FLY=(dx,dy)=>[{transform:"translate(0,0) scale(1)",opacity:1,easing:E.ant},{offset:.42,transform:`translate(${dx}px,${dy}px) scale(.7)`,opacity:0,easing:"step-end"},{offset:.44,transform:`translate(${-dx*.7}px,${-dy*.7}px) scale(.7)`,opacity:0,easing:SPS},{transform:"translate(0,0) scale(1)",opacity:1}];
+const DRAW=[{strokeDasharray:"1 1",strokeDashoffset:1,opacity:0},{offset:.06,opacity:1},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:1}];
+const DRAWR=[{strokeDasharray:"1 1",strokeDashoffset:-1,opacity:0},{offset:.06,opacity:1},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:1}];
+const FADEPOP=[{opacity:0,transform:"scale(.6)"},{opacity:1,transform:"scale(1)"}];
+const NUDGE=(t,ez=E.o)=>[{transform:"none",easing:ez},{offset:.3,transform:t,easing:SPS},{transform:"none"}];
+const rot=a=>W(x=>`rotate(${x}deg)`,a);
+const tx=a=>W(x=>`translateX(${x}px)`,a);
+const SL=(x,y)=>NUDGE(`translate(${x}px,${y}px)`);
+const GROW=ax=>[{transform:`scale${ax}(0)`},{transform:"scale(1)"}];
+const STEAM=[{transform:"translateY(0)",opacity:1},{offset:.5,transform:"translateY(-3px)",opacity:0},{offset:.51,transform:"translateY(2px)",opacity:0},{transform:"translateY(0)",opacity:1}];
+/* ── motion principles kit (v2) ─────────────────────────────────────────
+   DV    damped oscillation values: follow-through that loses energy each swing
+   BLINK eyelid close/open at a point in time (secondary action)
+   PUSH  anticipation → thrust → spring settle (instead of a plain nudge)
+   LEAP  crouch (squash) → launch (stretch + lean) → gravity fall → land squash → settle
+   DRAG  a dangling part that trails the body: lags, overshoots, settles (overlap)       */
+const DV=(a,n=4,d=.55)=>{const v=[0];for(let k=0;k<n;k++)v.push(+(a*(k%2?-1:1)*d**k).toFixed(2));v.push(0);return v};
+const BLINK=(at=.5,w=.07)=>[{transform:"scaleY(1)"},{offset:at-w,transform:"scaleY(1)",easing:E.in},{offset:at,transform:"scaleY(.12)",easing:E.o},{offset:Math.min(.99,at+w*1.3),transform:"scaleY(1)"},{transform:"scaleY(1)"}];
+const PUSH=(x,y,a=.35,extra="")=>[{transform:"translate(0,0)",easing:E.sm},{offset:.2,transform:`translate(${-x*a}px,${-y*a}px)`,easing:"cubic-bezier(.3,0,.1,1)"},{offset:.44,transform:`translate(${x}px,${y}px) ${extra}`,easing:SPS},{transform:"translate(0,0)"}];
+const LEAP=(h,lean=0)=>[{transform:"translateY(0) rotate(0deg) scale(1,1)",easing:E.o},{offset:.16,transform:`translateY(0) rotate(${-lean*.4}deg) scale(1.1,.86)`,easing:"cubic-bezier(.3,0,.2,1)"},{offset:.42,transform:`translateY(${-h}px) rotate(${lean}deg) scale(.93,1.09)`,easing:"cubic-bezier(.5,0,.9,.5)"},{offset:.62,transform:"translateY(0) rotate(0deg) scale(1.12,.86)",easing:SPS},{transform:"translateY(0) rotate(0deg) scale(1,1)"}];
+const DRAG=(a,f=x=>`rotate(${x}deg)`)=>[{transform:f(0),easing:E.sm},{offset:.16,transform:f(-a*.35),easing:E.sm},{offset:.42,transform:f(a),easing:E.sm},{offset:.62,transform:f(-a*.7),easing:E.sm},{offset:.8,transform:f(a*.25),easing:E.sm},{transform:f(0)}];
+
+const R={
+"arab-egypt":{t:"أبو الهول بيرفع راسه ويبص حواليه",p:[[1,DRAW,E.o,{d:500}],[[3,4],[{transform:"translateY(0) rotate(0deg)",easing:E.sm},{offset:.18,transform:"translateY(.6px) rotate(3deg)",easing:"cubic-bezier(.3,0,.1,1)"},{offset:.42,transform:"translateY(-1.4px) rotate(-7deg)",easing:E.sm},{offset:.62,transform:"translateY(-.6px) rotate(4deg)",easing:E.sm},{offset:.8,transform:"translateY(0) rotate(-1.5deg)",easing:E.sm},{transform:"translateY(0) rotate(0deg)"}],"lin",{d:1400,o:"50% 100%"}],[[2,6],W(x=>`scaleY(${x})`,[1,1.05,.98,1]),"lin",{d:1400,o:"50% 100%"}],[5,[{transform:"scaleX(1)",easing:E.sm},{offset:.5,transform:"scaleX(1.1)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:1400,dl:150,o:"0% 50%"}]],fx:[["dust","muted",350]]},
+"arab-saudi":{t:"برج المملكة بيتبني من تحت لفوق والجسر بيتمد",p:[[1,GROW("X"),"spb",{}],[2,DRAW,E.io,{d:900}],[3,FADEPOP,"spb",{dl:650}],[4,GROW("X"),"spb",{dl:780}],[5,GROW("Y"),"spb",{dl:880,o:"50% 100%"}]],fx:[["glow","ok",900],["sparkle","ok",1000]]},
+"arab-uae":{t:"برج العرب: الشراع بيتملي هوا ويتفرد",p:[[1,GROW("X"),"spb",{}],[2,GROW("Y"),"sp",{dl:100,o:"50% 100%"}],[3,[{transform:"scaleX(.15)",opacity:0,easing:E.o},{offset:.35,transform:"scaleX(1.12)",opacity:1,easing:E.sm},{offset:.6,transform:"scaleX(.95)",easing:E.sm},{offset:.8,transform:"scaleX(1.03)",easing:E.sm},{transform:"scaleX(1)"}],"lin",{d:1100,dl:250,o:"0% 50%"}],[4,DRAW,E.o,{d:500,dl:450}],[5,GROW("X"),"spb",{dl:700,o:"100% 50%"}]],fx:[["sparkle","accent",900]]},
+"arab-kuwait":{t:"أبراج الكويت بتطلع والكُرات بتتنفخ وتترجرج",p:[[1,GROW("X"),"spb",{}],[[2,6,9],GROW("Y"),"spb",{st:90,dl:80,o:"50% 100%"}],[[3,7,5],[{transform:"scale(0)",easing:E.o},{offset:.55,transform:"scale(1.18)",easing:E.sm},{offset:.78,transform:"scale(.95)",easing:E.sm},{transform:"scale(1)"}],"lin",{d:700,st:110,dl:300}],[[4,8],GROW("Y"),"spb",{dl:520,o:"50% 100%"}],[0,rot(DV(2.5,3,.5)),"lin",{d:900,dl:850,o:"50% 100%"}]],fx:[["sparkle","accent",900]]},
+"arab-qatar":{t:"متحف الفن الإسلامي بيترسم درجة درجة والعين بتفتح",p:[[1,GROW("X"),"spb",{}],[2,DRAW,E.io,{d:900,dl:100}],[3,GROW("Y"),"spb",{dl:700,o:"50% 100%"}],[4,GROW("X"),"spb",{dl:850}],[5,FADEPOP,"spb",{dl:950}]],fx:[["glow","accent",1000]]},
+"arab-bahrain":{t:"نصب اللؤلؤة: الأشرعة بتطلع واللؤلؤة بتنزل وتستقر",p:[[1,GROW("X"),"spb",{}],[[2,3,4,5],DRAW,E.o,{d:600,st:70,dl:80}],[6,[{transform:"translateY(-9px) scale(.8,.8)",opacity:0,easing:E.in},{offset:.45,transform:"translateY(0) scale(1.15,.85)",opacity:1,easing:E.sm},{offset:.62,transform:"translateY(-1.5px) scale(.95,1.05)",easing:E.in},{offset:.78,transform:"translateY(0) scale(1.05,.95)",easing:SPS},{transform:"translateY(0) scale(1,1)"}],"lin",{d:1000,dl:450}]],fx:[["sparkle","amber",950]]},
+"arab-oman":{t:"الخنجر العُماني بيتسحب لفوق ويلمع",p:[[0,[{transform:"translateY(0) rotate(0deg)",easing:E.sm},{offset:.2,transform:"translateY(1px) rotate(4deg)",easing:"cubic-bezier(.3,0,.1,1)"},{offset:.45,transform:"translateY(-2px) rotate(-10deg)",easing:SPS},{transform:"translateY(0) rotate(0deg)"}],"lin",{d:1200,o:"50% 30%"}],[[1,2],[{transform:"translateY(0)",easing:E.sm},{offset:.45,transform:"translateY(-1.2px)",easing:SPS},{transform:"translateY(0)"}],"lin",{d:1200,dl:70}],[4,DRAW,E.o,{d:400,st:90,dl:450}]],fx:[["sparkle","amber",500]]},
+"arab-yemen":{t:"عماير شبام الطين بتطلع والشبابيك بتنوّر",p:[[1,GROW("X"),"spb",{}],[[3,2,4],GROW("Y"),"spb",{st:110,dl:80,o:"50% 100%"}],[[5,6],DRAW,E.o,{d:300,st:120,dl:600}]],fx:[["glow","amber",800]]},
+"arab-jordan":{t:"الخزنة في البترا: الأعمدة بتطلع والواجهة بتتنحت",p:[[1,GROW("X"),"spb",{}],[2,GROW("Y"),"spb",{dl:100,o:"50% 100%"}],[[3,5],GROW("X"),"spb",{st:200,dl:350}],[4,DRAW,E.o,{d:400,dl:450}],[6,GROW("Y"),"spb",{dl:600,o:"50% 100%"}],[7,DRAW,E.o,{d:450,dl:650}],[8,[{transform:"translateY(-3px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{dl:900}]],fx:[["dust","muted",200]]},
+"arab-palestine":{t:"قبة الصخرة بتطلع وتلمع والهلال بيلف فوقها",p:[[1,GROW("X"),"spb",{}],[2,DRAW,E.o,{d:600,dl:80}],[3,GROW("X"),"spb",{dl:300}],[4,[{transform:"scaleY(0)",easing:E.o},{offset:.6,transform:"scaleY(1.15)",easing:E.sm},{transform:"scaleY(1)"}],"lin",{d:700,dl:450,o:"50% 100%"}],[5,GROW("Y"),"spb",{dl:800,o:"50% 100%"}],[6,[{transform:"rotate(-180deg) scale(0)"},{transform:"rotate(0deg) scale(1)"}],"sp",{dl:900}],[[7,8],FADEPOP,"spb",{st:70,dl:600}]],fx:[["glow","amber",1000]]},
+"arab-lebanon":{t:"الأرزة بتتمايل مع الهوا طبقة ورا طبقة",p:[[3,W(x=>`translateX(${x}px) rotate(${x*1.5}deg)`,DV(1.4,4,.55)),"lin",{d:1400,o:"50% 100%"}],[4,W(x=>`translateX(${x}px) rotate(${x*1.5}deg)`,DV(2.1,4,.55)),"lin",{d:1400,dl:70,o:"50% 100%"}],[5,W(x=>`translateX(${x}px) rotate(${x*1.5}deg)`,DV(2.8,4,.55)),"lin",{d:1400,dl:140,o:"50% 100%"}],[[6,7],W(x=>`translateX(${x}px) rotate(${x*1.5}deg)`,DV(3.6,4,.55)),"lin",{d:1400,dl:210,o:"50% 100%"}],[2,rot(DV(3,3,.5)),"lin",{d:1400,o:"50% 100%"}]]},
+"arab-syria":{t:"قوس تدمر الكبير بيترسم والقوسين الصغيرين وراه",p:[[1,GROW("X"),"spb",{}],[2,DRAW,E.io,{d:700,dl:80}],[4,DRAW,E.o,{d:500,dl:350}],[[5,6],DRAW,E.o,{d:400,st:90,dl:600}],[3,[{transform:"translateY(-4px)",opacity:0,easing:E.in},{offset:.6,transform:"translateY(0)",opacity:1,easing:E.sm},{offset:.8,transform:"translateY(-.6px)",easing:E.in},{transform:"translateY(0)"}],"lin",{d:600,dl:550}]],fx:[["dust","muted",900]]},
+"arab-iraq":{t:"ملوية سامراء: السلم الحلزوني بيطلع لحد القمة",p:[[1,GROW("X"),"spb",{}],[2,DRAW,E.io,{d:700,dl:60}],[[3,4,5],DRAW,E.o,{d:380,st:170,dl:450}],[6,[{transform:"translateY(2px) scale(0)"},{transform:"translateY(0) scale(1)"}],"spb",{dl:1000}]],fx:[["sparkle","amber",1100]]},
+"arab-morocco":{t:"مئذنة الكتبية بتطلع والفانوس اللي فوقها بينوّر",p:[[1,GROW("X"),"spb",{}],[2,GROW("Y"),"sp",{dl:80,o:"50% 100%"}],[3,GROW("X"),"spb",{dl:450}],[4,GROW("Y"),"spb",{dl:560,o:"50% 100%"}],[5,GROW("Y"),"spb",{dl:720,o:"50% 100%"}],[[6,7],DRAW,E.o,{d:400,st:100,dl:500}]],fx:[["glow","amber",850]]},
+"arab-algeria":{t:"مقام الشهيد: السعفات بتقوم وتتقابل فوق",p:[[1,GROW("X"),"spb",{}],[2,[{transform:"rotate(-24deg) scaleY(.4)",opacity:0,easing:E.o},{offset:.55,transform:"rotate(3deg) scaleY(1.04)",opacity:1,easing:E.sm},{offset:.78,transform:"rotate(-1deg) scaleY(.99)",easing:E.sm},{transform:"rotate(0deg) scaleY(1)"}],"lin",{d:950,dl:80,o:"0% 100%"}],[3,[{transform:"rotate(24deg) scaleY(.4)",opacity:0,easing:E.o},{offset:.55,transform:"rotate(-3deg) scaleY(1.04)",opacity:1,easing:E.sm},{offset:.78,transform:"rotate(1deg) scaleY(.99)",easing:E.sm},{transform:"rotate(0deg) scaleY(1)"}],"lin",{d:950,dl:160,o:"100% 100%"}],[4,GROW("X"),"spb",{dl:500}],[5,GROW("X"),"spb",{dl:700}]],fx:[["sparkle","ok",900]]},
+"arab-tunisia":{t:"باب سيدي بوسعيد بيتفتح ويتقفل والمسامير بتلمع",p:[[1,GROW("X"),"spb",{}],[2,DRAW,E.io,{d:700}],[[3,4],[{transform:"scaleX(1)",easing:E.io},{offset:.35,transform:"scaleX(.55)",easing:E.sm},{offset:.6,transform:"scaleX(.55)",easing:E.in},{offset:.8,transform:"scaleX(1.06)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:1300,dl:300,o:"50% 100%"}],[5,POP(0),"spb",{dl:1050}]],fx:[["glow","accent",1100]]},
+"arab-libya":{t:"قوس ماركوس: الأعمدة بتشيل القوس والسقف بينزل عليه",p:[[1,GROW("X"),"spb",{}],[5,GROW("Y"),"spb",{dl:100,o:"50% 100%"}],[2,DRAW,E.io,{d:700,dl:150}],[4,DRAW,E.o,{d:500,dl:450}],[3,[{transform:"translateY(-4px)",opacity:0,easing:E.in},{offset:.6,transform:"translateY(0)",opacity:1,easing:E.sm},{offset:.8,transform:"translateY(-.6px)",easing:E.in},{transform:"translateY(0)"}],"lin",{d:600,dl:650}]],fx:[["dust","muted",1000]]},
+"arab-sudan":{t:"أهرامات مروي النوبية بتطلع من الرملة",p:[[1,GROW("X"),"spb",{}],[[2,3],GROW("Y"),"sp",{st:160,dl:80,o:"50% 100%"}],[4,FADEPOP,"spb",{dl:550}],[5,GROW("X"),"spb",{dl:700}]],fx:[["dust","muted",300]]},
+"arab-mauritania":{t:"مئذنة شنقيط الحجر بتطلع والبيضات بتتحط فوقها",p:[[1,GROW("X"),"spb",{}],[2,GROW("Y"),"sp",{dl:80,o:"50% 100%"}],[3,GROW("X"),"spb",{dl:450}],[[4,5,6],[{transform:"translateY(-4px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{st:110,dl:600}],[[7,8],FADEPOP,"spb",{st:80,dl:500}]]},
+"arab-somalia":{t:"البيت الصومالي بيتنسج والنجمة بتنوّر فوقه",p:[[1,GROW("X"),"spb",{}],[2,DRAW,E.io,{d:700,dl:80}],[[3,4],DRAW,E.o,{d:450,st:130,dl:450}],[5,GROW("Y"),"spb",{dl:650,o:"50% 100%"}],[6,[{transform:"rotate(-144deg) scale(0)"},{transform:"rotate(0deg) scale(1)"}],"sp",{dl:850}]],fx:[["sparkle","accent",1000]]},
+"arab-djibouti":{t:"مداخن بحيرة أبّي بتطلع والبخار بيتصاعد منها",p:[[1,GROW("X"),"spb",{}],[[2,3,4],GROW("Y"),"spb",{st:110,dl:60,o:"50% 100%"}],[[5,6],[{transform:"translateY(2px)",opacity:0,easing:E.o},{offset:.25,transform:"translateY(0)",opacity:1,easing:E.sm},{offset:.55,transform:"translateY(-2.5px)",opacity:0,easing:"step-end"},{offset:.56,transform:"translateY(1.5px)",opacity:0,easing:E.o},{transform:"translateY(0)",opacity:1}],"lin",{d:1300,st:200,dl:450}]]},
+"arab-comoros":{t:"الهلال بيلف والنجوم الأربعة بتنوّر ورا بعض",p:[[1,[{transform:"rotate(-70deg) scale(.6)",opacity:0},{transform:"rotate(0deg) scale(1)",opacity:1}],"sp",{}],[[2,3,4,5],[{transform:"scale(0) rotate(-90deg)",easing:E.o},{offset:.6,transform:"scale(1.4) rotate(10deg)",easing:E.sm},{transform:"scale(1) rotate(0deg)"}],"lin",{d:550,st:120,dl:300}]],fx:[["sparkle","amber",800]]},
+repeat:{t:"السهمين بيجروا ورا بعض والخطوط بتلحقهم",p:[[1,PUSH(3,0),"lin",{d:950}],[2,PUSH(2.8,0),"lin",{d:950,dl:45}],[3,PUSH(-3,0),"lin",{d:950}],[4,PUSH(-2.8,0),"lin",{d:950,dl:45}],[0,rot([0,4,-6,2,0]),"lin",{d:950}]]},
+frown:{t:"الوش بيكشّر وبيوطّي والبُق بيتقلب لتحت",p:[[0,[{transform:"translateY(0) rotate(0deg)",easing:E.sm},{offset:.4,transform:"translateY(1.2px) rotate(-5deg)",easing:E.sm},{offset:.75,transform:"translateY(1.2px) rotate(-5deg)",easing:E.io},{transform:"translateY(0) rotate(0deg)"}],"lin",{d:1500}],[2,[{transform:"translateY(0) scale(1,1)",easing:E.sm},{offset:.35,transform:"translateY(1px) scale(.82,1.35)",easing:E.sm},{offset:.48,transform:"translateY(.8px) scale(.86,1.2)",easing:E.sm},{offset:.58,transform:"translateY(1px) scale(.82,1.35)",easing:E.sm},{offset:.75,transform:"translateY(1px) scale(.82,1.35)",easing:SPS},{transform:"translateY(0) scale(1,1)"}],"lin",{d:1500}],[[3,4],[{transform:"translateY(0) scaleY(1)",easing:E.sm},{offset:.4,transform:"translateY(.6px) scaleY(.5)",easing:E.sm},{offset:.75,transform:"translateY(.6px) scaleY(.5)",easing:E.io},{transform:"translateY(0) scaleY(1)"}],"lin",{d:1500}]]},
+meh:{t:"العينين بتبص يمين وشمال والبُق بيتعوّج \"مش فارقة\"",p:[[[3,4],[{transform:"translateX(0)",easing:E.o},{offset:.2,transform:"translateX(-1.6px)",easing:E.sm},{offset:.45,transform:"translateX(-1.6px)",easing:E.io},{offset:.62,transform:"translateX(1.6px)",easing:E.sm},{offset:.82,transform:"translateX(1.6px)",easing:SPS},{transform:"translateX(0)"}],"lin",{d:1500}],[2,[{transform:"translate(0,0) rotate(0deg)",easing:E.o},{offset:.25,transform:"translate(-.6px,0) rotate(-9deg)",easing:E.io},{offset:.66,transform:"translate(.6px,0) rotate(9deg)",easing:SPS},{transform:"translate(0,0) rotate(0deg)"}],"lin",{d:1500}],[0,rot([0,-4,0,4,0]),"lin",{d:1500}]]},
+house:{t:"بيتنطّط والباب بيترسم",p:[[0,J(3),"lin",{d:850,o:"50% 100%"}],[1,DRAW,E.o,{d:500,dl:300}]]},
+settings:{t:"الترس بيلف بنعومة",p:[[1,K("rotate(0)","rotate(180deg)"),E.ant,{d:1100}],[2,POP(.3),"sp",{dl:150}]],fx:[["sparkle","accent",500]]},
+user:{t:"الراس بتنطّ والجسم بينضغط",p:[[2,HOP(4),"lin",{d:700}],[1,SQ(),"lin",{d:700,o:"50% 100%"}]]},
+search:{t:"العدسة بتدوّر حواليها",p:[[0,[{transform:"translate(0,0) rotate(0)"},{transform:"translate(-2px,-1px) rotate(-10deg)"},{transform:"translate(1.5px,-2px) rotate(6deg)"},{transform:"translate(2px,1px) rotate(-3deg)"},{transform:"translate(0,0) rotate(0)"}].map(f=>({...f,easing:E.sm})),"lin",{d:1100}],[1,POP(.6),"spb",{dl:650}]]},
+bell:{t:"بيرن واللسان بيتأخر وراه",p:[[1,rot([0,18,-15,10,-6,3,0]),"lin",{d:1000,o:"50% 0%"}],[2,tx([0,-3,3.2,-2.4,1.4,-.6,0]),"lin",{d:1000,dl:60}]],fx:[["ripple","accent",80]]},
+heart:{t:"بينبض ويتملي وتطلع منه جزيئات",tog:1,c:"hot",fill:[1],on:[[1,[{transform:"scale(1)",fillOpacity:0,easing:E.in},{offset:.24,transform:"scale(.7)",fillOpacity:.15,easing:SPS},{transform:"scale(1)",fillOpacity:1}],"lin",{d:1000}]],off:[[1,[{transform:"scale(1)",fillOpacity:1,easing:E.sm},{offset:.45,transform:"scale(.84)",fillOpacity:0,easing:SPS},{transform:"scale(1)",fillOpacity:0}],"lin",{d:700}]],fx:[["burst","hot",200]]},
+star:{t:"بتلف وتتملي وتلمع",tog:1,c:"amber",fill:[1],on:[[1,[{transform:"scale(1) rotate(0)",fillOpacity:0,easing:E.in},{offset:.24,transform:"scale(.6) rotate(-35deg)",fillOpacity:.2,easing:SPS},{transform:"scale(1) rotate(0)",fillOpacity:1}],"lin",{d:1050}]],off:[[1,[{transform:"scale(1) rotate(0)",fillOpacity:1,easing:E.sm},{offset:.45,transform:"scale(.8) rotate(20deg)",fillOpacity:0,easing:SPS},{transform:"scale(1) rotate(0)",fillOpacity:0}],"lin",{d:700}]],fx:[["sparkle","amber",220],["burst","amber",240]]},
+bookmark:{t:"بينزل ويتملي كأنه اتحفظ",tog:1,c:"accent",fill:[1],on:[[1,[{transform:"translateY(0) scale(1)",fillOpacity:0,easing:E.in},{offset:.25,transform:"translateY(-4px) scale(.92,1.08)",fillOpacity:.2,easing:SPS},{transform:"translateY(0) scale(1)",fillOpacity:1}],"lin",{d:1000,o:"50% 0%"}]],off:[[1,[{transform:"scale(1)",fillOpacity:1,easing:E.sm},{offset:.4,transform:"scale(1,.9)",fillOpacity:0,easing:SPS},{transform:"scale(1)",fillOpacity:0}],"lin",{d:650,o:"50% 0%"}]],fx:[["sparkle","accent",250]]},
+menu:{t:"بيتحول لعلامة إغلاق",tog:1,c:"accent",on:[[2,[{transform:"translateY(0) rotate(0)",easing:E.o},{offset:.4,transform:"translateY(6px) rotate(0)",easing:SPS},{transform:"translateY(6px) rotate(45deg)"}],"lin",{d:900,keep:1}],[1,[{transform:"scaleX(1)",opacity:1},{transform:"scaleX(0)",opacity:0}],E.o,{d:280,keep:1}],[3,[{transform:"translateY(0) rotate(0)",easing:E.o},{offset:.4,transform:"translateY(-6px) rotate(0)",easing:SPS},{transform:"translateY(-6px) rotate(-45deg)"}],"lin",{d:900,keep:1}]],off:[[2,[{transform:"translateY(6px) rotate(45deg)",easing:E.o},{offset:.4,transform:"translateY(6px) rotate(0)",easing:SPS},{transform:"translateY(0) rotate(0)"}],"lin",{d:900,keep:1}],[1,[{transform:"scaleX(0)",opacity:0},{transform:"scaleX(1)",opacity:1}],"sp",{dl:300,keep:1}],[3,[{transform:"translateY(-6px) rotate(-45deg)",easing:E.o},{offset:.4,transform:"translateY(-6px) rotate(0)",easing:SPS},{transform:"translateY(0) rotate(0)"}],"lin",{d:900,keep:1}]]},
+x:{t:"بيلف وبيترسم خط خط",p:[[0,K("rotate(-90deg) scale(.6)","rotate(0) scale(1)"),"sp",{}],[[1,2],DRAW,E.o,{d:380,st:120}]]},
+check:{t:"بيترسم وبعدين بيكبر بفرحة",p:[[1,DRAW,E.o,{d:550}],[0,[{transform:"scale(1)"},{offset:.5,transform:"scale(1)",easing:E.o},{offset:.68,transform:"scale(1.2)",easing:SPS},{transform:"scale(1)"}],"lin",{d:1100}]],fx:[["ripple","ok",450],["burst","ok",470]]},
+plus:{t:"بيلف ويبقى علامة إغلاق",tog:1,c:"accent",on:[[0,K("rotate(0)","rotate(135deg)"),"sp",{keep:1}]],off:[[0,K("rotate(135deg)","rotate(0)"),"sp",{keep:1}]]},
+"trash-2":{t:"الغطا بيتفتح والسلة بتتهز",p:[[[1,3],[{transform:"translateY(0) rotate(0)",easing:E.o},{offset:.3,transform:"translateY(-3px) rotate(-18deg)",easing:E.sm},{offset:.58,transform:"translateY(-3px) rotate(-18deg)",easing:E.in},{offset:.76,transform:"translateY(0) rotate(3deg)",easing:SPS},{transform:"translateY(0) rotate(0)"}],"lin",{d:1150,box:"view-box",o:"21px 6px"}],[[2,4,5],tx([0,0,0,0,-1.2,1,-.6,0]),"lin",{d:1150}]]},
+pencil:{t:"بيكتب سطر صغير",p:[[0,[{transform:"translate(0,0) rotate(0)"},{transform:"translate(-2px,2px) rotate(-10deg)"},{transform:"translate(1px,1px) rotate(4deg)"},{transform:"translate(3px,3px) rotate(-8deg)"},{transform:"translate(5px,2px) rotate(3deg)"},{transform:"translate(0,0) rotate(0)"}].map(f=>({...f,easing:E.sm})),"lin",{d:1150,o:"10% 90%"}]],fx:[["scribble",null,120]]},
+lock:{t:"القفل بيتفتح ويرجع يتقفل",p:[[2,[{transform:"translateY(0)",easing:E.o},{offset:.32,transform:"translateY(-3.5px)",easing:E.sm},{offset:.55,transform:"translateY(-3.5px)",easing:E.in},{offset:.72,transform:"translateY(.4px)",easing:SPS},{transform:"translateY(0)"}],"lin",{d:1100}],[1,tx([0,0,0,0,0,-1.2,1.2,-.6,0]),"lin",{d:1100}]]},
+"lock-open":{t:"الحلقة بتتمرجح وهي مفتوحة",p:[[2,rot([0,-26,12,-6,2,0]),"lin",{d:1100,box:"view-box",o:"7px 11px"}],[1,SQ(),"lin",{d:800,o:"50% 100%"}]]},
+eye:{t:"بترمش وبتبص يمين وشمال",p:[[0,[{transform:"scaleY(1)",easing:E.in},{offset:.1,transform:"scaleY(.08)",easing:E.o},{offset:.22,transform:"scaleY(1)"},{transform:"scaleY(1)"}],"lin",{d:1300}],[2,[{transform:"translate(0,0)"},{offset:.28,transform:"translate(0,0)",easing:E.sm},{offset:.48,transform:"translate(-2.6px,0)",easing:E.sm},{offset:.72,transform:"translate(2.6px,0)",easing:E.sm},{transform:"translate(0,0)"}],"lin",{d:1300}]]},
+"refresh-cw":{t:"بيشد لورا وبعدين يلف لفة كاملة",p:[[0,K("rotate(0)","rotate(360deg)"),E.ant,{d:1000}]]},
+filter:{t:"القمع بينضغط وبتنزل منه نقطة",p:[[0,[{transform:"scale(1)"},{offset:.3,transform:"scale(1.1,.86)"},{offset:.6,transform:"scale(.95,1.06)"},{transform:"scale(1)"}].map(f=>({...f,easing:E.sm})),"lin",{d:850,o:"50% 0%"}]],fx:[["drip","accent",280]]},
+"log-out":{t:"السهم بيخرج من الباب ويرجع",p:[[[2,3],OUT(6,0),"lin",{d:950}],[1,[{transform:"scaleX(1)",easing:E.sm},{offset:.4,transform:"scaleX(.85)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:950,o:"0% 50%"}]]},
+mail:{t:"الظرف بيتفتح ويتقفل",p:[[2,[{transform:"scaleY(1)",easing:E.io},{offset:.35,transform:"scaleY(-1)",easing:E.sm},{offset:.6,transform:"scaleY(-1)",easing:E.io},{transform:"scaleY(1)"}],"lin",{d:1200,o:"50% 0%"}],[0,HOP(2),"lin",{d:1200}]]},
+send:{t:"بيشد لورا ويطير ويرجع",p:[[0,FLY(14,-14),"lin",{d:1150}]],fx:[["trail",[1,-1],300]]},
+"message-circle":{t:"بينطّ ونقط الكتابة تظهر جواه",p:[[0,POP(.7),"sp",{}]],fx:[["typing",12,80]]},
+"message-square":{t:"بيتمط ونقط الكتابة تظهر",p:[[0,[{transform:"scale(1)"},{offset:.3,transform:"scale(1.12,.88)"},{offset:.55,transform:"scale(.94,1.06)"},{offset:.8,transform:"scale(1.02,.98)"},{transform:"scale(1)"}].map(f=>({...f,easing:E.sm})),"lin",{d:850,o:"0% 100%"}]],fx:[["typing",10,150]]},
+phone:{t:"بيرن ويهتز",p:[[0,rot([0,-14,14,-14,14,-11,11,-6,0]),"lin",{d:900}]],fx:[["rings","accent",0]]},
+"phone-call":{t:"الموجات بتطلع ورا بعض",p:[[1,rot([0,-9,9,-7,7,0]),"lin",{d:900}],[[3,2],[{opacity:0,transform:"scale(.5)"},{offset:.35,opacity:1,transform:"scale(1)",easing:E.sm},{offset:.7,opacity:.4},{opacity:1}],"lin",{d:950,st:160,o:"0% 100%"}]]},
+"at-sign":{t:"الدايرة بتترسم وهي بتلف",p:[[2,DRAW,E.o,{d:850}],[0,K("rotate(-140deg)","rotate(0)"),E.o,{d:950}],[1,POP(.2),"spb",{dl:300}]]},
+"share-2":{t:"النقطة بتبعت للنقطتين التانيين",p:[[2,POP(.5),"sp",{}],[4,DRAW,E.o,{d:320,dl:140}],[5,DRAWR,E.o,{d:320,dl:140}],[[1,3],POP(.2),"spb",{dl:400,st:70}]]},
+link:{t:"الحلقتين بيبعدوا ويتقفلوا تاني",p:[[1,NUDGE("translate(2.6px,-2.6px)"),"lin",{d:950}],[2,NUDGE("translate(-2.6px,2.6px)"),"lin",{d:950}]],fx:[["snap","accent",330]]},
+users:{t:"الفريق بينطّ واحد ورا التاني",p:[[2,HOP(3.5),"lin",{d:700}],[1,SQ(),"lin",{d:700,o:"50% 100%"}],[4,HOP(3),"lin",{d:700,dl:130}],[3,SQ(),"lin",{d:700,dl:130,o:"50% 100%"}]]},
+smile:{t:"الضحكة بتوسع والعينين بتتنطط",p:[[2,[{transform:"scale(1)"},{offset:.4,transform:"scale(1.25,1.45)"},{offset:.7,transform:"scale(.95)"},{transform:"scale(1)"}].map(f=>({...f,easing:E.sm})),"lin",{d:950}],[[3,4],HOP(2),"lin",{d:950,dl:60}],[0,rot([0,-8,6,-3,0]),"lin",{d:950}]],fx:[["sparkle","amber",350]]},
+"thumbs-up":{t:"الإيد بتترفع بحماس",p:[[0,NUDGE("rotate(-18deg) translateY(-2px)"),"lin",{d:1050,o:"20% 100%"}]],fx:[["burst","accent",260]]},
+play:{t:"بينضغط ويشتغل",p:[[0,NUDGE("scale(.78) translateX(-1px)",E.in),"lin",{d:950}]],fx:[["ripple","accent",230]]},
+pause:{t:"العمودين بيرقصوا زي الإيكوالايزر",p:[[1,W(x=>`scaleY(${x})`,[1,.5,1.12,.7,1.05,1]),"lin",{d:1000,o:"50% 100%"}],[2,W(x=>`scaleY(${x})`,[1,1.12,.5,1.05,.75,1]),"lin",{d:1000,o:"50% 100%"}]]},
+"skip-forward":{t:"المثلث بيعدّي والعمود بيستقبله",p:[[1,OUT(6,0),"lin",{d:900}],[2,[{transform:"scaleY(1)"},{offset:.38,transform:"scaleY(1)",easing:E.o},{offset:.5,transform:"scaleY(1.3)",easing:SPS},{transform:"scaleY(1)"}],"lin",{d:900}]]},
+"skip-back":{t:"المثلث بيرجع لورا",p:[[1,OUT(-6,0),"lin",{d:900}],[2,[{transform:"scaleY(1)"},{offset:.38,transform:"scaleY(1)",easing:E.o},{offset:.5,transform:"scaleY(1.3)",easing:SPS},{transform:"scaleY(1)"}],"lin",{d:900}]]},
+"volume-2":{t:"الموجات بتطلع من السماعة",p:[[1,POP(.85),"sp",{}],[[2,3],[{opacity:0,transform:"translateX(-2px) scale(.7)"},{opacity:1,transform:"translateX(0) scale(1)"}],E.o,{d:450,st:150,dl:80}]]},
+mic:{t:"بيلقط الصوت ودواير بتطلع",p:[[1,W(x=>`scaleY(${x})`,[1,1.1,.94,1.05,.98,1]),"lin",{d:950,o:"50% 100%"}]],fx:[["rings","accent",100]]},
+camera:{t:"العدسة بتقفل وفلاش",p:[[0,NUDGE("scale(.88)",E.in),"lin",{d:900}],[2,NUDGE("scale(.15)",E.in),"lin",{d:900}]],fx:[["glow","accent",200]]},
+image:{t:"الشمس بتطلع والجبل بيترسم",p:[[3,DRAW,E.o,{d:650}],[2,[{transform:"translateY(5px)",opacity:0},{transform:"translateY(0)",opacity:1}],"sp",{dl:250}],[1,POP(.94),"sps",{}]]},
+video:{t:"بيقرّب ونقطة التسجيل بتنوّر",p:[[2,POP(.9),"sp",{}],[1,NUDGE("translateX(2px) scale(1.12)"),"lin",{d:900}]],fx:[["rec",null,100]]},
+music:{t:"النوتتين بيتنططوا والنغمات بتطير",p:[[2,HOP(3),"lin",{d:800}],[3,HOP(3),"lin",{d:800,dl:150}],[0,rot([0,-6,5,-3,0]),"lin",{d:1000}]],fx:[["notes","accent",100]]},
+headphones:{t:"بتتهز مع الإيقاع",p:[[0,W(x=>`scale(${x}) rotate(${(x-1)*40}deg)`,[1,1.1,1,1.07,1]),"lin",{d:900}]],fx:[["notes","accent",150]]},
+film:{t:"الشريط بيلف",p:[[[3,5,7,8],[{transform:"translateY(0)"},{transform:"translateY(-4.5px)"}],"linear",{d:320,it:3}],[0,POP(.92),"sps",{}]]},
+radio:{t:"الموجات بتتبث للناحيتين",p:[[3,POP(.3),"spb",{}],[[2,4],FADEPOP,E.o,{d:450,dl:120}],[[1,5],FADEPOP,E.o,{d:450,dl:270}]]},
+disc:{t:"الأسطوانة بتلف وتهدى",p:[[0,K("rotate(0)","rotate(540deg)"),E.o,{d:1300}],[2,POP(.2),"spb",{dl:200}]]},
+file:{t:"الركن بيتطوي",p:[[2,[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}],"spb",{o:"100% 0%",dl:150}],[0,HOP(2.5),"lin",{d:800}]]},
+"file-text":{t:"السطور بتتكتب واحد واحد",p:[[0,HOP(2),"lin",{d:800}],[[3,4,5],DRAW,E.o,{d:300,st:120,dl:150}]]},
+folder:{t:"بينطّ وبيلمع",p:[[0,J(3),"lin",{d:850,o:"50% 100%"}]],fx:[["sparkle","accent",380]]},
+"folder-open":{t:"بيتفتح لفوق",p:[[0,NUDGE("rotate(-9deg) translateY(-2px)"),"lin",{d:950,o:"0% 100%"}]],fx:[["sparkle","amber",180]]},
+download:{t:"السهم بينزل في الصينية",p:[[[2,3],[{transform:"translateY(0) scaleY(1)",easing:E.in},{offset:.35,transform:"translateY(5px) scaleY(1)",easing:E.sm},{offset:.5,transform:"translateY(4px) scaleY(.82)",easing:SPS},{transform:"translateY(0) scaleY(1)"}],"lin",{d:1050,box:"view-box",o:"12px 15px"}],[1,[{transform:"scale(1)"},{offset:.35,transform:"scale(1)",easing:E.o},{offset:.48,transform:"scale(1.12,.8)",easing:SPS},{transform:"scale(1)"}],"lin",{d:1050,o:"50% 100%"}]],fx:[["ripple","ok",500]]},
+upload:{t:"السهم بيطلع لفوق",p:[[[2,3],[{transform:"translateY(0)",easing:E.in},{offset:.38,transform:"translateY(-5px)",opacity:1,easing:E.sm},{offset:.55,transform:"translateY(-2px)",easing:SPS},{transform:"translateY(0)"}],"lin",{d:1000,box:"view-box",o:"12px 3px"}],[1,[{transform:"scale(1)",easing:E.in},{offset:.2,transform:"scale(1.1,.82)",easing:SPS},{transform:"scale(1)"}],"lin",{d:1000,o:"50% 100%"}]]},
+cloud:{t:"بتعوم في الهوا",p:[[0,W(x=>`translateX(${x}px) scale(${1+Math.abs(x)*.015})`,[0,-2.5,2,-1,0]),"lin",{d:1400}]]},
+"cloud-upload":{t:"السهم بيطلع للسحابة",p:[[[1,3],OUT(0,-6),"lin",{d:1000}],[2,W(x=>`scale(${x})`,[1,1.05,.98,1]),"lin",{d:1000}]]},
+copy:{t:"الورقة بتتنسخ وترجع",p:[[1,[{transform:"translate(0,0)",easing:E.io},{offset:.35,transform:"translate(-6px,-6px)",easing:E.sm},{offset:.5,transform:"translate(-6px,-6px)",easing:SPS},{transform:"translate(0,0)"}],"lin",{d:1150}],[2,[{opacity:1},{offset:.35,opacity:.2},{offset:.5,opacity:.2},{opacity:1}],"lin",{d:1150}]]},
+clipboard:{t:"المشبك بيتقفل",p:[[1,NUDGE("translateY(-2.5px)",E.in),"lin",{d:900}],[2,rot([0,-4,3,-1.5,0]),"lin",{d:900,o:"50% 0%"}]]},
+paperclip:{t:"بيترسم وهو بيتمرجح",p:[[1,DRAW,E.io,{d:950}],[0,rot([0,-14,8,-4,0]),"lin",{d:950}]]},
+printer:{t:"الورقة بتطلع من الطابعة",p:[[3,[{transform:"translateY(-5px)",opacity:0},{transform:"translateY(0)",opacity:1}],"sp",{dl:220}],[1,tx([0,-.8,.8,-.8,.8,0]),"lin",{d:500}]]},
+"shopping-cart":{t:"العربية بتتحرك وحاجة بتقع فيها",p:[[0,[{transform:"translateX(0) rotate(0)",easing:E.in},{offset:.3,transform:"translateX(3px) rotate(-6deg)",easing:E.sm},{offset:.6,transform:"translateX(-2px) rotate(3deg)",easing:SPS},{transform:"translateX(0) rotate(0)"}],"lin",{d:1050,o:"50% 100%"}]],fx:[["dropin","amber",0]]},
+"shopping-bag":{t:"الشنطة بتترفع وتتمرجح",p:[[3,NUDGE("translateY(-2.5px)",E.in),"lin",{d:900}],[0,rot([0,5,-4,2,0]),"lin",{d:950,o:"50% 0%"}]]},
+"credit-card":{t:"الكارت بيتقلب ويلمع",p:[[0,K("perspective(80px) rotateY(0)","perspective(80px) rotateY(360deg)"),E.io,{d:1050}]],fx:[["sparkle","accent",750]]},
+wallet:{t:"المحفظة بتتفتح والفلوس بتطلع",p:[[1,NUDGE("translateX(2.5px)"),"lin",{d:950}],[0,J(2),"lin",{d:850,o:"50% 100%"}]],fx:[["coins","amber",200]]},
+gift:{t:"الغطا بيطير والكونفيتي بيتفرقع",p:[[[1,4],[{transform:"translate(0,0) rotate(0)",easing:E.o},{offset:.3,transform:"translate(0,-5px) rotate(-12deg)",easing:E.sm},{offset:.55,transform:"translate(0,-5px) rotate(-12deg)",easing:E.in},{offset:.74,transform:"translate(0,0) rotate(2deg)",easing:SPS},{transform:"translate(0,0) rotate(0)"}],"lin",{d:1200,box:"view-box",o:"3px 12px"}],[[2,3],W(x=>`scale(${1+x},${1-x})`,[0,0,.06,-.03,0]),"lin",{d:1200,box:"view-box",o:"12px 21px"}]],fx:[["confetti",null,300]]},
+tag:{t:"بيتمرجح من الخرم",p:[[0,rot([0,16,-11,6,-3,0]),"lin",{d:1100,o:"30% 30%"}]],fx:[["sparkle","amber",400]]},
+percent:{t:"بيلف نص لفة والدواير بتنطّ",p:[[0,K("rotate(0)","rotate(180deg)"),"sp",{}],[[2,3],POP(.4),"spb",{dl:150}]]},
+receipt:{t:"الفاتورة بتطلع والعلامة بتترسم",p:[[1,[{transform:"translateY(-4px)",opacity:0},{transform:"translateY(0)",opacity:1}],"sps",{}],[[2,3],DRAW,E.o,{d:500,st:150,dl:200}]]},
+store:{t:"التندة بتنزل والباب بيترسم",p:[[5,[{transform:"scaleY(0)"},{transform:"scaleY(1)"}],"spb",{o:"50% 0%"}],[3,DRAW,E.o,{d:500,dl:250}]]},
+package:{t:"الطرد بيقع ويطيّر تراب",p:[[0,[{transform:"translateY(-8px) scale(1)",opacity:0,easing:E.in},{offset:.38,transform:"translateY(0) scale(1.12,.86)",opacity:1,easing:SPS},{transform:"translateY(0) scale(1)",opacity:1}],"lin",{d:1050,o:"50% 100%"}]],fx:[["dust","muted",380]]},
+truck:{t:"العربية بتتحرك وخطوط السرعة وراها",p:[[0,[{transform:"translate(0,0)",easing:E.sm},{offset:.25,transform:"translate(-2px,0)",easing:E.sm},{offset:.5,transform:"translate(3px,-1px)",easing:E.sm},{offset:.62,transform:"translate(3px,0)",easing:SPS},{transform:"translate(0,0)"}],"lin",{d:1150}]],fx:[["trail",[1,0],250]]},
+banknote:{t:"الورقة بتلف وتلمع",p:[[0,K("perspective(80px) rotateX(0)","perspective(80px) rotateX(360deg)"),E.io,{d:1050}],[2,POP(.3),"spb",{dl:550}]],fx:[["sparkle","ok",650]]},
+sun:{t:"الأشعة بتطلع واحدة ورا التانية",p:[[0,K("rotate(0)","rotate(90deg)"),E.o,{d:1200}],[1,POP(.6),"sp",{}],[[2,7,4,9,3,6,5,8],[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}],"spb",{st:45}]]},
+moon:{t:"القمر بيميل والنجوم بتلمع",p:[[0,NUDGE("rotate(-30deg)"),"lin",{d:1050}]],fx:[["sparkle","amber",120]]},
+"cloud-rain":{t:"المطر بينزل",p:[[[2,4,3],[{transform:"translateY(0)",opacity:1},{offset:.5,transform:"translateY(5px)",opacity:0},{offset:.51,transform:"translateY(-4px)",opacity:0},{transform:"translateY(0)",opacity:1}],"linear",{d:620,st:130,it:2}],[1,W(x=>`translateY(${x}px)`,[0,-1,0,-1,0]),"lin",{d:1400}]]},
+"cloud-lightning":{t:"البرق بيرعش",p:[[2,[{opacity:1},{opacity:.1},{opacity:1},{opacity:.2},{opacity:1}],"lin",{d:650}],[1,tx([0,-1,1,-.5,0]),"lin",{d:650}]],fx:[["glow","amber",0]]},
+snowflake:{t:"بتلف وتتفتح",p:[[0,K("rotate(0) scale(.7)","rotate(180deg) scale(1)"),"sps",{}],[[3,4,5,6],POP(.4),"spb",{st:50,dl:150}]],fx:[["sparkle","accent",300]]},
+wind:{t:"الهوا بيعدّي سطر سطر",p:[[[3,2,1],DRAWR,E.o,{d:620,st:120}],[0,tx([0,2,-1,0]),"lin",{d:1000}]]},
+umbrella:{t:"الشمسية بتتفتح",p:[[1,[{transform:"scale(.3,.2)"},{transform:"scale(1)"}],"spb",{o:"50% 100%"}],[3,POP(0),"sp",{dl:220}],[2,rot([0,-7,5,0]),"lin",{d:900,o:"50% 0%"}]]},
+thermometer:{t:"الزئبق بيطلع",p:[[0,W(x=>`scale(${x})`,[1,1.05,1]),"lin",{d:900}]],fx:[["mercury",null,0]]},
+flame:{t:"النار بترقص وبتطلع شرار",p:[[0,[{transform:"scale(1,1) skewX(0)"},{transform:"scale(.94,1.1) skewX(-4deg)"},{transform:"scale(1.06,.94) skewX(3deg)"},{transform:"scale(.97,1.06) skewX(-2deg)"},{transform:"scale(1.02,.98) skewX(1deg)"},{transform:"scale(1) skewX(0)"}].map(f=>({...f,easing:E.sm})),"lin",{d:1200,o:"50% 100%"}]],fx:[["tint","hot",0],["embers","hot",150]]},
+droplet:{t:"النقطة بتقع وتطرطش",p:[[0,[{transform:"translateY(-7px) scale(.9,1.1)",opacity:0,easing:E.in},{offset:.35,transform:"translateY(0) scale(1.15,.85)",opacity:1,easing:SPS},{transform:"translateY(0) scale(1)",opacity:1}],"lin",{d:1050,o:"50% 100%"}]],fx:[["splash","accent",330]]},
+leaf:{t:"الورقة بتتمرجح مع الهوا",p:[[0,rot([0,-12,9,-5,2,0]),"lin",{d:1300,o:"10% 90%"}],[2,DRAW,E.o,{d:650,dl:150}]]},
+flower:{t:"الورد بيلف ويتفتح",p:[[2,K("rotate(0)","rotate(180deg)"),"sps",{box:"view-box",o:"12px 12px"}],[1,POP(.3),"spb",{}],[[3,4,5,6,7,8,9,10],FADEPOP,E.o,{d:300,st:35,dl:150}]],fx:[["sparkle","hot",350]]},
+smartphone:{t:"بيهتز كأن فيه رسالة",p:[[0,W(x=>`translateX(${x}px) rotate(${x*2}deg)`,[0,-1.5,1.5,-1.5,1.5,-1.5,1.5,-1,0]),"lin",{d:700}]],fx:[["buzz","accent",0]]},
+laptop:{t:"الشاشة بتتفتح وبتنوّر",p:[[0,NUDGE("perspective(60px) rotateX(-22deg)"),"lin",{d:1000,o:"50% 80%"}]],fx:[["screen",[6,7,12,8],150]]},
+monitor:{t:"الشاشة بتشتغل",p:[[1,POP(.9),"sps",{}]],fx:[["screen",[4,5,16,10],100]]},
+wifi:{t:"الإشارة بتتوصّل خطوة خطوة",p:[[1,POP(0),"spb",{}],[[4,3,2],[{opacity:0,transform:"scale(.7)"},{opacity:1,transform:"scale(1)"}],E.o,{d:350,st:140,dl:120,o:"50% 100%"}]]},
+"battery-charging":{t:"البرق بيضرب والبطارية بتشحن",p:[[3,[{transform:"scale(.3)",opacity:0},{transform:"scale(1)",opacity:1}],"spb",{}],[[1,2,4],W(x=>`scale(${x})`,[1,1.05,1]),"lin",{d:600,dl:100}]],fx:[["glow","ok",120]]},
+bluetooth:{t:"بيترسم ويبعت إشارة",p:[[1,DRAW,E.io,{d:950}]],fx:[["rings","accent",450]]},
+cpu:{t:"البيانات بتجري في الأرجل",p:[[2,W(x=>`scale(${x})`,[1,.8,1.1,.95,1]),"lin",{d:950}],[[3,8,4,9,5,10,6,7],[{opacity:1},{opacity:.12},{opacity:1}],E.sm,{d:380,st:55}]]},
+database:{t:"الطبقات بتتنطط",p:[[1,HOP(3),"lin",{d:900}],[3,HOP(2),"lin",{d:900,dl:90}],[2,SQ(),"lin",{d:900,o:"50% 100%",dl:60}]]},
+code:{t:"الأقواس بتبعد والشرطة بتظهر",p:[[1,NUDGE("translateX(3px)"),"lin",{d:950}],[2,NUDGE("translateX(-3px)"),"lin",{d:950}]],fx:[["slash",null,150]]},
+terminal:{t:"المؤشر بيرمش",p:[[2,[{opacity:1},{opacity:0},{opacity:1},{opacity:0},{opacity:1}],"lin",{d:1100}],[1,NUDGE("translateX(2px)"),"lin",{d:900}]]},
+"map-pin":{t:"الدبوس بيقع على الخريطة",p:[[0,[{transform:"translateY(-9px) scale(.9,1.1)",opacity:0,easing:E.in},{offset:.35,transform:"translateY(0) scale(1.12,.88)",opacity:1,easing:SPS},{transform:"translateY(0) scale(1)",opacity:1}],"lin",{d:1050,o:"50% 100%"}],[2,POP(0),"spb",{dl:380}]],fx:[["land","accent",330]]},
+map:{t:"الخريطة بتتفرد",p:[[0,[{transform:"scaleX(.2)",opacity:0},{transform:"scaleX(1)",opacity:1}],"sp",{}],[[2,3],DRAW,E.o,{d:420,st:110,dl:220}]]},
+compass:{t:"الإبرة بتدوّر على الشمال",p:[[1,rot([0,-70,45,-20,8,0]),"lin",{d:1400,box:"view-box",o:"12px 12px"}]]},
+plane:{t:"الطيارة بتقلع وترجع",p:[[0,FLY(14,-14),"lin",{d:1200}]],fx:[["trail",[1,-1],320]]},
+car:{t:"العربية بتتحرك وبتهتز",p:[[[1,3],W(x=>`translateY(${x}px)`,[0,-1.5,0,-1,0,-.5,0]),"lin",{d:1050}],[0,NUDGE("translateX(3px)",E.in),"lin",{d:1050}]],fx:[["trail",[1,0],120]]},
+rocket:{t:"الصاروخ بيتهز ويطلع",p:[[0,[{transform:"translate(0,0)",opacity:1},{offset:.12,transform:"translate(-.7px,.7px)",opacity:1},{offset:.2,transform:"translate(.7px,-.7px)",opacity:1},{offset:.28,transform:"translate(0,0)",opacity:1,easing:"cubic-bezier(.6,0,.9,.4)"},{offset:.52,transform:"translate(14px,-14px)",opacity:0,easing:"step-end"},{offset:.54,transform:"translate(-8px,8px)",opacity:0,easing:SPS},{transform:"translate(0,0)",opacity:1}],"lin",{d:1500}],[1,W(x=>`scale(${x})`,[1,1.5,.8,1.4,.9,1]),"lin",{d:650,box:"view-box",o:"7px 17px"}]],fx:[["trail",[1,-1],420],["embers","amber",350]]},
+globe:{t:"الكرة بتلف",p:[[2,[{transform:"scaleX(1)",easing:E.sm},{transform:"scaleX(-1)",easing:E.sm},{transform:"scaleX(1)"}],"lin",{d:1300}],[0,POP(.9),"sps",{}]]},
+"bell-ring":{t:"بيرن والموجات بتطلع حواليه",p:[[1,rot([0,18,-15,10,-6,3,0]),"lin",{d:1000,o:"50% 0%"}],[2,tx([0,-3,3.2,-2.4,1.4,-.6,0]),"lin",{d:1000,dl:60}],[[3,4],[{opacity:1,transform:"scale(1)"},{opacity:0,transform:"scale(1.3)",offset:.35},{opacity:0,transform:"scale(.6)",offset:.36},{opacity:1,transform:"scale(1)"}],E.o,{d:520,it:2}]]},
+sparkles:{t:"النجوم بتلمع وبتلف",p:[[0,NUDGE("rotate(-14deg) scale(1.12)"),"lin",{d:950}]],fx:[["sparkle","amber",150]]},
+"thumbs-down":{t:"الإيد بتنزل لتحت",p:[[0,NUDGE("rotate(18deg) translateY(2px)"),"lin",{d:1000,o:"80% 0%"}]]},
+"toggle-left":{t:"الزرار بيتزحلق ويتقفل",tog:1,c:"ok",on:[[2,K("translateX(0)","translateX(8px)"),"sp",{}]],off:[[2,K("translateX(8px)","translateX(0)"),"sp",{}]]},
+"toggle-right":{t:"الزرار بيتزحلق ويتقفل",tog:1,c:"ok",on:[[2,K("translateX(0)","translateX(-8px)"),"sp",{}]],off:[[2,K("translateX(-8px)","translateX(0)"),"sp",{}]]},
+"loader-circle":{t:"بيلف لفتين وبيهدى",p:[[0,K("rotate(0)","rotate(720deg)"),"cubic-bezier(.5,.1,.35,.95)",{d:1400}]]},
+"zoom-in":{t:"العدسة بتكبر والعلامة بتظهر",p:[[0,NUDGE("scale(1.18)"),"lin",{d:900}],[[3,4],POP(0),"spb",{dl:200,st:80}]]},
+"zoom-out":{t:"العدسة بتصغر",p:[[0,NUDGE("scale(.84)"),"lin",{d:900}],[3,[{transform:"scaleX(0)"},{transform:"scaleX(1)"}],"spb",{dl:200}]]},
+power:{t:"الدايرة بتترسم والزرار بينوّر",p:[[1,DRAW,E.o,{d:400}],[2,DRAW,E.o,{d:700,dl:120}]],fx:[["glow","ok",500]]},
+scissors:{t:"المقص بيقص مرتين",p:[[[1,2,5],rot([0,-14,0,-14,0]),"lin",{d:800,box:"view-box",o:"12px 12px"}],[[3,4],rot([0,14,0,14,0]),"lin",{d:800,box:"view-box",o:"12px 12px"}]]},
+palette:{t:"الألوان بتنطّ والكونفيتي بيطير",p:[[5,NUDGE("rotate(-15deg)"),"lin",{d:950}],[[1,2,3,4],POP(0),"spb",{st:70,dl:120}]],fx:[["confetti",null,250]]},
+"wand-sparkles":{t:"العصاية بتلوّح والنجوم بتلمع",p:[[[1,2],NUDGE("rotate(-16deg)"),"lin",{d:1000,box:"view-box",o:"3px 21px"}],[[3,4,5,6,7,8],FADEPOP,E.o,{d:300,st:50,dl:200}]],fx:[["sparkle","amber",250]]},
+lightbulb:{t:"الفكرة بتنوّر",p:[[0,NUDGE("scale(1.12)",E.in),"lin",{d:950}]],fx:[["tint","amber",0],["glow","amber",150],["sparkle","amber",250]]},
+trophy:{t:"الكاس بينطّ ويلمع",p:[[0,J(3),"lin",{d:850,o:"50% 100%"}]],fx:[["sparkle","amber",350],["burst","amber",360]]},
+crown:{t:"التاج بيترفع ويلمع",p:[[1,NUDGE("translateY(-3px) rotate(-8deg)"),"lin",{d:1000}]],fx:[["sparkle","amber",220]]},
+medal:{t:"الميدالية بتتمرجح",p:[[0,rot([0,14,-10,6,-3,0]),"lin",{d:1100,o:"50% 0%"}]],fx:[["sparkle","amber",300]]},
+target:{t:"الدواير بتتجمع وتصيب",p:[[[3,2,1],FADEPOP,"spb",{st:90}]],fx:[["ripple","hot",350],["snap","hot",360]]},
+fingerprint:{t:"البصمة بتترسم خط خط",p:[[[1,2,3,4,5,6,7,8,9],DRAW,E.o,{d:450,st:55}]],fx:[["ripple","ok",650]]},
+megaphone:{t:"بيعلن بصوت عالي",p:[[0,rot([0,-9,7,-9,7,-4,0]),"lin",{d:900}]],fx:[["rings","accent",100]]},
+hand:{t:"الإيد بتسلّم",p:[[0,rot([0,18,-10,16,-6,0]),"lin",{d:1100,o:"50% 100%"}]]},
+handshake:{t:"الإيدين بيتصافحوا",p:[[0,W(x=>`translateY(${x}px)`,[0,-2,0,-2,0]),"lin",{d:900}]],fx:[["sparkle","amber",300]]},
+"heart-handshake":{t:"القلب بينبض بالرعاية",p:[[0,W(x=>`scale(${x})`,[1,1.12,1,1.08,1]),"lin",{d:900}]],fx:[["ripple","hot",100]]},
+anchor:{t:"المرساة بتتمرجح",p:[[0,rot([0,14,-10,6,-3,0]),"lin",{d:1200,o:"50% 10%"}]]},
+fish:{t:"الديل بيقود والجسم بيتبعه والزعانف بترفرف",p:[[4,rot(DV(22,6,.72)),"lin",{d:1300,o:"100% 50%"}],[0,W(x=>`translateX(${x*.12}px) rotate(${x}deg)`,DV(-5,6,.72)),"lin",{d:1300,dl:110}],[[5,6],W(x=>`scaleY(${1+x})`,DV(.18,6,.7)),"lin",{d:1300,dl:60}],[3,W(x=>`scaleX(${1+x})`,DV(-.2,4,.6)),"lin",{d:1300,dl:200}]],fx:[["bubbles","accent",300]]},
+bird:{t:"بتوطّي وتنطّ وجناحها بيرفرف ومنقارها بيغني",p:[[0,LEAP(3.2,-6),"lin",{d:900,o:"50% 100%"}],[[4,5],[{transform:"scaleY(1)",easing:E.sm},{offset:.16,transform:"scaleY(.55)",easing:"cubic-bezier(.3,0,.2,1)"},{offset:.42,transform:"scaleY(1.15)",easing:E.sm},{offset:.62,transform:"scaleY(.7)",easing:SPS},{transform:"scaleY(1)"}],"lin",{d:900,o:"50% 0%"}],[6,[{transform:"rotate(0deg)",easing:E.sm},{offset:.2,transform:"rotate(8deg)",easing:E.in},{offset:.32,transform:"rotate(-28deg)",easing:E.sm},{offset:.44,transform:"rotate(6deg)",easing:E.in},{offset:.56,transform:"rotate(-20deg)",easing:E.sm},{offset:.72,transform:"rotate(3deg)",easing:E.sm},{transform:"rotate(0deg)"}],"lin",{d:900,o:"90% 5%"}],[3,[{transform:"rotate(0deg)"},{offset:.66,transform:"rotate(0deg)",easing:E.o},{offset:.74,transform:"rotate(-22deg)",easing:E.sm},{offset:.82,transform:"rotate(0deg)",easing:E.o},{offset:.9,transform:"rotate(-16deg)",easing:E.sm},{transform:"rotate(0deg)"}],"lin",{d:900,o:"0% 50%"}]],fx:[["notes","accent",600]]},
+"tree-pine":{t:"الشجرة بتتمايل",p:[[1,rot([0,-6,5,-3,1,0]),"lin",{d:1200,o:"50% 100%"}]]},
+trees:{t:"الهوا بيعدّي على الشجرتين ورا بعض",p:[[[1,2],rot(DV(-9,4,.55)),"lin",{d:1300,box:"view-box",o:"7px 22px"}],[[4,3],rot(DV(-7,4,.55)),"lin",{d:1300,dl:160,box:"view-box",o:"15px 22px"}]]},
+waves:{t:"الموج بيتحرك",p:[[[1,2,3],tx([0,-2.5,2.5,-1,0]),"lin",{d:1000,st:110}]]},
+sprout:{t:"النبتة بتطلع من الأرض",p:[[[2,3,4],[{transform:"scale(0)"},{transform:"scale(1)"}],"spb",{o:"50% 100%",st:110}]],fx:[["sparkle","ok",400]]},
+rainbow:{t:"القوس بيترسم",p:[[[1,2,3],DRAW,E.o,{d:600,st:120}]],fx:[["sparkle","amber",500]]},
+"qr-code":{t:"خط المسح بيعدّي",p:[[0,POP(.92),"sps",{}]],fx:[["scanline","accent",0]]},
+scan:{t:"خط المسح بيعدّي",p:[[0,W(x=>`scale(${x})`,[1,1.08,1]),"lin",{d:900}]],fx:[["scanline","accent",0]]},
+"scan-face":{t:"الوش بيتمسح",p:[[0,W(x=>`scale(${x})`,[1,1.06,1]),"lin",{d:900}]],fx:[["scanline","ok",0],["ripple","ok",900]]},
+barcode:{t:"الليزر بيقرا الباركود",p:[[[1,2,3,4,5],[{transform:"scaleY(1)"},{transform:"scaleY(.6)",offset:.5},{transform:"scaleY(1)"}],E.sm,{d:400,st:50}]],fx:[["scanline","hot",0]]},
+plug:{t:"الفيشة بتدخل وبتشحن",p:[[0,NUDGE("translateY(-3px)",E.in),"lin",{d:900}]],fx:[["glow","amber",300]]},
+"plug-zap":{t:"الكهربا بتشرّر",p:[[0,tx([0,-1,1,-1,1,0]),"lin",{d:500}]],fx:[["glow","amber",0],["snap","amber",80]]},
+dumbbell:{t:"بيترفع ويتنزل",p:[[0,W(x=>`translateY(${-x*3}px) rotate(${-x*10}deg)`,[0,1,0,1,0]),"lin",{d:1100}]]},
+pill:{t:"الكبسولة بتلف وتنطّ",p:[[0,[{transform:"rotate(0) translateY(0)",easing:E.o},{offset:.4,transform:"rotate(120deg) translateY(-3px)",easing:SPS},{transform:"rotate(180deg) translateY(0)"}],"lin",{d:1000}]]},
+ship:{t:"المركب بيتهادى على الموج",p:[[[2,3,4,5],rot([0,-6,5,-3,0]),"lin",{d:1300,box:"view-box",o:"12px 20px"}],[1,tx([0,-2,2,0]),"lin",{d:1300}]]},
+sailboat:{t:"المركب بيتهادى",p:[[0,W(x=>`rotate(${x}deg) translateY(${Math.abs(x)*.15}px)`,[0,-6,5,-3,0]),"lin",{d:1300,o:"50% 100%"}]]},
+lamp:{t:"الأباجورة بتنوّر",p:[[1,NUDGE("rotate(-10deg)"),"lin",{d:950,o:"50% 100%"}]],fx:[["glow","amber",200],["tint","amber",0]]},
+"door-open":{t:"الباب بيتفتح",p:[[5,NUDGE("perspective(40px) rotateY(-35deg)"),"lin",{d:1100,o:"0% 50%"}]],fx:[["glow","amber",250]]},
+key:{t:"المفتاح بيلف في الكالون",p:[[0,NUDGE("rotate(-40deg)"),"lin",{d:1050,box:"view-box",o:"7.5px 15.5px"}]],fx:[["sparkle","amber",400]]},
+"key-round":{t:"المفتاح بيلف",p:[[0,NUDGE("rotate(-40deg)"),"lin",{d:1050}]],fx:[["sparkle","amber",400]]},
+hourglass:{t:"الساعة الرملية بتتقلب",p:[[0,K("rotate(0)","rotate(180deg)"),E.ant,{d:1000}]]},
+"alarm-clock":{t:"المنبّه بيرن والعقارب بتلف",p:[[0,rot([0,-9,9,-9,9,-9,9,-5,0]),"lin",{d:800}],[2,K("rotate(0)","rotate(360deg)"),E.o,{d:1000,box:"view-box",o:"12px 13px"}]],fx:[["buzz","hot",0]]},
+timer:{t:"العقرب بيلف",p:[[2,K("rotate(0)","rotate(360deg)"),E.io,{d:1100,box:"view-box",o:"12px 14px"}],[1,HOP(1.5),"lin",{d:600}]]},
+clock:{t:"العقارب بتلف",p:[[2,K("rotate(0)","rotate(360deg)"),E.io,{d:1100,box:"view-box",o:"12px 12px"}]]},
+watch:{t:"الساعة بتتهز",p:[[0,rot([0,-10,8,-4,0]),"lin",{d:900}]],fx:[["buzz","accent",0]]},
+coffee:{t:"البخار بيطلع من الفنجان",p:[[[1,4,2],[{transform:"translateY(0)",opacity:1},{offset:.5,transform:"translateY(-3px)",opacity:0},{offset:.51,transform:"translateY(2px)",opacity:0},{transform:"translateY(0)",opacity:1}],"linear",{d:800,st:130,it:2}],[3,rot([0,-4,3,0]),"lin",{d:900,o:"50% 100%"}]]},
+signal:{t:"الأشرطة بتطلع واحد واحد",p:[[[1,2,3,4,5],[{transform:"scaleY(0)"},{transform:"scaleY(1)"}],"spb",{st:80,o:"50% 100%"}]]},
+flag:{t:"العلم بيرفرف",p:[[1,W(x=>`skewY(${x}deg)`,[0,-7,6,-4,2,0]),"lin",{d:1200,o:"0% 50%"}]]},
+"dice-5":{t:"النرد بيترمي",p:[[0,[{transform:"rotate(0) translateY(0)",easing:"cubic-bezier(.3,0,.6,1)"},{offset:.45,transform:"rotate(200deg) translateY(-6px)",easing:SPS},{transform:"rotate(360deg) translateY(0)"}],"lin",{d:1000}],[[2,3,4,5,6],POP(0),"spb",{st:50,dl:450}]]},
+"heart-pulse":{t:"القلب بينبض وخط النبض بيترسم",p:[[1,W(x=>`scale(${x})`,[1,1.15,1,1.1,1]),"lin",{d:900}],[2,DRAW,E.io,{d:800}]],fx:[["ripple","hot",100]]},
+activity:{t:"خط النشاط بيترسم",p:[[1,DRAW,E.io,{d:900}]],fx:[["ripple","accent",700]]},
+siren:{t:"السرينة بتصفّر",p:[[0,W(x=>`scale(${x})`,[1,1.08,1,1.08,1]),"lin",{d:900}]],fx:[["glow","hot",0],["rings","hot",120]]},
+coins:{t:"العملات بتنطّ",p:[[0,J(2.5),"lin",{d:850,o:"50% 100%"}]],fx:[["coins","amber",200]]},
+"piggy-bank":{t:"عملة بتقع في الحصالة",p:[[0,J(2),"lin",{d:850,o:"50% 100%"}]],fx:[["dropin","amber",0]]},
+"hand-coins":{t:"الإيد بتدفع",p:[[0,NUDGE("translateY(-2px) rotate(-6deg)"),"lin",{d:900}]],fx:[["coins","amber",150]]},
+"circle-dollar-sign":{t:"العملة بتلف وتلمع",p:[[0,K("perspective(80px) rotateY(0)","perspective(80px) rotateY(360deg)"),E.io,{d:1000}]],fx:[["sparkle","amber",700]]},
+ghost:{t:"الشبح بيعوم",p:[[0,W(x=>`translateY(${-Math.abs(x)}px) rotate(${x*2}deg)`,[0,-3,3,-2,2,0]),"lin",{d:1300}]]},
+cat:{t:"بتمد راسها بفضول وبترمش ببطء ومناخيرها بتتحرك",p:[[0,[{transform:"translateY(0) rotate(0deg) scale(1,1)",easing:E.sm},{offset:.16,transform:"translateY(.6px) rotate(0deg) scale(1.06,.92)",easing:"cubic-bezier(.3,0,.1,1)"},{offset:.4,transform:"translateY(-1.6px) rotate(-11deg) scale(.97,1.05)",easing:E.sm},{offset:.64,transform:"translateY(-.6px) rotate(5deg) scale(1,1)",easing:E.sm},{offset:.82,transform:"translateY(0) rotate(-2deg) scale(1,1)",easing:E.sm},{transform:"translateY(0) rotate(0deg) scale(1,1)"}],"lin",{d:1400,o:"50% 100%"}],[[2,3],[{transform:"scaleY(1)"},{offset:.42,transform:"scaleY(1)",easing:E.sm},{offset:.54,transform:"scaleY(.12)"},{offset:.74,transform:"scaleY(.12)",easing:E.sm},{offset:.86,transform:"scaleY(1)"},{transform:"scaleY(1)"}],"lin",{d:1400}],[4,[{transform:"translateY(0)"},{offset:.22,transform:"translateY(0)",easing:E.sm},{offset:.28,transform:"translateY(-.5px)",easing:E.sm},{offset:.34,transform:"translateY(0)",easing:E.sm},{offset:.4,transform:"translateY(-.4px)",easing:E.sm},{offset:.46,transform:"translateY(0)"},{transform:"translateY(0)"}],"lin",{d:1400}]],fx:[["sparkle","amber",650]]},
+dog:{t:"بيميل راسه بفضول وودانه بتترجرج وبيرمش",p:[[0,rot(DV(11,4,.5)),"lin",{d:1150,o:"50% 88%"}],[5,[{transform:"translateY(0) scaleY(1)",easing:E.sm},{offset:.2,transform:"translateY(.9px) scaleY(.86)",easing:E.sm},{offset:.44,transform:"translateY(-.7px) scaleY(1.07)",easing:E.sm},{offset:.66,transform:"translateY(.3px) scaleY(.97)",easing:E.sm},{transform:"translateY(0) scaleY(1)"}],"lin",{d:1150,dl:90,o:"50% 100%"}],[[2,4],BLINK(.58),"lin",{d:1150}],[1,[{transform:"scale(1)"},{offset:.7,transform:"scale(1)",easing:E.sm},{offset:.8,transform:"translateY(-.5px) scale(1.3)",easing:E.sm},{offset:.9,transform:"scale(.95)",easing:E.sm},{transform:"scale(1)"}],"lin",{d:1150}]]},
+rabbit:{t:"بينطّ وودانه بتتسحب لورا وبترجع تترجرج",p:[[0,LEAP(4,-7),"lin",{d:820,o:"50% 100%"}],[4,DRAG(-24),"lin",{d:900,dl:40,o:"50% 100%"}],[5,[{transform:"scale(1)",easing:E.sm},{offset:.16,transform:"scale(1.15,.85)",easing:E.sm},{offset:.42,transform:"scale(.9,1.1)",easing:E.sm},{offset:.62,transform:"scale(1.1,.9)",easing:SPS},{transform:"scale(1)"}],"lin",{d:820,o:"100% 50%"}]],fx:[["dust","muted",500]]},
+turtle:{t:"بتطلّع راسها وتمشي خطوتين بالراحة",p:[[4,[{transform:"scaleX(1)",easing:"cubic-bezier(.3,0,.1,1)"},{offset:.22,transform:"scaleX(1.1)",easing:E.sm},{offset:.32,transform:"scaleX(1.07)",easing:E.sm},{offset:.82,transform:"scaleX(1.08)",easing:E.io},{transform:"scaleX(1)"}],"lin",{d:1700,o:"0% 50%"}],[0,[{transform:"translate(0,0) rotate(0deg)",easing:E.sm},{offset:.25,transform:"translate(0,0) rotate(0deg)",easing:E.sm},{offset:.38,transform:"translate(.7px,-.6px) rotate(-3deg)",easing:E.sm},{offset:.5,transform:"translate(1.2px,0) rotate(0deg)",easing:E.sm},{offset:.63,transform:"translate(1.9px,-.6px) rotate(3deg)",easing:E.sm},{offset:.75,transform:"translate(2.4px,0) rotate(0deg)",easing:E.io},{transform:"translate(0,0) rotate(0deg)"}],"lin",{d:1700,o:"50% 100%"}],[[2,3],[{transform:"scale(1)"},{offset:.38,transform:"scale(1.15)",easing:E.sm},{offset:.5,transform:"scale(1)",easing:E.sm},{offset:.63,transform:"scale(1.15)",easing:E.sm},{offset:.75,transform:"scale(1)"},{transform:"scale(1)"}],"lin",{d:1700}]]},
+bug:{t:"الرجلين بتمشي مشية الحشرات والقرون بتترعش",p:[[[6,10,8],rot([0,16,-14,16,-14,8,0]),"lin",{d:950,o:"100% 50%"}],[[9,7,11],rot([0,-16,14,-16,14,-8,0]),"lin",{d:950,o:"0% 50%"}],[0,[{transform:"translateY(0)",easing:E.sm},{offset:.2,transform:"translateY(-1.2px)",easing:E.sm},{offset:.4,transform:"translateY(-.4px)",easing:E.sm},{offset:.6,transform:"translateY(-1.2px)",easing:E.sm},{offset:.8,transform:"translateY(-.3px)",easing:E.sm},{transform:"translateY(0)"}],"lin",{d:950}],[1,rot(DV(-22,5,.6)),"lin",{d:950,dl:60,o:"100% 100%"}],[2,rot(DV(22,5,.6)),"lin",{d:950,dl:110,o:"0% 100%"}]]},
+"paw-print":{t:"البصمة بتنطبع",p:[[0,NUDGE("scale(.8)",E.in),"lin",{d:900}]],fx:[["sparkle","hot",250]]},
+bike:{t:"العجلة بتتحرك",p:[[0,NUDGE("translateX(3px)",E.in),"lin",{d:1000}]],fx:[["trail",[1,0],120]]},
+bus:{t:"الأتوبيس بيتحرك",p:[[0,[{transform:"translateY(0)"},{transform:"translateY(-1.5px)"},{transform:"translateY(0)"},{transform:"translateY(-1px)"},{transform:"translateY(0)"}].map(f=>({...f,easing:E.sm})),"lin",{d:900}]],fx:[["trail",[1,0],100]]},
+"train-front":{t:"القطر جاي",p:[[0,[{transform:"scale(.75)",opacity:0},{transform:"scale(1)",opacity:1}],"sp",{}]],fx:[["glow","amber",200]]},
+"plane-takeoff":{t:"الطيارة بتقلع",p:[[0,FLY(14,-10),"lin",{d:1200}]],fx:[["trail",[1,-.7],320]]},
+"plane-landing":{t:"الطيارة بتهبط",p:[[0,OUT(10,6),"lin",{d:1100}]],fx:[["land","accent",500]]},
+earth:{t:"الكوكب بيلف والقارات بتعدّي من قدامك",p:[[[1,2,3],[{transform:"translateX(0) scaleX(1)",opacity:1,easing:E.io},{offset:.45,transform:"translateX(2.2px) scaleX(.82)",opacity:.35,easing:"step-end"},{offset:.46,transform:"translateX(-2.2px) scaleX(.82)",opacity:.35,easing:E.io},{transform:"translateX(0) scaleX(1)",opacity:1}],"lin",{d:1500,st:70}],[0,rot(DV(-9,3,.5)),"lin",{d:1500}],[4,W(x=>`scale(${x})`,[1,1.04,.98,1]),"lin",{d:1500}]]},
+"locate-fixed":{t:"بيحدد موقعك",p:[[0,K("rotate(0)","rotate(90deg)"),"sp",{}]],fx:[["rings","accent",100]]},
+crosshair:{t:"النيشان بيثبت",p:[[0,K("rotate(0)","rotate(90deg)"),"sp",{}]],fx:[["snap","hot",400]]},
+volleyball:{t:"الكورة بتتنطط",p:[[0,[{transform:"translateY(0) rotate(0)",easing:"cubic-bezier(.2,.6,.35,1)"},{offset:.4,transform:"translateY(-7px) rotate(180deg)",easing:"cubic-bezier(.6,0,.8,.4)"},{offset:.72,transform:"translateY(0) rotate(300deg) scale(1.1,.9)",easing:SPS},{transform:"translateY(0) rotate(360deg)"}],"lin",{d:1000}]]},
+goal:{t:"جووون",p:[[0,NUDGE("scale(1.12)"),"lin",{d:900}]],fx:[["confetti",null,250]]},
+swords:{t:"السيوف بتتخبط",p:[[0,W(x=>`scale(${x})`,[1,.85,1.12,1]),"lin",{d:700}]],fx:[["snap","amber",250]]},
+puzzle:{t:"القطعة بتتركّب",p:[[0,[{transform:"translate(3px,-3px) rotate(10deg)",opacity:0},{transform:"translate(0,0) rotate(0)",opacity:1}],"sp",{}]],fx:[["snap","accent",350]]},
+"graduation-cap":{t:"الطاقية بتتحدف لفوق",p:[[0,[{transform:"translateY(0) rotate(0)",easing:"cubic-bezier(.2,.6,.35,1)"},{offset:.45,transform:"translateY(-8px) rotate(-180deg)",easing:"cubic-bezier(.6,0,.8,.4)"},{offset:.8,transform:"translateY(0) rotate(-360deg)",easing:SPS},{transform:"translateY(0) rotate(-360deg)"}],"lin",{d:1100}]],fx:[["confetti",null,800]]},
+atom:{t:"الذرة بتلف",p:[[0,K("rotate(0)","rotate(180deg)"),E.o,{d:1200}]],fx:[["sparkle","accent",400]]},
+"flask-conical":{t:"التجربة بتفور",p:[[0,rot([0,-10,8,-4,0]),"lin",{d:1000,o:"50% 100%"}]],fx:[["bubbles","ok",100]]},
+telescope:{t:"التلسكوب بيدوّر على نجمة",p:[[0,NUDGE("rotate(-12deg)"),"lin",{d:1000,o:"50% 100%"}]],fx:[["sparkle","amber",350]]},
+fan:{t:"المروحة بتلف",p:[[0,K("rotate(0)","rotate(720deg)"),E.o,{d:1500}]]},
+recycle:{t:"بيتدوّر",p:[[0,K("rotate(0)","rotate(360deg)"),E.ant,{d:1100}]]},
+aperture:{t:"العدسة بتتفتح",p:[[0,K("rotate(0)","rotate(360deg)"),E.ant,{d:1000}]],fx:[["glow","accent",600]]},
+"spray-can":{t:"البخاخ بيرش",p:[[0,NUDGE("rotate(-10deg)"),"lin",{d:900}]],fx:[["dust","accent",150]]},
+"radio-tower":{t:"البرج بيبث",p:[[0,POP(.9),"sps",{}]],fx:[["rings","accent",0]]},
+podcast:{t:"البودكاست بيبث",p:[[0,W(x=>`scale(${x})`,[1,1.08,1]),"lin",{d:800}]],fx:[["rings","accent",0]]},
+cast:{t:"البث بيتبعت",p:[[0,POP(.9),"sps",{}]],fx:[["rings","accent",50]]},
+satellite:{t:"القمر الصناعي بيلف",p:[[0,rot([0,-20,14,-6,0]),"lin",{d:1300}]],fx:[["rings","accent",200]]},
+bot:{t:"البوت بيصحى",p:[[0,J(2.5),"lin",{d:850,o:"50% 100%"}]],fx:[["sparkle","accent",300]]},
+vault:{t:"الخزنة بتتقفل",p:[[0,NUDGE("scale(.9)",E.in),"lin",{d:900}]],fx:[["snap","accent",200]]},
+cctv:{t:"الكاميرا بتلف تراقب",p:[[0,rot([0,-14,10,-6,0]),"lin",{d:1400,o:"80% 20%"}]]}
+,
+"settings-2":{t:"المقابض بتتزحلق",p:[[4,SL(6,0),"lin",{d:1000}],[3,SL(-6,0),"lin",{d:1000,dl:90}]]},
+minus:{t:"بيتشد وبيرجع",p:[[1,[{transform:"scaleX(1)",easing:E.in},{offset:.3,transform:"scaleX(.3)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:900}]]},
+"sliders-horizontal":{t:"المقابض بتتظبط",p:[[7,SL(-5,0),"lin",{d:1000}],[8,SL(6,0),"lin",{d:1000,dl:90}],[9,SL(-4,0),"lin",{d:1000,dl:180}]]},
+"log-in":{t:"السهم بيدخل من الباب",p:[[[2,3],OUT(6,0),"lin",{d:950}],[1,[{transform:"scaleX(1)",easing:E.sm},{offset:.45,transform:"scaleX(.85)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:950,o:"100% 50%"}]]},
+ellipsis:{t:"النقط بتتنطط زي الموجة",p:[[[3,1,2],HOP(3.5),"lin",{d:600,st:110}]]},
+"ellipsis-vertical":{t:"النقط بتنطّ ورا بعض",p:[[[2,1,3],POP(.2),"spb",{st:90}]]},
+"external-link":{t:"السهم بيطلع لبرّه",p:[[[1,2],OUT(5,-5),"lin",{d:950}],[3,POP(.92),"sps",{}]]},
+"maximize-2":{t:"الأركان بتتمدد",p:[[[1,3],SL(2,-2),"lin",{d:900}],[[2,4],SL(-2,2),"lin",{d:900}]]},
+"minimize-2":{t:"الأركان بتتلم",p:[[[1,4],SL(2,-2),"lin",{d:900}],[[2,3],SL(-2,2),"lin",{d:900}]]},
+pin:{t:"الدبوس بيتغرز",p:[[0,[{transform:"translateY(-6px) rotate(-15deg)",opacity:0,easing:E.in},{offset:.4,transform:"translateY(0) rotate(0)",opacity:1,easing:SPS},{transform:"translateY(0) rotate(0)",opacity:1}],"lin",{d:1000}]],fx:[["land","accent",380]]},
+"grip-vertical":{t:"النقط بتنطّ",p:[[[2,5,1,4,3,6],POP(.3),"spb",{st:50}]]},
+share:{t:"بيطلع لبرّه",p:[[[2,3],OUT(0,-6),"lin",{d:950}],[1,[{transform:"scale(1)"},{offset:.45,transform:"scale(1.06,.92)",easing:SPS},{transform:"scale(1)"}],"lin",{d:950,o:"50% 100%"}]]},
+shuffle:{t:"الخطوط بتتلخبط",p:[[[1,3,4],DRAW,E.o,{d:500,st:80}],[[2,5],SL(2.5,0),"lin",{d:800,dl:250}]]},
+move:{t:"بيتمدد في كل الاتجاهات",p:[[6,SL(0,-2.5),"lin",{d:900}],[2,SL(0,2.5),"lin",{d:900}],[3,SL(2.5,0),"lin",{d:900}],[5,SL(-2.5,0),"lin",{d:900}]]},
+info:{t:"النقطة بتنزل والخط بيترسم",p:[[1,POP(.8),"sp",{}],[3,[{transform:"translateY(-4px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{dl:150}],[2,DRAW,E.o,{d:350,dl:260}]]},
+ban:{t:"علامة المنع بتترسم وتتهز",p:[[1,POP(.8),"sp",{}],[2,DRAW,E.o,{d:400,dl:150}],[0,tx([0,0,0,-2,2,-1.5,1,0]),"lin",{d:900}]],fx:[["ripple","hot",300]]},
+"bell-dot":{t:"بيرن والنقطة بتظهر",p:[[1,rot([0,16,-13,8,-4,0]),"lin",{d:900,o:"50% 0%"}],[2,tx([0,-3,3,-2,1,0]),"lin",{d:900,dl:50}],[3,POP(0),"spb",{dl:350}]],fx:[["ripple","hot",400]]},
+bold:{t:"الحرف بيتنفخ",p:[[0,[{transform:"scale(1)",easing:E.in},{offset:.3,transform:"scale(1.22,.9)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900}]]},
+italic:{t:"الحرف بيميل",p:[[0,NUDGE("skewX(-16deg)"),"lin",{d:950}]]},
+quote:{t:"علامات الاقتباس بتنزل",p:[[[2,1],[{transform:"translateY(-5px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{st:110}]]},
+languages:{t:"الحروف بتترسم بلغتين",p:[[[3,4,1,2],DRAW,E.o,{d:320,st:60}],[[5,6],DRAW,E.o,{d:350,st:60,dl:320}]]},
+"link-2":{t:"الحلقتين بيتقفلوا",p:[[1,SL(-2.5,0),"lin",{d:900}],[2,SL(2.5,0),"lin",{d:900}],[3,[{transform:"scaleX(.2)"},{transform:"scaleX(1)"}],"spb",{dl:280}]],fx:[["snap","accent",300]]},
+eraser:{t:"الأستيكة بتمسح",p:[[0,W(x=>`translateX(${x}px) rotate(${x*2}deg)`,[0,-3,3,-3,3,0]),"lin",{d:900}]],fx:[["dust","muted",200]]},
+highlighter:{t:"بيعلّم على الكلام",p:[[0,W(x=>`translate(${x}px,${Math.abs(x)*.5}px) rotate(${-x*2}deg)`,[0,-2,2,4,0]),"lin",{d:1100,o:"20% 80%"}]],fx:[["scribble",null,100]]},
+"pen-tool":{t:"القلم بيرسم مسار",p:[[0,NUDGE("rotate(-12deg)"),"lin",{d:950}],[3,DRAW,E.o,{d:500,dl:150}]]},
+brush:{t:"الفرشاة بتلوّن",p:[[0,rot([0,-14,10,-14,6,0]),"lin",{d:1000,o:"20% 80%"}]],fx:[["scribble",null,120]]},
+pipette:{t:"القطارة بتسحب لون",p:[[0,NUDGE("translateY(-3px) rotate(-10deg)"),"lin",{d:950}]],fx:[["drip","hot",300]]},
+crop:{t:"الإطار بيتظبط",p:[[1,SL(-2,2),"lin",{d:900}],[2,SL(2,-2),"lin",{d:900,dl:60}]]},
+"layout-grid":{t:"المربعات بتظهر في دايرة",p:[[[1,2,3,4],POP(.3),"spb",{st:70}]]},
+"layout-dashboard":{t:"اللوحات بتترتب",p:[[[1,2,3,4],POP(.4),"spb",{st:70}]]},
+"layout-list":{t:"القائمة بتترتب",p:[[[1,2],POP(.4),"spb",{st:120}],[[3,4,5,6],DRAW,E.o,{d:300,st:70,dl:100}]]},
+"columns-2":{t:"الفاصل بيقسم",p:[[2,GROW("Y"),"spb",{}],[1,POP(.92),"sps",{}]]},
+"rows-2":{t:"الفاصل بيقسم",p:[[2,GROW("X"),"spb",{}],[1,POP(.92),"sps",{}]]},
+"panel-left":{t:"اللوحة بتتسحب",p:[[2,SL(-3,0),"lin",{d:900}]]},
+"panel-right":{t:"اللوحة بتتسحب",p:[[2,SL(3,0),"lin",{d:900}]]},
+"app-window":{t:"النافذة بتتفتح",p:[[1,[{transform:"scale(.6)",opacity:0},{transform:"scale(1)",opacity:1}],"sp",{}],[[2,4,3],DRAW,E.o,{d:300,st:70,dl:200}]]},
+layers:{t:"الطبقات بتتنطط",p:[[1,HOP(4),"lin",{d:800}],[3,HOP(2.5),"lin",{d:800,dl:70}],[2,SQ(),"lin",{d:800,o:"50% 100%",dl:140}]]},
+frame:{t:"الخطوط بتتقاطع",p:[[[1,2],GROW("X"),"spb",{st:80}],[[3,4],GROW("Y"),"spb",{st:80,dl:120}]]},
+"grid-3x3":{t:"الجريد بيترسم",p:[[[2,3,4,5],GROW(""),"spb",{st:70}],[1,POP(.92),"sps",{}]]},
+component:{t:"القطع بتلف وتتركّب",p:[[0,K("rotate(0)","rotate(90deg)"),"sps",{}],[[4,1,3,2],POP(.3),"spb",{st:80}]]},
+shapes:{t:"الأشكال بتلعب",p:[[1,HOP(3),"lin",{d:800}],[2,rot([0,-15,10,-4,0]),"lin",{d:900,dl:80}],[3,POP(.5),"spb",{dl:160}]]},
+square:{t:"المربع بيلف",p:[[0,K("rotate(0) scale(.7)","rotate(90deg) scale(1)"),"sps",{}]]},
+circle:{t:"الدايرة بتترسم",p:[[1,DRAW,E.o,{d:700}],[0,POP(.85),"sps",{}]]},
+triangle:{t:"المثلث بينطّ",p:[[0,J(3),"lin",{d:850,o:"50% 100%"}]]},
+diamond:{t:"الماسة بتلف وتلمع",p:[[0,K("perspective(80px) rotateY(0)","perspective(80px) rotateY(180deg)"),E.io,{d:900}]],fx:[["sparkle","accent",500]]},
+pentagon:{t:"الخماسي بيلف",p:[[0,NUDGE("rotate(-36deg) scale(.9)"),"lin",{d:1000}]]},
+hexagon:{t:"السداسي بيلف",p:[[0,K("rotate(0)","rotate(60deg)"),"sps",{}]]},
+expand:{t:"الأركان بتبعد",p:[[1,SL(2,2),"lin",{d:900}],[2,SL(-2,2),"lin",{d:900}],[3,SL(2,-2),"lin",{d:900}],[4,SL(-2,-2),"lin",{d:900}]]},
+shrink:{t:"الأركان بتتلم",p:[[1,SL(-1.5,-1.5),"lin",{d:900}],[2,SL(1.5,-1.5),"lin",{d:900}],[3,SL(-1.5,1.5),"lin",{d:900}],[4,SL(1.5,1.5),"lin",{d:900}]]},
+"mouse-pointer-2":{t:"المؤشر بيدوس",p:[[0,[{transform:"translate(0,0) scale(1)",easing:E.sm},{offset:.3,transform:"translate(-3px,-2px) scale(1)",easing:E.in},{offset:.45,transform:"translate(0,0) scale(.82)",easing:SPS},{transform:"translate(0,0) scale(1)"}],"lin",{d:1000}]],fx:[["ripple","accent",430]]},
+"mail-open":{t:"الظرف بيتفتح",p:[[1,HOP(2),"lin",{d:800}],[2,DRAW,E.o,{d:500,dl:150}]],fx:[["sparkle","hot",300]]},
+inbox:{t:"رسالة بتوصل للوارد",p:[[[1,2],[{transform:"translateY(0)"},{offset:.5,transform:"translateY(0)",easing:E.in},{offset:.62,transform:"translateY(1.5px) scaleY(.92)",easing:SPS},{transform:"translateY(0)"}],"lin",{d:1000,box:"view-box",o:"12px 20px"}]],fx:[["dropin","accent",0]]},
+"messages-square":{t:"الرسايل بتتبادل",p:[[1,SL(-1.5,-1.5),"lin",{d:900}],[2,SL(1.5,1.5),"lin",{d:900,dl:140}]]},
+"phone-off":{t:"المكالمة بتقفل",p:[[1,rot([0,-12,12,-8,4,0]),"lin",{d:700}],[2,DRAW,E.o,{d:420,dl:220}]],fx:[["ripple","hot",350]]},
+hash:{t:"الهاشتاج بيترسم",p:[[[1,2],GROW("X"),"spb",{st:80}],[[3,4],GROW("Y"),"spb",{st:80,dl:150}]]},
+voicemail:{t:"التسجيل بيتوصل",p:[[[1,2],POP(.3),"spb",{st:100}],[3,DRAW,E.o,{d:400,dl:220}]]},
+contact:{t:"الكارت بيظهر والصورة بتطلع",p:[[5,POP(.92),"sps",{}],[4,[{transform:"translateY(3px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{dl:120}],[2,DRAW,E.o,{d:400,dl:220}],[[1,3],HOP(2),"lin",{d:600,st:60}]]},
+"person-standing":{t:"بيوطّي وينطّ نطة فرحة ودراعاته لفوق",p:[[0,LEAP(3,0),"lin",{d:950,o:"50% 100%"}],[3,[{transform:"scaleY(1)",easing:E.sm},{offset:.16,transform:"scaleY(1.3)",easing:"cubic-bezier(.3,0,.2,1)"},{offset:.42,transform:"scaleY(-1.6)",easing:E.sm},{offset:.62,transform:"scaleY(-1.2)",easing:SPS},{transform:"scaleY(1)"}],"lin",{d:950,o:"50% 100%"}],[2,[{transform:"scaleX(1)",easing:E.sm},{offset:.42,transform:"scaleX(1.4)",easing:E.sm},{offset:.62,transform:"scaleX(1.1)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:950,o:"50% 0%"}],[1,[{transform:"translateY(0)",easing:E.sm},{offset:.2,transform:"translateY(.8px)",easing:E.sm},{offset:.48,transform:"translateY(-1px)",easing:E.sm},{offset:.68,transform:"translateY(.7px)",easing:SPS},{transform:"translateY(0)"}],"lin",{d:950,dl:40}]],fx:[["sparkle","amber",420]]},
+accessibility:{t:"العجلة بتلف",p:[[[4,5],K("rotate(0)","rotate(360deg)"),E.io,{d:1100,box:"view-box",o:"9px 16px"}],[1,HOP(2),"lin",{d:700}]]},
+"hand-heart":{t:"الإيد بتقدّم قلب",p:[[4,W(x=>`scale(${x})`,[1,1.22,1,1.12,1]),"lin",{d:900}],[[1,2,3],SL(0,-1.5),"lin",{d:900}]],fx:[["sparkle","hot",250]]},
+"hand-helping":{t:"الإيد اللي تحت بتشيل والتانية بتستند عليها",p:[[[2,3],[{transform:"translate(0,0) rotate(0deg)",easing:E.sm},{offset:.18,transform:"translate(0,.8px) rotate(3deg)",easing:"cubic-bezier(.3,0,.1,1)"},{offset:.46,transform:"translate(0,-2.4px) rotate(-6deg)",easing:SPS},{transform:"translate(0,0) rotate(0deg)"}],"lin",{d:1150,o:"0% 100%"}],[1,[{transform:"translate(0,0) rotate(0deg)",easing:E.sm},{offset:.3,transform:"translate(0,-.6px) rotate(-3deg)",easing:E.sm},{offset:.56,transform:"translate(0,-2px) rotate(-5deg)",easing:SPS},{transform:"translate(0,0) rotate(0deg)"}],"lin",{d:1150,dl:90,o:"0% 100%"}]],fx:[["sparkle","hot",520]]},
+"volume-x":{t:"الصوت بيتقفل",p:[[1,POP(.85),"sp",{}],[[2,3],DRAW,E.o,{d:300,st:120,dl:150}]]},
+images:{t:"الصور بتتفرد",p:[[4,SL(-2,-2),"lin",{d:950}],[1,SL(1,1),"lin",{d:950}],[3,POP(0),"spb",{dl:220}],[2,DRAW,E.o,{d:500,dl:150}]]},
+clapperboard:{t:"الكلاكيت بيقفل: أكشن!",p:[[[1,2,3],[{transform:"rotate(0)",easing:E.o},{offset:.3,transform:"rotate(-16deg)",easing:E.in},{offset:.42,transform:"rotate(0)",easing:SPS},{transform:"rotate(0)"}],"lin",{d:1000,box:"view-box",o:"3px 11px"}],[4,[{transform:"scale(1)"},{offset:.42,transform:"scale(1)",easing:E.o},{offset:.5,transform:"scale(1.04,.94)",easing:SPS},{transform:"scale(1)"}],"lin",{d:1000,o:"50% 100%"}]],fx:[["snap","amber",420]]},
+tv:{t:"التلفزيون بيشتغل",p:[[2,rot([0,-14,10,-6,0]),"lin",{d:1000,o:"50% 100%"}],[1,POP(.94),"sps",{}]],fx:[["screen",[4,9,16,11],150]]},
+archive:{t:"الصندوق بيتفتح ويتقفل",p:[[1,[{transform:"translateY(0)",easing:E.o},{offset:.35,transform:"translateY(-4px)",easing:E.sm},{offset:.6,transform:"translateY(-4px)",easing:E.in},{offset:.78,transform:"translateY(0)",easing:SPS},{transform:"translateY(0)"}],"lin",{d:1100}],[3,DRAW,E.o,{d:300,dl:650}]],fx:[["dropin","amber",150]]},
+save:{t:"الحفظ بيتأكد",p:[[0,NUDGE("scale(.86)",E.in),"lin",{d:900}],[3,[{transform:"translateY(-3px)"},{transform:"translateY(0)"}],"spb",{dl:200}]],fx:[["ripple","ok",300]]},
+"cloud-download":{t:"السهم بينزل من السحابة",p:[[[1,2],OUT(0,6),"lin",{d:1000}],[3,W(x=>`scale(${x})`,[1,1.05,.98,1]),"lin",{d:1000}]]},
+"clipboard-check":{t:"المهمة بتتعلّم",p:[[1,NUDGE("translateY(-2.5px)",E.in),"lin",{d:900}],[3,DRAW,E.o,{d:450,dl:250}]],fx:[["ripple","ok",600]]},
+"book-open":{t:"الصفحات بتتفرد",p:[[2,[{transform:"scaleX(1)",easing:E.io},{offset:.4,transform:"scaleX(.2)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:1100}],[1,GROW("Y"),"spb",{dl:300,o:"50% 0%"}]],fx:[["sparkle","amber",450]]},
+"sticky-note":{t:"النوتة بتتلزق",p:[[0,NUDGE("rotate(-8deg) translateY(-2px)"),"lin",{d:1000,o:"50% 0%"}],[2,GROW(""),"spb",{o:"100% 0%",dl:200}]]},
+"notebook-pen":{t:"الدفتر بيتكتب فيه",p:[[6,W(x=>`translate(${x}px,${Math.abs(x)*.6}px) rotate(${-x*3}deg)`,[0,-1.5,1.5,-1.5,1.5,0]),"lin",{d:1000,o:"20% 80%"}],[[2,3,4,5],DRAW,E.o,{d:250,st:70}]]},
+"hard-drive":{t:"اللمبات بتنوّر وهو بيشتغل",p:[[[3,4],[{opacity:1},{opacity:.1},{opacity:1},{opacity:.1},{opacity:1}],"lin",{d:800,st:120}],[2,POP(.94),"sps",{}]]},
+ticket:{t:"التذكرة بتتقطع",p:[[1,NUDGE("rotate(-10deg) scale(1.05)"),"lin",{d:950}],[[2,4,3],[{opacity:1},{opacity:0},{opacity:1}],E.sm,{d:300,st:80}]],fx:[["sparkle","amber",350]]},
+scale:{t:"الميزان بيتوزن",p:[[[5,1,2],rot([0,-10,8,-5,2,0]),"lin",{d:1300,box:"view-box",o:"12px 6px"}]]},
+briefcase:{t:"الشنطة بتترفع",p:[[0,[{transform:"translateY(0) rotate(0)",easing:E.sm},{offset:.35,transform:"translateY(-3px) rotate(-5deg)",easing:E.sm},{offset:.7,transform:"translateY(0) rotate(3deg)",easing:SPS},{transform:"translateY(0) rotate(0)"}],"lin",{d:1000,o:"50% 0%"}]]},
+"building-2":{t:"الشبابيك بتنوّر",p:[[1,POP(.94),"sps",{}],[[7,6,5,4],[{opacity:0},{opacity:1}],E.o,{d:250,st:90,dl:150}]]},
+landmark:{t:"العواميد بتتبني",p:[[1,GROW("X"),"sp",{}],[[2,3,4,5],GROW("Y"),"spb",{o:"50% 100%",st:60,dl:100}],[6,[{transform:"translateY(-5px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{dl:380}]]},
+presentation:{t:"الشاشة بتنزل",p:[[2,GROW("Y"),"spb",{o:"50% 0%"}],[3,HOP(2),"lin",{d:700,dl:200}]]},
+gauge:{t:"المؤشر بيعلى وبينزل",p:[[1,rot([0,-80,30,-10,0]),"lin",{d:1300,box:"view-box",o:"12px 14px"}]]},
+award:{t:"الوسام بيتمرجح ويلمع",p:[[0,rot([0,12,-9,5,-2,0]),"lin",{d:1100,o:"50% 0%"}]],fx:[["sparkle","amber",300]]},
+calculator:{t:"الأزرار بتتداس",p:[[[6,5,4,8,7,3,10,9],[{opacity:1},{opacity:.12},{opacity:1}],E.sm,{d:300,st:55}],[2,DRAW,E.o,{d:400,dl:450}]]},
+kanban:{t:"الأعمدة بتتملي مهام",p:[[[1,2,3],GROW("Y"),"spb",{o:"50% 0%",st:90}]]},
+network:{t:"الشبكة بتتوصّل",p:[[3,POP(.5),"spb",{}],[[5,4],DRAW,E.o,{d:300,dl:150}],[[1,2],POP(.4),"spb",{st:80,dl:350}]]},
+workflow:{t:"الخطوات بتتوصّل",p:[[1,POP(.5),"spb",{}],[2,DRAW,E.o,{d:400,dl:150}],[3,POP(.5),"spb",{dl:450}]],fx:[["snap","accent",500]]},
+sunrise:{t:"الشمس بتشرق",p:[[8,[{transform:"translateY(4px)",opacity:0},{transform:"translateY(0)",opacity:1}],"sps",{}],[[2,5,3,4],FADEPOP,"spb",{st:60,dl:200}],[[1,7],[{transform:"translateY(4px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{dl:320}]],fx:[["glow","amber",150]]},
+sunset:{t:"الشمس بتغيب",p:[[8,[{transform:"translateY(0)",opacity:1,easing:E.in},{offset:.45,transform:"translateY(4px)",opacity:0,easing:"step-end"},{offset:.47,transform:"translateY(-2px)",opacity:0,easing:SPS},{transform:"translateY(0)",opacity:1}],"lin",{d:1300}],[[1,7],OUT(0,5),"lin",{d:1100}]]},
+mountain:{t:"الجبل بيترسم",p:[[1,DRAW,E.io,{d:950}]],fx:[["sparkle","accent",700]]},
+tablet:{t:"التابلت بينوّر",p:[[1,POP(.92),"sps",{}]],fx:[["screen",[6,4,12,13],100]]},
+keyboard:{t:"الزراير بتتكتب",p:[[[6,1,5,3,8,4,2],[{opacity:1},{opacity:.1},{opacity:1}],E.sm,{d:260,st:60}],[7,[{transform:"scaleX(1)"},{offset:.5,transform:"scaleX(.7)"},{transform:"scaleX(1)"}],E.sm,{d:350,dl:450}]]},
+mouse:{t:"العجلة بتسكرول",p:[[2,W(x=>`translateY(${x}px)`,[0,2,0,2,0]),"lin",{d:900}],[1,POP(.95),"sps",{}]]},
+headset:{t:"الهيدسيت بيتمايل مع الصوت",p:[[0,rot([0,-6,6,-4,2,0]),"lin",{d:1000}]],fx:[["notes","accent",150]]},
+webcam:{t:"العدسة بتركّز",p:[[2,[{transform:"scale(1)",easing:E.in},{offset:.3,transform:"scale(.4)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900}]],fx:[["glow","accent",250]]},
+"gamepad-2":{t:"الزراير بتتداس",p:[[[1,2],NUDGE("scale(.7)",E.in),"lin",{d:800}],[[3,4],POP(0),"spb",{st:100,dl:150}],[5,rot([0,-6,6,-3,0]),"lin",{d:900}]]},
+"memory-stick":{t:"الرامات بتشتغل",p:[[[1,2,3,4],GROW("Y"),"spb",{o:"50% 0%",st:60}],[[5,7,6],[{opacity:1},{opacity:.1},{opacity:1}],E.sm,{d:350,st:70,dl:200}]]},
+server:{t:"السيرفر بيشتغل",p:[[[3,4],[{opacity:1},{opacity:0},{opacity:1},{opacity:0},{opacity:1}],"lin",{d:900,st:150}],[[1,2],SL(1.5,0),"lin",{d:800,st:100}]]},
+router:{t:"الراوتر بيبث",p:[[[5,6],FADEPOP,"spb",{st:120}],[[2,3],[{opacity:1},{opacity:.1},{opacity:1}],E.sm,{d:400,st:100,dl:200}],[4,GROW("Y"),"spb",{o:"50% 100%"}]]},
+usb:{t:"اليو إس بي بيدخل",p:[[0,NUDGE("translate(2px,-2px)",E.in),"lin",{d:900}]],fx:[["glow","ok",280]]},
+braces:{t:"الأقواس بتتفتح",p:[[1,SL(-2.5,0),"lin",{d:900}],[2,SL(2.5,0),"lin",{d:900}]]},
+brackets:{t:"الأقواس بتتفتح",p:[[1,SL(2.5,0),"lin",{d:900}],[2,SL(-2.5,0),"lin",{d:900}]]},
+binary:{t:"الأرقام بتتقلب",p:[[[2,6,4,1,5,3],K("perspective(30px) rotateY(0)","perspective(30px) rotateY(360deg)"),E.io,{d:700,st:60}]]},
+variable:{t:"الإكس بيلف جوه الأقواس",p:[[1,SL(-2,0),"lin",{d:900}],[2,SL(2,0),"lin",{d:900}],[[3,4],K("rotate(0)","rotate(90deg)"),"sps",{box:"view-box",o:"12px 12px"}]]},
+"git-branch":{t:"الفرع بيطلع",p:[[1,DRAW,E.o,{d:400}],[4,DRAW,E.o,{d:500,dl:200}],[[3,2],POP(0),"spb",{st:200,dl:100}]]},
+"git-merge":{t:"الفرعين بيندمجوا",p:[[2,POP(0),"spb",{}],[3,DRAW,E.o,{d:600,dl:100}],[1,POP(0),"spb",{dl:550}]],fx:[["snap","accent",600]]},
+"git-pull-request":{t:"طلب الدمج بيتبعت",p:[[4,DRAW,E.o,{d:400}],[3,DRAW,E.o,{d:500,dl:150}],[[2,1],POP(0),"spb",{st:300}]]},
+"git-commit-horizontal":{t:"الكوميت بيتسجل",p:[[2,DRAW,E.o,{d:300}],[1,POP(0),"spb",{dl:220}],[3,DRAW,E.o,{d:300,dl:420}]]},
+webhook:{t:"الوصلات بتلف وتترسم",p:[[0,NUDGE("rotate(-30deg)"),"lin",{d:1000}],[[1,2,3],DRAW,E.o,{d:500,st:100}]]},
+blocks:{t:"البلوك بيتركّب",p:[[2,POP(.9),"sps",{}],[1,[{transform:"translate(3px,-3px)",opacity:0},{transform:"translate(0,0)",opacity:1}],"spb",{dl:150}]],fx:[["snap","accent",350]]},
+route:{t:"المسار بيترسم من نقطة لنقطة",p:[[1,POP(0),"spb",{}],[2,DRAW,E.io,{d:800,dl:100}],[3,POP(0),"spb",{dl:800}]],fx:[["ripple","accent",900]]},
+signpost:{t:"اللافتة بتتمرجح",p:[[3,rot([0,-10,7,-3,0]),"lin",{d:1100,box:"view-box",o:"12px 6px"}]]},
+milestone:{t:"العلامة بتتمرجح",p:[[3,rot([0,10,-7,3,0]),"lin",{d:1100,box:"view-box",o:"12px 6px"}]]},
+fuel:{t:"الخرطوم بيتمرجح",p:[[4,rot([0,-14,9,-4,0]),"lin",{d:1100,box:"view-box",o:"14px 13px"}]],fx:[["drip","amber",300]]},
+hotel:{t:"الأوض بتنوّر",p:[[10,POP(.94),"sps",{}],[[9,3,7,8,2,6],[{opacity:0},{opacity:1}],E.o,{d:250,st:70}],[5,DRAW,E.o,{d:400,dl:400}]]},
+building:{t:"الشبابيك بتنوّر",p:[[1,POP(.94),"sps",{}],[[3,5,4,10,6,8,11,7,9],[{opacity:0},{opacity:1}],E.o,{d:200,st:50}],[2,DRAW,E.o,{d:400,dl:350}]]},
+castle:{t:"الأبراج بتطلع",p:[[[6,8,9,7],[{transform:"translateY(3px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{st:60}],[[4,5],[{transform:"translateY(3px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{st:60,dl:200}],[3,DRAW,E.o,{d:400,dl:300}]],fx:[["sparkle","amber",400]]},
+tent:{t:"الخيمة بتتنصب",p:[[[1,2],GROW("Y"),"spb",{o:"50% 100%",st:80}],[3,DRAW,E.o,{d:400,dl:250}]]},
+luggage:{t:"الشنطة بتتجر",p:[[0,NUDGE("translateX(3px) rotate(4deg)",E.in),"lin",{d:1000,o:"50% 100%"}]],fx:[["trail",[1,0],120]]},
+footprints:{t:"خطوة ورا خطوة",p:[[[1,4],[{transform:"translateY(3px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{}],[[2,3],[{transform:"translateY(3px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{dl:260}]]},
+sofa:{t:"الكنبة بتتهبط وترجع",p:[[0,[{transform:"scale(1)",easing:E.in},{offset:.3,transform:"scale(1.08,.88)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900,o:"50% 100%"}]]},
+armchair:{t:"الفوتيه بيتهبط وبيرجع",p:[[0,[{transform:"scale(1)",easing:E.in},{offset:.3,transform:"scale(1.08,.88)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900,o:"50% 100%"}]]},
+bed:{t:"السرير بيتهبط... وأحلام سعيدة",p:[[2,[{transform:"scale(1)",easing:E.in},{offset:.3,transform:"scale(1,.8)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900,o:"50% 100%"}]],fx:[["zzz","accent",250]]},
+bath:{t:"البانيو بيفوّر صابون",p:[[0,W(x=>`scale(${x})`,[1,1.05,.98,1]),"lin",{d:900,o:"50% 100%"}]],fx:[["bubbles","accent",100]]},
+"shower-head":{t:"الدش بيرش مية",p:[[[4,5,6,7,8,9,10],[{transform:"translate(0,0)",opacity:1},{offset:.5,transform:"translate(-2px,2px)",opacity:0},{offset:.51,transform:"translate(1px,-1px)",opacity:0},{transform:"translate(0,0)",opacity:1}],"linear",{d:600,st:50,it:2}],[[1,2,3],rot([0,-6,4,0]),"lin",{d:900,box:"view-box",o:"6px 6px"}]]},
+"washing-machine":{t:"الغسالة بتلف",p:[[5,K("rotate(0)","rotate(720deg)"),E.io,{d:1300,box:"view-box",o:"12px 13px"}],[[3,1,2],tx([0,-.6,.6,-.6,.6,-.6,.6,0]),"lin",{d:1300}]]},
+refrigerator:{t:"باب التلاجة بيتفتح",p:[[0,NUDGE("perspective(50px) rotateY(-25deg)"),"lin",{d:1000,o:"0% 50%"}]],fx:[["glow","accent",200]]},
+microwave:{t:"الميكرويف بيسخّن... تيييين",p:[[2,[{opacity:1},{opacity:.3},{opacity:1},{opacity:.3},{opacity:1}],E.sm,{d:1000}],[[1,3],tx([0,-.6,.6,-.6,.6,0]),"lin",{d:800}]],fx:[["glow","amber",850]]},
+shirt:{t:"القميص بيتمرجح على الشماعة",p:[[0,rot([0,8,-6,3,0]),"lin",{d:1100,o:"50% 0%"}]]},
+glasses:{t:"النضارة بتلمع",p:[[0,NUDGE("translateY(-2px)"),"lin",{d:900}]],fx:[["sparkle","accent",200]]},
+"cup-soda":{t:"الحاجة الساقعة بتفور",p:[[4,rot([0,-10,8,-4,0]),"lin",{d:1000,box:"view-box",o:"12px 8px"}],[3,DRAW,E.o,{d:500}]],fx:[["bubbles","accent",100]]},
+pizza:{t:"البيتزا سخنة",p:[[0,NUDGE("rotate(-12deg) scale(1.08)"),"lin",{d:950}],[[1,2],POP(0),"spb",{st:100,dl:150}]],fx:[["embers","hot",200]]},
+sandwich:{t:"الساندويتش بيتقفل",p:[[1,[{transform:"translateY(0)",easing:E.o},{offset:.35,transform:"translateY(-3.5px)",easing:E.sm},{offset:.55,transform:"translateY(-3.5px)",easing:E.in},{offset:.72,transform:"translateY(0)",easing:SPS},{transform:"translateY(0)"}],"lin",{d:1100}]]},
+soup:{t:"الشوربة بتطلع بخار",p:[[[6,5,4],STEAM,"linear",{d:800,st:130,it:2}],[3,rot([0,-10,6,0]),"lin",{d:900,box:"view-box",o:"19.5px 12px"}]]},
+salad:{t:"السلطة بتتقلّب",p:[[[3,4,5],HOP(3),"lin",{d:750,st:80}]]},
+beef:{t:"اللحمة على النار",p:[[0,rot([0,-6,5,-3,0]),"lin",{d:900}]],fx:[["embers","hot",100]]},
+egg:{t:"البيضة بتترج",p:[[0,rot([0,-10,10,-8,6,-3,0]),"lin",{d:1000,o:"50% 100%"}]]},
+croissant:{t:"الكرواسون طازة",p:[[0,J(2.5),"lin",{d:850,o:"50% 100%"}]],fx:[["sparkle","amber",350]]},
+cake:{t:"الشمع بيرقص والكونفيتي بيطير",p:[[[7,8,9],[{opacity:1,transform:"translateY(0) scale(1)"},{opacity:.3,transform:"translateY(-1px) scale(1.5)"},{opacity:1,transform:"translateY(0) scale(1)"}],E.sm,{d:400,st:90,it:2}],[0,POP(.92),"sps",{}]],fx:[["confetti",null,300]]},
+cookie:{t:"الكوكيز بشوكولاتة",p:[[0,NUDGE("rotate(-25deg)"),"lin",{d:1000}],[[2,3,4,5,6],POP(0),"spb",{st:60}]]},
+"ice-cream-cone":{t:"البولة بتنزل على الكون",p:[[[2,3],[{transform:"translateY(-5px)",opacity:0},{transform:"translateY(0)",opacity:1}],"spb",{st:110}],[1,[{transform:"scale(1)"},{offset:.35,transform:"scale(1)",easing:E.o},{offset:.5,transform:"scale(1.08,.9)",easing:SPS},{transform:"scale(1)"}],"lin",{d:1000,o:"50% 100%"}]]},
+popcorn:{t:"الفشار بيفرقع",p:[[0,tx([0,-1,1,-1,1,0]),"lin",{d:500}]],fx:[["burst","amber",150],["coins","amber",250]]},
+apple:{t:"التفاحة بتنطّ",p:[[1,HOP(2.5),"lin",{d:800}],[2,rot([0,-16,10,-5,0]),"lin",{d:900,o:"50% 100%"}]]},
+cherry:{t:"الكريز بيتمرجح",p:[[0,rot([0,10,-8,4,0]),"lin",{d:1100,o:"65% 5%"}]]},
+citrus:{t:"البرتقانة بتتعصر",p:[[0,NUDGE("rotate(-30deg) scale(.9)",E.in),"lin",{d:1000}]],fx:[["splash","amber",300]]},
+carrot:{t:"الجزرة بتطلع من الأرض",p:[[1,[{transform:"translate(-3px,3px)",opacity:0},{transform:"translate(0,0)",opacity:1}],"spb",{}],[[2,3],rot([0,-15,10,-4,0]),"lin",{d:900,dl:150,box:"view-box",o:"16px 8px"}]]},
+utensils:{t:"الشوكة والسكينة بيتحركوا",p:[[[1,2],NUDGE("translateY(-2px) rotate(-6deg)"),"lin",{d:900}],[3,NUDGE("translateY(-2px) rotate(6deg)"),"lin",{d:900,dl:80}]]},
+"utensils-crossed":{t:"مطعم مفتوح",p:[[0,NUDGE("rotate(-15deg) scale(1.08)"),"lin",{d:950}]],fx:[["snap","amber",300]]},
+"chef-hat":{t:"الطاقية بتنفخ",p:[[1,[{transform:"scale(1)",easing:E.in},{offset:.3,transform:"scale(1.08,1.15)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900,o:"50% 100%"}]],fx:[["sparkle","amber",300]]},
+stethoscope:{t:"السماعة بتسمع النبض",p:[[5,POP(.3),"spb",{}],[4,DRAW,E.io,{d:700,dl:100}]],fx:[["rings","hot",300]]},
+tablets:{t:"الأقراص بتلف",p:[[[1,4],NUDGE("rotate(-60deg)"),"lin",{d:1000,box:"view-box",o:"7px 7px"}],[[2,3],NUDGE("rotate(60deg)"),"lin",{d:1000,dl:80,box:"view-box",o:"17px 17px"}]]},
+syringe:{t:"الحقنة بتتداس",p:[[[1,2],NUDGE("translate(-2px,2px)",E.in),"lin",{d:900}]],fx:[["drip","accent",350]]},
+bandage:{t:"البلاستر بيتلزق",p:[[0,NUDGE("rotate(-10deg)"),"lin",{d:950}],[[1,2,3,4],POP(0),"spb",{st:60,dl:200}]]},
+hospital:{t:"المستشفى بتنوّر",p:[[6,POP(.94),"sps",{}],[[1,4],W(x=>`scale(${x})`,[1,1.3,1,1.2,1]),"lin",{d:900,box:"view-box",o:"12px 8px"}]],fx:[["glow","hot",150]]},
+ambulance:{t:"الإسعاف بيجري",p:[[[1,4],[{opacity:1},{opacity:.15},{opacity:1},{opacity:.15},{opacity:1}],"lin",{d:900}],[0,NUDGE("translateX(3px)",E.in),"lin",{d:1000}]],fx:[["trail",[1,0],120],["glow","hot",0]]},
+brain:{t:"المخ بيفكر",p:[[[1,2],W(x=>`scale(${x})`,[1,1.06,1]),"lin",{d:800}],[[3,4,5,6,7,8,9],DRAW,E.o,{d:350,st:50}]],fx:[["sparkle","accent",400]]},
+dna:{t:"الحمض النووي بيلف",p:[[0,[{transform:"scaleX(1)",easing:E.sm},{transform:"scaleX(-1)",easing:E.sm},{transform:"scaleX(1)"}],"lin",{d:1300}]]},
+microscope:{t:"الميكروسكوب بيقرّب",p:[[0,NUDGE("rotate(-8deg)"),"lin",{d:1000,o:"50% 100%"}]],fx:[["sparkle","accent",350]]},
+bone:{t:"العضمة بتتهز",p:[[0,rot([0,-20,15,-8,3,0]),"lin",{d:1000}]]},
+ear:{t:"الودن بتسمع",p:[[0,NUDGE("scale(1.1)"),"lin",{d:900}]],fx:[["rings","accent",100]]},
+cross:{t:"علامة الإسعاف بتنبض",p:[[0,W(x=>`scale(${x})`,[1,1.15,1,1.1,1]),"lin",{d:900}]],fx:[["glow","hot",0]]},
+weight:{t:"التقل بيقع بقوة",p:[[0,[{transform:"translateY(-6px) scale(1)",opacity:0,easing:E.in},{offset:.35,transform:"translateY(0) scale(1.1,.88)",opacity:1,easing:SPS},{transform:"translateY(0) scale(1)",opacity:1}],"lin",{d:1000,o:"50% 100%"}]],fx:[["dust","muted",350]]},
+joystick:{t:"الدراع بيتحرك",p:[[[3,4],rot([0,-20,16,-12,6,0]),"lin",{d:1100,box:"view-box",o:"12px 15px"}]]},
+school:{t:"المدرسة بتفتح",p:[[6,POP(0),"spb",{}],[[3,5],GROW("Y"),"spb",{o:"50% 100%",st:80}],[1,DRAW,E.o,{d:400,dl:250}]],fx:[["rings","amber",350]]},
+book:{t:"الكتاب بيتفتح",p:[[0,NUDGE("perspective(60px) rotateY(-30deg)"),"lin",{d:1000,o:"0% 50%"}]]},
+"book-marked":{t:"علامة الكتاب بتنزل",p:[[2,POP(.95),"sps",{}],[1,GROW("Y"),"spb",{o:"50% 0%",dl:150}]]},
+library:{t:"الكتب بتتهز على الرف",p:[[1,rot([0,-12,8,-4,0]),"lin",{d:1000,o:"50% 100%"}],[[2,3,4],HOP(1.5),"lin",{d:700,st:80}]]},
+notebook:{t:"الكشكول بيتقلّب",p:[[[1,2,3,4],SL(-1.5,0),"lin",{d:800,st:60}],[6,DRAW,E.o,{d:500,dl:150}]]},
+backpack:{t:"الشنطة بتتنطط على الضهر",p:[[0,J(2.5),"lin",{d:850,o:"50% 100%"}]]},
+"pencil-ruler":{t:"القلم والمسطرة بيتباعدوا",p:[[[1,2,3],NUDGE("rotate(-10deg)"),"lin",{d:950,box:"view-box",o:"6px 18px"}],[[4,5,6],NUDGE("rotate(10deg)"),"lin",{d:950,box:"view-box",o:"18px 18px"}]]},
+ruler:{t:"علامات المسطرة بتظهر",p:[[1,NUDGE("rotate(-8deg)"),"lin",{d:950}],[[4,3,2,5],GROW(""),"spb",{st:60}]]},
+sigma:{t:"المجموع بيترسم",p:[[1,DRAW,E.io,{d:800}]]},
+pi:{t:"باي بيترسم",p:[[2,DRAW,E.o,{d:450}],[[1,3],GROW("Y"),"spb",{o:"50% 0%",st:100,dl:200}]]},
+shield:{t:"الدرع بيحمي",p:[[1,POP(.8),"sp",{}]],fx:[["ripple","accent",150],["sparkle","accent",250]]},
+"lock-keyhole":{t:"القفل بيتقفل",p:[[3,[{transform:"translateY(0)",easing:E.o},{offset:.32,transform:"translateY(-3.5px)",easing:E.sm},{offset:.55,transform:"translateY(-3.5px)",easing:E.in},{offset:.72,transform:"translateY(.4px)",easing:SPS},{transform:"translateY(0)"}],"lin",{d:1100}],[1,POP(0),"spb",{dl:700}]]}
+,
+lantern:{t:"الفانوس بيتمرجح والشمعة بتنوّر",p:[[0,rot([0,10,-8,5,-2,0]),"lin",{d:1400,o:"50% 0%"}],[5,W(x=>`scale(${x},${2-x})`,[1,.8,1.2,.9,1.1,1]),"lin",{d:1000,o:"50% 100%"}]],fx:[["tint","amber",0],["glow","amber",150]]},
+"prayer-rug":{t:"السجادة بتتفرد والمحراب بيترسم",p:[[1,GROW("Y"),"spb",{o:"50% 0%"}],[2,DRAW,E.o,{d:600,dl:250}],[3,GROW("X"),"spb",{dl:550}],[[5,4],FADEPOP,"spb",{st:120,dl:150}]]},
+quran:{t:"المصحف بيتفتح على الرحل",p:[[4,DRAW,E.o,{d:500}],[3,GROW("Y"),"spb",{dl:150}],[1,[{transform:"scaleX(0)"},{transform:"scaleX(1)"}],"sps",{o:"100% 50%",dl:250}],[2,[{transform:"scaleX(0)"},{transform:"scaleX(1)"}],"sps",{o:"0% 50%",dl:250}]],fx:[["sparkle","amber",550]]},
+kaaba:{t:"الحزام الذهبي بيلمع",p:[[0,POP(.9),"sps",{}],[4,DRAW,E.io,{d:850,dl:150}],[5,GROW("Y"),"spb",{o:"50% 100%",dl:500}]],fx:[["glow","amber",350],["sparkle","amber",600]]},
+pyramids:{t:"الأهرامات بتطلع والشمس بتشرق",p:[[1,GROW("X"),"sp",{}],[2,[{transform:"scaleY(.1)",opacity:0},{transform:"none",opacity:1}],"spb",{o:"50% 100%",dl:100}],[3,DRAW,E.o,{d:400,dl:420}],[4,[{transform:"scaleY(.1)",opacity:0},{transform:"none",opacity:1}],"spb",{o:"50% 100%",dl:250}],[5,[{transform:"translateY(4px)",opacity:0},{transform:"none",opacity:1}],"sps",{dl:450}]],fx:[["glow","amber",500]]},
+camel:{t:"الجمل بيمشي بهدوء",p:[[0,W(x=>`translateY(${-Math.abs(x)*.6}px) rotate(${x}deg)`,[0,-2,2,-2,2,0]),"lin",{d:1400,o:"50% 100%"}],[4,rot([0,-20,15,-10,5,0]),"lin",{d:1400,box:"view-box",o:"3px 12.5px"}]]},
+dallah:{t:"الدلة بتصب قهوة",p:[[0,[{transform:"rotate(0)",easing:E.o},{offset:.35,transform:"rotate(-28deg)",easing:E.sm},{offset:.6,transform:"rotate(-28deg)",easing:E.in},{offset:.8,transform:"rotate(2deg)",easing:SPS},{transform:"rotate(0)"}],"lin",{d:1400,o:"50% 90%"}]],fx:[["drip","amber",500]]},
+"car-shield":{t:"العربية بتتأمّن",p:[[[1,2,3,4],SL(-1.5,0),"lin",{d:900}],[5,[{transform:"scale(0) rotate(-30deg)"},{transform:"none"}],"spb",{dl:200}],[6,DRAW,E.o,{d:350,dl:480}]],fx:[["ripple","ok",550]]},
+"house-shield":{t:"البيت بيتأمّن",p:[[[1,2],J(2),"lin",{d:850,o:"50% 100%"}],[3,[{transform:"scale(0) rotate(-30deg)"},{transform:"none"}],"spb",{dl:250}],[4,DRAW,E.o,{d:350,dl:520}]],fx:[["ripple","ok",600]]},
+"heart-shield":{t:"التغطية الطبية بتنبض",p:[[1,W(x=>`scale(${x})`,[1,1.15,1,1.1,1]),"lin",{d:900}],[2,[{transform:"scale(0) rotate(-30deg)"},{transform:"none"}],"spb",{dl:200}],[3,GROW(""),"spb",{dl:450}]],fx:[["ripple","hot",100]]},
+"globe-shield":{t:"السفر متأمّن",p:[[2,[{transform:"scaleX(1)",easing:E.sm},{transform:"scaleX(-1)",easing:E.sm},{transform:"scaleX(1)"}],"lin",{d:1200}],[4,[{transform:"scale(0) rotate(-30deg)"},{transform:"none"}],"spb",{dl:250}],[5,DRAW,E.o,{d:350,dl:520}]],fx:[["ripple","ok",600]]},
+"file-claim":{t:"المطالبة بتتبعت",p:[[[1,2,3],HOP(2),"lin",{d:800}],[4,DRAW,E.o,{d:400,dl:150}],[5,POP(0),"spb",{dl:300}],[6,[{transform:"translateY(3px)",opacity:0},{transform:"none",opacity:1}],"spb",{dl:450}]],fx:[["ripple","accent",550]]},
+"file-policy":{t:"الوثيقة بتتختم",p:[[[1,2,3,4],HOP(2),"lin",{d:800}],[5,[{transform:"scale(1.8) rotate(-40deg)",opacity:0},{transform:"none",opacity:1}],"sp",{dl:250}],[6,GROW("Y"),"spb",{o:"50% 0%",dl:480}]],fx:[["snap","amber",430]]},
+mosque:{t:"المسجد بيترسم والهلال بيلمع",p:[[6,DRAW,E.io,{d:900}],[4,GROW("Y"),"spb",{o:"50% 100%",dl:300}],[5,GROW("X"),"spb",{dl:400}],[3,DRAW,E.o,{d:400,dl:500}],[2,GROW("Y"),"spb",{o:"50% 100%",dl:550}],[1,[{transform:"scale(0) rotate(-90deg)"},{transform:"none"}],"spb",{dl:700}]],fx:[["sparkle","amber",850]]},
+"saudi-riyal":{t:"رمز الريال بيترسم",p:[[[3,2],DRAW,E.o,{d:450,st:150}],[[4,1],DRAW,E.o,{d:300,st:120,dl:420}]],fx:[["sparkle","ok",750]]},
+"circle-pound-sterling":{t:"الجنيه بيترسم",p:[[1,POP(.85),"sp",{}],[[2,3,4],DRAW,E.o,{d:350,st:100,dl:150}]],fx:[["sparkle","ok",500]]},
+"moon-star":{t:"الهلال والنجمة بيلمعوا",p:[[1,NUDGE("rotate(-20deg)"),"lin",{d:1000}],[[2,3],[{transform:"scale(0) rotate(-90deg)"},{transform:"none"}],"spb",{dl:200}]],fx:[["sparkle","amber",300]]},
+"tree-palm":{t:"النخلة بتتمايل",p:[[[1,2,3],rot([0,-8,6,-3,0]),"lin",{d:1300,box:"view-box",o:"12px 9px"}],[4,rot([0,-3,2,0]),"lin",{d:1300,o:"50% 100%"}]]},
+"shield-plus":{t:"تغطية إضافية",p:[[1,POP(.8),"sp",{}],[[2,3],DRAW,E.o,{d:350,st:100,dl:150}]],fx:[["ripple","ok",350]]},
+"arrow-down-a-z":{t:"الحروف بتترتب",p:[[[1,2],OUT(0,5),"lin",{d:900}],[[4,3],[{transform:"translateY(-3px)",opacity:0},{transform:"none",opacity:1}],"spb",{}],[5,[{transform:"translateY(-3px)",opacity:0},{transform:"none",opacity:1}],"spb",{dl:120}]]},
+"arrow-down-wide-narrow":{t:"بيترتب تنازلي",p:[[[1,2],SL(0,2.5),"lin",{d:900}],[[3,4,5],GROW("X"),"spb",{o:"0% 50%",st:70}]]},
+"arrow-up-narrow-wide":{t:"بيترتب تصاعدي",p:[[[1,2],SL(0,-2.5),"lin",{d:900}],[[3,4,5],GROW("X"),"spb",{o:"0% 50%",st:70}]]},
+"list-filter":{t:"القائمة بتتفلتر",p:[[[1,2,3],[{transform:"scaleX(1)",easing:E.in},{offset:.4,transform:"scaleX(.4)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:900,st:80}]]},
+"filter-x":{t:"الفلتر بيتمسح",p:[[1,[{transform:"scale(1)"},{offset:.3,transform:"scale(1.08,.88)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900,o:"50% 0%"}],[[2,3],DRAW,E.o,{d:300,st:100,dl:200}]],fx:[["ripple","hot",300]]},
+"search-x":{t:"مفيش نتايج",p:[[[3,4],NUDGE("rotate(-10deg)"),"lin",{d:900}],[[1,2],DRAW,E.o,{d:300,st:100,dl:150}]]},
+"check-check":{t:"الرسالة اتقرت",p:[[1,DRAW,E.o,{d:450}],[2,DRAW,E.o,{d:400,dl:250}]],fx:[["tint","accent",350]]},
+"star-half":{t:"نص نجمة",p:[[0,NUDGE("rotate(-20deg) scale(.85)"),"lin",{d:950}]],fx:[["sparkle","amber",250]]},
+"heart-crack":{t:"القلب بيتكسر",p:[[1,tx([0,-1.5,1.5,-1,0]),"lin",{d:600}],[2,DRAW,E.o,{d:450,dl:100}]],fx:[["dust","hot",400]]},
+"panel-left-close":{t:"السايدبار بيتقفل",p:[[[2,3],SL(-3,0),"lin",{d:900}]]},
+"panel-left-open":{t:"السايدبار بيتفتح",p:[[[2,3],SL(3,0),"lin",{d:900}]]},
+command:{t:"الأوامر المختصرة",p:[[1,DRAW,E.io,{d:1000}],[0,NUDGE("scale(.9)",E.in),"lin",{d:900}]]},
+"copy-check":{t:"اتنسخ",p:[[3,SL(-2,-2),"lin",{d:900}],[1,DRAW,E.o,{d:400,dl:250}]],fx:[["ripple","ok",450]]},
+unlink:{t:"الرابط بيتفك",p:[[1,SL(2,-2),"lin",{d:900}],[2,SL(-2,2),"lin",{d:900}],[[3,4,5,6],FADEPOP,"spb",{st:50,dl:150}]]},
+"bell-plus":{t:"تفعيل الإشعارات",p:[[1,rot([0,16,-13,8,-4,0]),"lin",{d:900,o:"50% 0%"}],[2,tx([0,-3,3,-2,1,0]),"lin",{d:900,dl:50}],[[3,4],POP(0),"spb",{dl:300}]]},
+"circle-user":{t:"الحساب",p:[[1,POP(.9),"sps",{}],[2,HOP(2.5),"lin",{d:750,dl:100}],[3,SQ(),"lin",{d:750,dl:100,o:"50% 100%"}]]},
+"user-cog":{t:"إعدادات الحساب بتلف",p:[[2,HOP(2.5),"lin",{d:750}],[[1,4,5,6,7,8,9,10,11],K("rotate(0)","rotate(90deg)"),"sps",{box:"view-box",o:"18px 15px"}]]},
+"id-card":{t:"البطاقة بتظهر",p:[[5,POP(.94),"sps",{}],[[4,3],[{transform:"translateY(3px)",opacity:0},{transform:"none",opacity:1}],"spb",{st:80,dl:100}],[[1,2],DRAW,E.o,{d:300,st:80,dl:300}]]},
+"rectangle-ellipsis":{t:"الباسورد بيتكتب",p:[[[4,2,3],HOP(2.5),"lin",{d:600,st:110}]]},
+"message-circle-more":{t:"بيكتب...",p:[[1,POP(.85),"sp",{}],[[2,3,4],HOP(2),"lin",{d:600,st:110,it:2}]]},
+"send-horizontal":{t:"الرسالة بتتبعت",p:[[0,OUT(8,0),"lin",{d:950}]],fx:[["trail",[1,0],250]]},
+"phone-incoming":{t:"مكالمة جاية",p:[[[1,2],[{transform:"translate(3px,-3px)",opacity:0},{transform:"none",opacity:1}],"spb",{}],[3,rot([0,-10,10,-8,8,0]),"lin",{d:800}]]},
+"phone-missed":{t:"مكالمة فايتة",p:[[3,rot([0,-10,10,-6,0]),"lin",{d:700}],[[1,2],DRAW,E.o,{d:300,st:100,dl:200}]],fx:[["ripple","hot",350]]},
+"mail-check":{t:"الإيميل اتبعت",p:[[[1,2],HOP(2),"lin",{d:800}],[3,DRAW,E.o,{d:400,dl:250}]],fx:[["ripple","ok",450]]},
+"fast-forward":{t:"تقديم سريع",p:[[[2,1],OUT(5,0),"lin",{d:850,st:90}]]},
+rewind:{t:"ترجيع",p:[[[1,2],OUT(-5,0),"lin",{d:850,st:90}]]},
+"repeat-1":{t:"تكرار مرة واحدة",p:[[[1,2,3,4],K("rotate(0)","rotate(360deg)"),E.ant,{d:1000,box:"view-box",o:"12px 12px"}],[5,POP(0),"spb",{dl:500}]]},
+captions:{t:"الترجمة بتظهر",p:[[1,POP(.94),"sps",{}],[2,DRAW,E.o,{d:600,dl:150}]]},
+"picture-in-picture-2":{t:"الفيديو الصغير بيتزحلق للركن",p:[[2,[{transform:"translate(-6px,-5px) scale(.6)",opacity:0},{transform:"none",opacity:1}],"spb",{}]]},
+"volume-1":{t:"الصوت واطي",p:[[1,POP(.85),"sp",{}],[2,[{opacity:0,transform:"translateX(-2px) scale(.7)"},{opacity:1,transform:"none"}],E.o,{d:450,dl:80,it:2}]]},
+table:{t:"الجدول بيتقسم",p:[[2,POP(.94),"sps",{}],[[3,4],GROW("X"),"spb",{st:80}],[1,GROW("Y"),"spb",{dl:150}]]},
+"indent-increase":{t:"المسافة بتزيد",p:[[[3,1,2],SL(2,0),"lin",{d:900,st:70}],[4,SL(2,0),"lin",{d:900}]]},
+"indent-decrease":{t:"المسافة بتقل",p:[[[3,1,2],SL(-2,0),"lin",{d:900,st:70}],[4,SL(-2,0),"lin",{d:900}]]},
+"a-large-small":{t:"حجم الخط بيتغير",p:[[[4,3],[{transform:"scale(1)",easing:E.in},{offset:.35,transform:"scale(1.25)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900,box:"view-box",o:"7.5px 16px"}],[[1,2],[{transform:"scale(1)",easing:E.in},{offset:.35,transform:"scale(.75)",easing:SPS},{transform:"scale(1)"}],"lin",{d:900,box:"view-box",o:"18.5px 16px"}]]},
+"paint-bucket":{t:"الجردل بيدلق لون",p:[[[1,2,3],rot([0,-14,8,-4,0]),"lin",{d:1000,box:"view-box",o:"11px 12px"}],[4,[{transform:"translateY(-4px) scale(.5)",opacity:0},{transform:"none",opacity:1}],"spb",{dl:300}]]},
+stamp:{t:"الختم بينزل",p:[[[2,3],[{transform:"translateY(0)",easing:E.o},{offset:.35,transform:"translateY(-4px)",easing:E.in},{offset:.5,transform:"translateY(.6px) scale(1.04,.94)",easing:SPS},{transform:"none"}],"lin",{d:1000,box:"view-box",o:"12px 19px"}],[1,[{transform:"scaleX(1)"},{offset:.5,transform:"scaleX(1)",easing:E.o},{offset:.6,transform:"scaleX(1.12)",easing:SPS},{transform:"scaleX(1)"}],"lin",{d:1000}]],fx:[["snap","amber",480]]},
+"image-plus":{t:"صورة جديدة",p:[[[1,2],POP(0),"spb",{}],[4,DRAW,E.o,{d:450,dl:150}],[5,POP(0),"spb",{dl:250}]]},
+subscript:{t:"الرقم بينزل تحت",p:[[[1,2],POP(.8),"sp",{}],[3,[{transform:"translateY(-4px)",opacity:0},{transform:"none",opacity:1}],"spb",{dl:200}]]},
+superscript:{t:"الرقم بيطلع فوق",p:[[[1,2],POP(.8),"sp",{}],[3,[{transform:"translateY(4px)",opacity:0},{transform:"none",opacity:1}],"spb",{dl:200}]]},
+"code-xml":{t:"الكود بيتفتح",p:[[1,SL(2.5,0),"lin",{d:900}],[2,SL(-2.5,0),"lin",{d:900}],[3,DRAW,E.o,{d:400,dl:150}]]},
+sticker:{t:"الستيكر بيتلزق ويبتسم",p:[[1,NUDGE("rotate(-8deg)"),"lin",{d:950}],[2,GROW(""),"spb",{o:"100% 0%",dl:200}],[[3,4],POP(0),"spb",{st:60,dl:300}],[5,DRAW,E.o,{d:350,dl:420}]]},
+"shopping-basket":{t:"السلة بتتملي",p:[[[6,2],NUDGE("translateY(-2.5px)",E.in),"lin",{d:900}],[[3,4,5,1,7],rot([0,4,-3,1.5,0]),"lin",{d:900,box:"view-box",o:"12px 11px"}]],fx:[["dropin","ok",0]]},
+"package-open":{t:"الطرد اتفتح",p:[[[2,4],NUDGE("translateY(-3px)"),"lin",{d:1000}]],fx:[["confetti",null,250]]},
+"package-check":{t:"الطرد اتسلّم",p:[[[2,3,4,5],J(2.5),"lin",{d:850,o:"50% 100%"}],[1,DRAW,E.o,{d:400,dl:400}]],fx:[["ripple","ok",550]]},
+"wallet-cards":{t:"الكروت بتطلع من المحفظة",p:[[2,NUDGE("translateY(-3px)"),"lin",{d:1000}],[1,POP(.95),"sps",{}]]},
+tags:{t:"التاجات بتتمرجح",p:[[1,rot([0,-12,8,-4,0]),"lin",{d:1100,box:"view-box",o:"9px 6px"}],[[2,3],rot([0,14,-10,5,0]),"lin",{d:1100,dl:80,box:"view-box",o:"6.5px 9.5px"}]]},
+"ticket-percent":{t:"الكوبون بيتفعّل",p:[[1,NUDGE("rotate(-10deg) scale(1.05)"),"lin",{d:950}],[3,DRAW,E.o,{d:350,dl:150}],[[2,4],POP(0),"spb",{st:80,dl:250}]],fx:[["sparkle","amber",350]]},
+"dollar-sign":{t:"الدولار بيلف",p:[[0,K("perspective(80px) rotateY(0)","perspective(80px) rotateY(360deg)"),E.io,{d:1000}]],fx:[["sparkle","ok",700]]},
+euro:{t:"اليورو بيلف",p:[[0,K("perspective(80px) rotateY(0)","perspective(80px) rotateY(360deg)"),E.io,{d:1000}]],fx:[["sparkle","accent",700]]},
+bitcoin:{t:"البيتكوين بيلف ويلمع",p:[[0,K("rotate(0)","rotate(360deg)"),E.ant,{d:1000}]],fx:[["sparkle","amber",650]]},
+"chart-candlestick":{t:"الشموع بتطلع",p:[[7,DRAW,E.o,{d:500}],[[1,2,3],GROW("Y"),"spb",{st:40,dl:150}],[[4,5,6],GROW("Y"),"spb",{st:40,dl:300}]]},
+"chart-scatter":{t:"النقط بتتوزع",p:[[6,DRAW,E.o,{d:500}],[[4,1,3,5,2],POP(0),"spb",{st:70,dl:150}]]},
+"cloud-fog":{t:"الضباب بيتحرك",p:[[1,tx([0,-1.5,1.5,0]),"lin",{d:1200}],[[2,3],tx([0,3,-3,2,0]),"lin",{d:1200,st:120}]]},
+tornado:{t:"الإعصار بيلف",p:[[[1,2,3,4,5],tx([0,2,-2,1.5,-1,0]),"lin",{d:1100,st:60}]]},
+"sun-moon":{t:"النهار بيقلب ليل",p:[[1,K("rotate(0)","rotate(360deg)"),E.io,{d:1200}],[[2,3,4,5,6,7,8,9],FADEPOP,"spb",{st:40}]]},
+haze:{t:"الشبورة",p:[[7,[{transform:"translateY(3px)",opacity:0},{transform:"none",opacity:1}],"sps",{}],[[5,6],tx([0,2.5,-2.5,0]),"lin",{d:1100,st:120}],[[1,4,8,2,3],FADEPOP,"spb",{st:50,dl:200}]]},
+"thermometer-sun":{t:"الجو حر",p:[[4,W(x=>`scale(${x})`,[1,1.05,1]),"lin",{d:900}],[[2,6,5,3],FADEPOP,"spb",{st:60}],[1,DRAW,E.o,{d:450,dl:200}]],fx:[["tint","hot",0]]},
+"car-taxi-front":{t:"التاكسي جاي",p:[[1,[{opacity:1},{opacity:.2},{opacity:1},{opacity:.2},{opacity:1}],"lin",{d:800}],[[2,5,6,7,3,4],W(x=>`translateY(${x}px)`,[0,-1.5,0,-1,0]),"lin",{d:900}]],fx:[["glow","amber",0]]},
+"tram-front":{t:"الترام جاي",p:[[0,[{transform:"scale(.8)",opacity:0},{transform:"none",opacity:1}],"sp",{}],[[6,7],[{opacity:1},{opacity:.2},{opacity:1}],E.sm,{d:400,dl:300,it:2}]]}
+,
+navigation:{t:"بيشد ويتجه لقدّام",p:[[0,[{transform:"translate(0,0) rotate(0)",easing:E.in},{offset:.3,transform:"translate(-1.5px,1.5px) rotate(-12deg)",easing:E.sm},{offset:.55,transform:"translate(3px,-3px) rotate(6deg)",easing:SPS},{transform:"translate(0,0) rotate(0)"}],"lin",{d:1150}]],fx:[["trail",[1,-1],380]]}
+};
+
+const CATS=[
+["local","محلي وعربي","mosque:مسجد,lantern:فانوس,moon-star:هلال ونجمة,prayer-rug:سجادة صلاة,quran:مصحف,kaaba:الكعبة,saudi-riyal:ريال سعودي,circle-pound-sterling:جنيه,pyramids:الأهرامات,camel:جمل,dallah:دلة قهوة,tree-palm:نخلة"],
+["arab","دول عربية","arab-egypt:مصر,arab-saudi:السعودية,arab-uae:الإمارات,arab-kuwait:الكويت,arab-qatar:قطر,arab-bahrain:البحرين,arab-oman:عُمان,arab-yemen:اليمن,arab-jordan:الأردن,arab-palestine:فلسطين,arab-lebanon:لبنان,arab-syria:سوريا,arab-iraq:العراق,arab-morocco:المغرب,arab-algeria:الجزائر,arab-tunisia:تونس,arab-libya:ليبيا,arab-sudan:السودان,arab-mauritania:موريتانيا,arab-somalia:الصومال,arab-djibouti:جيبوتي,arab-comoros:جزر القمر"],
+["insurance","تأمين","car-shield:تأمين عربيات,house-shield:تأمين بيت,heart-shield:تأمين طبي,globe-shield:تأمين سفر,file-claim:تقديم مطالبة,file-policy:وثيقة تأمين,shield-plus:تغطية إضافية"],
+["ui","واجهة","house:بيت,settings:إعدادات,settings-2:إعدادات ٢,user:مستخدم,search:بحث,bell:جرس,bell-ring:جرس بيرن,bell-off:كتم الإشعارات,heart:قلب,star:نجمة,bookmark:حفظ,sparkles:لمعة,menu:قائمة,x:إغلاق,check:تم,plus:إضافة,minus:طرح,circle-plus:إضافة دائرية,square-check:اختيار,trash-2:حذف,pencil:تعديل,lock:قفل,lock-open:فتح,eye:عين,eye-off:إخفاء,refresh-cw:تحديث,loader-circle:جاري التحميل,filter:فلتر,sliders-horizontal:ضبط,log-in:دخول,log-out:خروج,ellipsis:المزيد,ellipsis-vertical:خيارات,toggle-left:مفتاح مقفول,toggle-right:مفتاح مفتوح,zoom-in:تكبير,zoom-out:تصغير,external-link:رابط خارجي,maximize-2:ملء الشاشة,minimize-2:تصغير الشاشة,pin:تثبيت,power:تشغيل الجهاز,grip-vertical:سحب,undo-2:تراجع,redo-2:إعادة,share:مشاركة خارجية,thumbs-down:مش عاجبني,check-check:اتقرت,star-half:نص نجمة,heart-crack:قلب مكسور,panel-left-close:قفل السايدبار,panel-left-open:فتح السايدبار,command:أوامر مختصرة,copy-check:اتنسخ,unlink:فك الرابط,list-filter:فلترة,filter-x:مسح الفلتر,search-x:مفيش نتايج,bell-plus:تفعيل الإشعارات"],
+["arrows","أسهم","arrow-up:سهم لفوق,arrow-down:سهم لتحت,arrow-left:سهم شمال,arrow-right:سهم يمين,arrow-up-right:سهم مايل,arrow-down-left:سهم مايل لتحت,arrow-up-down:فوق وتحت,arrow-left-right:يمين وشمال,arrow-big-up:سهم عريض,arrow-big-down:سهم عريض لتحت,arrow-down-to-line:نزول للآخر,chevron-up:شيفرون فوق,chevron-down:شيفرون تحت,chevron-left:شيفرون شمال,chevron-right:شيفرون يمين,chevrons-right:شيفرون مزدوج,chevrons-left:شيفرون مزدوج شمال,chevrons-up-down:فتح وقفل,corner-down-left:رجوع للسطر,corner-up-right:تحويل,rotate-cw:لف يمين,rotate-ccw:لف شمال,repeat:تكرار,shuffle:عشوائي,move:تحريك,circle-arrow-right:سهم دائري,circle-arrow-up:سهم دائري لفوق,trending-up:صعود,trending-down:هبوط,iteration-cw:دوران,arrow-down-a-z:ترتيب أبجدي,arrow-down-wide-narrow:ترتيب تنازلي,arrow-up-narrow-wide:ترتيب تصاعدي"],
+["status","تنبيهات","info:معلومة,circle-alert:تنبيه,triangle-alert:تحذير,octagon-alert:خطر,circle-check:نجاح,circle-x:خطأ,circle-help:مساعدة,ban:ممنوع,badge-check:موثّق,shield-check:محمي,shield-alert:تهديد,circle-dot:تسجيل,bell-dot:إشعار جديد,flag:بلاغ,siren:طوارئ"],
+["text","نصوص وتحرير","type:نص,bold:عريض,italic:مائل,underline:تحته خط,strikethrough:مشطوب,heading:عنوان,baseline:خط النص,pilcrow:فقرة,align-left:محاذاة شمال,align-center:توسيط,align-right:محاذاة يمين,align-justify:ضبط,list:قائمة نقط,list-ordered:قائمة مرقمة,list-checks:قائمة مهام,quote:اقتباس,text-cursor-input:حقل نص,spell-check:تدقيق,languages:لغات,link-2:رابط ٢,scissors:قص,eraser:أستيكة,highlighter:هايلايتر,pen-tool:قلم مسارات,brush:فرشاة,palette:ألوان,pipette:قطارة,crop:قص الصورة,wand-sparkles:عصاية سحرية,table:جدول,indent-increase:زيادة المسافة,indent-decrease:تقليل المسافة,a-large-small:حجم الخط,paint-bucket:جردل ألوان,stamp:ستامب,image-plus:إضافة صورة,subscript:رقم سفلي,superscript:رقم علوي,code-xml:كود HTML,sticker:ستيكر"],
+["layout","تخطيط وأشكال","layout-grid:شبكة,layout-dashboard:داشبورد,layout-list:عرض قائمة,columns-2:عمودين,rows-2:صفين,panel-left:لوحة جانبية,panel-right:لوحة يمين,app-window:نافذة,layers:طبقات,frame:فريم,grid-3x3:جريد,component:كومبوننت,shapes:أشكال,square:مربع,circle:دايرة,triangle:مثلث,diamond:ماسة,pentagon:خماسي,hexagon:سداسي,expand:توسيع,shrink:تضييق,mouse-pointer-2:مؤشر"],
+["talk","تواصل","mail:بريد,mail-open:بريد مفتوح,inbox:الوارد,send:إرسال,reply:رد,forward:إعادة توجيه,message-circle:رسالة,message-square:دردشة,messages-square:محادثات,phone:تليفون,phone-call:مكالمة,phone-off:إنهاء مكالمة,at-sign:منشن,hash:هاشتاج,share-2:مشاركة,link:رابط,megaphone:إعلان,rss:آر إس إس,voicemail:بريد صوتي,thumbs-up:لايك,smile:ابتسامة,message-circle-more:بيكتب,send-horizontal:إرسال أفقي,phone-incoming:مكالمة واردة,phone-missed:مكالمة فايتة,mail-check:إيميل اتبعت"],
+["people","ناس ومشاعر","users:فريق,users-round:مجموعة,user-round:بروفايل,user-plus:إضافة مستخدم,user-check:مستخدم موثّق,user-x:حذف مستخدم,contact:جهة اتصال,baby:طفل,person-standing:شخص,accessibility:إتاحة,hand:إيد,handshake:اتفاق,hand-heart:تبرّع,hand-helping:مساعدة,laugh:ضحك,smile-plus:تفاعل,meh:عادي,frown:زعلان,angry:غضبان,circle-user:حساب,user-cog:إعدادات الحساب,id-card:بطاقة هوية"],
+["media","ميديا","play:تشغيل,pause:إيقاف مؤقت,circle-play:تشغيل دائري,skip-forward:التالي,skip-back:السابق,volume-2:صوت,volume-x:صامت,mic:ميكروفون,mic-off:ميكروفون مقفول,camera:كاميرا,aperture:عدسة,image:صورة,images:صور,video:فيديو,video-off:كاميرا مقفولة,music:موسيقى,list-music:بلاي ليست,headphones:سماعات,podcast:بودكاست,radio:راديو,disc:أسطوانة,film:فيلم,clapperboard:كلاكيت,tv:تلفزيون,cast:بث,fast-forward:تقديم,rewind:ترجيع,repeat-1:تكرار مرة,captions:ترجمة,picture-in-picture-2:صورة في صورة,volume-1:صوت واطي"],
+["files","ملفات","file:ملف,file-text:مستند,file-plus:ملف جديد,file-check:ملف معتمد,file-x:ملف مرفوض,file-image:ملف صورة,file-code:ملف كود,file-spreadsheet:جدول,folder:فولدر,folder-open:فولدر مفتوح,folder-plus:فولدر جديد,archive:أرشيف,save:حفظ ملف,download:تحميل,upload:رفع,cloud:سحابة,cloud-upload:رفع سحابي,cloud-download:تنزيل سحابي,copy:نسخ,clipboard:حافظة,clipboard-check:قائمة متابعة,paperclip:مرفق,printer:طباعة,book-open:كتاب مفتوح,sticky-note:نوتة لاصقة,notebook-pen:دفتر,qr-code:كود QR,scan:مسح,hard-drive:هارد"],
+["shop","تجارة وفلوس","shopping-cart:سلة,shopping-bag:شنطة,credit-card:كارت,wallet:محفظة,banknote:فلوس,coins:عملات,circle-dollar-sign:دولار,hand-coins:دفع,piggy-bank:حصالة,gift:هدية,tag:سعر,percent:خصم,badge-percent:عرض,receipt:فاتورة,ticket:تذكرة,barcode:باركود,store:متجر,package:طرد,truck:شحن,scale:ميزان,shopping-basket:سلة خضار,package-open:طرد مفتوح,package-check:طرد اتسلّم,wallet-cards:كروت المحفظة,tags:تاجات,ticket-percent:كوبون خصم,dollar-sign:دولار,euro:يورو,bitcoin:بيتكوين"],
+["biz","أعمال وإحصاء","briefcase:شنطة شغل,building-2:شركة,landmark:بنك,presentation:عرض تقديمي,chart-column:أعمدة,chart-bar:أشرطة,chart-line:خط بياني,chart-spline:منحنى,chart-area:مساحة,chart-pie:نسب,activity:نشاط,gauge:عداد,target:هدف,lightbulb:فكرة,award:جايزة,trophy:كاس,medal:ميدالية,crown:تاج,calculator:آلة حاسبة,kanban:كانبان,network:شبكة علاقات,workflow:سير عمل,chart-candlestick:شموع الأسهم,chart-scatter:نقط بيانية"],
+["time","وقت","calendar:تقويم,calendar-check:موعد مؤكد,calendar-plus:موعد جديد,calendar-days:أيام,calendar-clock:جدولة,clock:ساعة,alarm-clock:منبّه,timer:تايمر,hourglass:ساعة رملية,history:السجل,watch:ساعة إيد,sunrise:شروق,sunset:غروب"],
+["nature","طبيعة وحيوانات","sun:شمس,moon:قمر,cloud-sun:غيوم وشمس,cloud-rain:مطر,cloud-drizzle:رذاذ,cloud-snow:تلج نازل,cloud-lightning:برق,snowflake:تلج,wind:رياح,rainbow:قوس قزح,umbrella:شمسية,thermometer:حرارة,flame:نار,droplet:نقطة مية,waves:موج,mountain:جبل,leaf:ورقة شجر,sprout:نبتة,flower:وردة,tree-pine:شجرة صنوبر,trees:شجر,bug:حشرة,bird:عصفورة,cat:قطة,dog:كلب,fish:سمكة,rabbit:أرنب,turtle:سلحفاة,paw-print:أثر حيوان,cloud-fog:ضباب,tornado:إعصار,sun-moon:ليل ونهار,haze:شبورة,thermometer-sun:حر"],
+["tech","أجهزة","smartphone:موبايل,tablet:تابلت,laptop:لابتوب,monitor:شاشة,keyboard:كيبورد,mouse:ماوس,headset:هيدسيت,webcam:كاميرا ويب,gamepad-2:دراع ألعاب,cpu:معالج,memory-stick:رامات,server:سيرفر,database:داتا,router:راوتر,wifi:واي فاي,wifi-off:مفيش واي فاي,bluetooth:بلوتوث,signal:إشارة,radio-tower:برج إرسال,satellite:قمر صناعي,battery:بطارية,battery-low:بطارية ضعيفة,battery-charging:شحن بطارية,plug:فيشة,usb:يو إس بي"],
+["dev","برمجة","code:كود,terminal:تيرمنال,square-terminal:كونسول,braces:أقواس,brackets:أقواس مربعة,binary:باينري,variable:متغير,git-branch:فرع,git-merge:دمج,git-pull-request:طلب دمج,git-commit-horizontal:كوميت,webhook:ويب هوك,blocks:بلوكات,bot:بوت"],
+["travel","سفر ومواصلات","map-pin:موقع,map:خريطة,compass:بوصلة,navigation:اتجاه,locate-fixed:موقعي,route:مسار,signpost:لافتة,milestone:علامة طريق,globe:العالم,earth:الأرض,plane:طيارة,plane-takeoff:إقلاع,plane-landing:هبوط,rocket:صاروخ,car:عربية,bus:أتوبيس,train-front:قطر,bike:عجلة,ship:مركب,sailboat:مركب شراعي,anchor:مرساة,fuel:بنزين,hotel:فندق,building:مبنى,castle:قلعة,tent:خيمة,luggage:شنطة سفر,footprints:خطوات,car-taxi-front:تاكسي,tram-front:ترام"],
+["home","بيت وحياة","lamp:أباجورة,sofa:كنبة,armchair:فوتيه,bed:سرير,bath:بانيو,shower-head:دش,door-open:باب مفتوح,key:مفتاح,washing-machine:غسالة,refrigerator:تلاجة,microwave:ميكرويف,fan:مروحة,plug-zap:كهربا,shirt:قميص,glasses:نضارة,spray-can:بخاخ,recycle:تدوير"],
+["food","أكل وشرب","coffee:قهوة,cup-soda:حاجة ساقعة,pizza:بيتزا,sandwich:ساندويتش,soup:شوربة,salad:سلطة,beef:لحمة,egg:بيضة,croissant:كرواسون,cake:تورتة,cookie:كوكيز,ice-cream-cone:آيس كريم,popcorn:فشار,apple:تفاحة,cherry:كريز,citrus:برتقان,carrot:جزرة,utensils:أدوات أكل,utensils-crossed:مطعم,chef-hat:طاهي"],
+["health","صحة","heart-pulse:نبض,stethoscope:سماعة دكتور,pill:دوا,tablets:أقراص,syringe:حقنة,bandage:بلاستر,hospital:مستشفى,ambulance:إسعاف,brain:مخ,dna:دي إن إيه,microscope:ميكروسكوب,bone:عضمة,ear:ودن,cross:إسعافات,heart-handshake:رعاية,weight:وزن"],
+["sport","رياضة وألعاب","dumbbell:دمبل,volleyball:كورة,goal:جون,crosshair:نيشان,swords:سيوف,dice-5:نرد,puzzle:بازل,joystick:جويستيك,ghost:شبح"],
+["edu","تعليم","graduation-cap:تخرج,school:مدرسة,book:كتاب,book-marked:كتاب معلّم,library:مكتبة,notebook:كشكول,backpack:شنطة مدرسة,pencil-ruler:أدوات هندسية,ruler:مسطرة,atom:ذرّة,flask-conical:تجربة,telescope:تلسكوب,sigma:مجموع,pi:باي"],
+["security","أمان","shield:درع,shield-off:حماية مقفولة,shield-ban:حظر,key-round:مفتاح دائري,lock-keyhole:قفل مفتاح,fingerprint:بصمة,scan-face:بصمة وش,vault:خزنة,file-lock:ملف محمي,cctv:كاميرا مراقبة,rectangle-ellipsis:باسورد"]
+];
+const C=Object.fromEntries(CATS.map(([k,a])=>[k,a]));
+const I=CATS.flatMap(([k,_,str])=>str.split(",").map(e=>{const[n,l]=e.split(":");return[n,l,k]}));
+const ar=n=>String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]);
+const ez=n=>({lin:"linear",sp:SP.sp.e,sps:SP.sps.e,spb:SP.spb.e})[n]||n;
+const du=(n,o)=>o.d||({sp:SP.sp.d,sps:SP.sps.d,spb:SP.spb.d})[n]||600;
+const col=n=>getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
+const NS="http://www.w3.org/2000/svg";
+
+function targets(svg,t){if(t===0)return[svg];return(Array.isArray(t)?t:[t]).map(n=>svg.querySelector(`:scope>[data-o="${n}"]`)).filter(Boolean)}
+function run(svg,parts,keepAll){
+  const out=[];
+  for(const[t,frames,e,o={}]of parts){
+    targets(svg,t).forEach((el,k)=>{
+      if(el!==svg){el.style.transformBox=o.box||"fill-box";el.style.transformOrigin=o.o||"50% 50%"}
+      else el.style.transformOrigin=o.o||"50% 50%";
+      const a=el.animate(frames,{duration:du(e,o),delay:(o.dl||0)+k*(o.st||0),easing:ez(e),iterations:o.it||1,fill:(o.keep||keepAll)?"both":"backwards"});
+      if(o.keep||keepAll)a.finished.then(()=>{try{a.commitStyles()}catch(_){}a.cancel()}).catch(()=>{});
+      out.push(a);
+    });
+  }
+  return out;
+}
+
+const sz=box=>{const s=box.querySelector("svg");return s?s.getBoundingClientRect().width/24:1};
+const T=(x,y,s=1,r=0)=>`translate(-50%,-50%) translate(${x}px,${y}px) rotate(${r}deg) scale(${s})`;
+function span(box,w,h,st={}){const e=document.createElement("span");e.className="fx";Object.assign(e.style,{width:w+"px",height:h+"px",borderRadius:"50%"},st);box.appendChild(e);return e}
+function go(e,frames,d,easing=E.o,delay=0){e.animate(frames,{duration:d,easing,delay,fill:"both"}).finished.then(()=>e.remove()).catch(()=>e.remove())}
+function svgEl(svg,tag,at){const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);e.classList.add("fxel");svg.appendChild(e);return e}
+function goS(e,frames,d,o={}){e.animate(frames,{duration:d,easing:o.e||"linear",delay:o.dl||0,fill:"both"}).finished.then(()=>e.remove()).catch(()=>e.remove())}
+const STAR="polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)";
+const FX={
+  burst(box,svg,c="accent"){const s=sz(box),cs=[col(c),col("amber"),col(c),col("hot")];for(let k=0;k<10;k++){const a=(k*36-90)*Math.PI/180,cx=Math.cos(a),cy=Math.sin(a),line=k%2;const e=span(box,line?2*s/1.2:3.6*s,line?6*s:3.6*s,{background:cs[k%4],borderRadius:line?"2px":"50%"});const r=line?a*180/Math.PI+90:0;go(e,[{transform:T(cx*9*s,cy*9*s,1,r),opacity:1},{transform:T(cx*21*s,cy*21*s,0,r),opacity:.8}],620,E.o)}},
+  sparkle(box,svg,c="accent"){const s=sz(box),ang=[-55,25,150,215];ang.forEach((g,k)=>{const a=g*Math.PI/180,r=(14+Math.random()*4)*s,z=(k%2?5:7.5)*s;const e=span(box,z,z,{background:col(c),borderRadius:"0",clipPath:STAR});go(e,[{transform:T(Math.cos(a)*r,Math.sin(a)*r,0,0),opacity:1},{transform:T(Math.cos(a)*r,Math.sin(a)*r,1,45),opacity:1,offset:.45},{transform:T(Math.cos(a)*r,Math.sin(a)*r,0,90),opacity:0}],720,E.sm,k*80)})},
+  ripple(box,svg,c="accent"){const s=sz(box),e=span(box,26*s,26*s,{border:`1.5px solid ${col(c)}`});go(e,[{transform:T(0,0,.45),opacity:.8},{transform:T(0,0,1.6),opacity:0}],700,E.o)},
+  rings(box,svg,c="accent"){FX.ripple(box,svg,c);setTimeout(()=>FX.ripple(box,svg,c),220)},
+  glow(box,svg,c="accent"){const s=sz(box),e=span(box,30*s,30*s,{background:col(c)});go(e,[{transform:T(0,0,.5),opacity:.35},{transform:T(0,0,1.5),opacity:0}],650,E.o)},
+  land(box,svg,c="accent"){const s=sz(box),e=span(box,22*s,6*s,{border:`1.5px solid ${col(c)}`});go(e,[{transform:T(0,11*s,.3),opacity:.9},{transform:T(0,11*s,1.6),opacity:0}],650,E.o)},
+  snap(box,svg,c="accent"){const s=sz(box);for(let k=0;k<6;k++){const a=(k*60+30)*Math.PI/180;const e=span(box,1.6*s/1.2,4.5*s,{background:col(c),borderRadius:"2px"});go(e,[{transform:T(Math.cos(a)*5*s,Math.sin(a)*5*s,1,k*60+120),opacity:1},{transform:T(Math.cos(a)*13*s,Math.sin(a)*13*s,0,k*60+120),opacity:0}],450,E.o)}},
+  trail(box,svg,[dx,dy]){const s=sz(box),l=Math.hypot(dx,dy),ux=dx/l,uy=dy/l,ang=Math.atan2(uy,ux)*180/Math.PI;[-1,0,1].forEach((k,j)=>{const px=-uy*k*4.5*s,py=ux*k*4.5*s,bx=-ux*9*s+px,by=-uy*9*s+py;const e=span(box,(k?6:9)*s,1.7,{background:col("accent"),borderRadius:"2px"});go(e,[{transform:T(bx,by,1,ang),opacity:0},{transform:T(bx-ux*3*s,by-uy*3*s,1,ang),opacity:.9,offset:.25},{transform:T(bx-ux*12*s,by-uy*12*s,.3,ang),opacity:0}],520,E.o,j*60)})},
+  confetti(box,svg){const s=sz(box),cs=["accent","hot","amber","ok"].map(col);for(let k=0;k<14;k++){const x=(Math.random()*2-1)*20*s,yp=-(12+Math.random()*10)*s,r0=Math.random()*180;const e=span(box,2.6*s,4.6*s,{background:cs[k%4],borderRadius:"1px"});go(e,[{transform:T(0,-4*s,.4,r0),opacity:1,easing:E.o},{transform:T(x*.8,yp,1,r0+180),opacity:1,offset:.4,easing:"cubic-bezier(.5,0,.9,.6)"},{transform:T(x,16*s,.8,r0+420),opacity:0}],1100,"linear",k*12)}},
+  dust(box,svg,c="muted"){const s=sz(box);[-1,1,-1,1].forEach((d,k)=>{const e=span(box,(k<2?5:3.5)*s,(k<2?5:3.5)*s,{background:col(c)});go(e,[{transform:T(d*3*s,10*s,.4),opacity:.6},{transform:T(d*(k<2?14:10)*s,(k<2?8:6)*s,1.3),opacity:0}],650,E.o,k*40)})},
+  splash(box,svg,c="accent"){const s=sz(box);[-12,-6,6,12].forEach((x,k)=>{const e=span(box,2.6*s,2.6*s,{background:col(c)});go(e,[{transform:T(x*.2*s,10*s,1),opacity:1,easing:E.o},{transform:T(x*.7*s,(Math.abs(x)>8?4:1)*s,1),opacity:1,offset:.45,easing:E.in},{transform:T(x*s,12*s,.4),opacity:0}],620,"linear")})},
+  drip(box,svg,c="accent"){const s=sz(box),e=span(box,3*s,3.8*s,{background:col(c),borderRadius:"50% 50% 50% 50% / 60% 60% 40% 40%"});go(e,[{transform:T(0,7*s,0),opacity:1},{transform:T(0,8*s,1),opacity:1,offset:.25},{transform:T(0,19*s,.7),opacity:0}],600,E.in)},
+  notes(box,svg,c="accent"){const s=sz(box);[[6,-2,13,-17,15],[-6,0,-13,-14,-15]].forEach(([x0,y0,x1,y1,r],k)=>{const e=span(box,"auto","auto",{fontSize:12*s+"px",lineHeight:1,color:col(c),borderRadius:0,width:"auto",height:"auto"});e.textContent=k?"♫":"♪";go(e,[{transform:T(x0*s,y0*s,.5,0),opacity:0},{transform:T((x0+x1)/2*s,(y0+y1)/2*s,1,r/2),opacity:1,offset:.35},{transform:T(x1*s,y1*s,.9,r),opacity:0}],1000,E.o,k*150)})},
+  zzz(box,svg,c="accent"){const s=sz(box);[[5,-4,12,-16],[8,-8,15,-20],[3,-2,9,-13]].forEach(([x0,y0,x1,y1],k)=>{const e=span(box,"auto","auto",{fontSize:(8+k*2)*s+"px",lineHeight:1,color:col(c),borderRadius:0,width:"auto",height:"auto",fontWeight:600});e.textContent="z";go(e,[{transform:T(x0*s,y0*s,.4,0),opacity:0},{transform:T((x0+x1)/2*s,(y0+y1)/2*s,1,-10),opacity:1,offset:.4},{transform:T(x1*s,y1*s,.9,-20),opacity:0}],1100,E.o,k*220)})},
+  embers(box,svg,c="hot"){const s=sz(box);for(let k=0;k<5;k++){const x0=(Math.random()*2-1)*4*s,x1=x0+(Math.random()*2-1)*7*s;const e=span(box,2.4*s,2.4*s,{background:col(k%2?"amber":c)});go(e,[{transform:T(x0,-3*s,1),opacity:1},{transform:T(x1,-(15+Math.random()*6)*s,0),opacity:0}],750,E.o,k*90)}},
+  coins(box,svg,c="amber"){const s=sz(box);[[-9,-13],[0,-17],[9,-13]].forEach(([x,y],k)=>{const e=span(box,4.4*s,4.4*s,{background:col(c),border:`1px solid ${col("surface")}`});go(e,[{transform:T(0,-1*s,.3),opacity:0,easing:E.o},{transform:T(x*s,y*s,1),opacity:1,offset:.5,easing:E.in},{transform:T(x*1.2*s,(y+6)*s,.6),opacity:0}],800,"linear",k*70)})},
+  dropin(box,svg,c="amber"){const s=sz(box),e=span(box,4*s,4*s,{background:col(c),borderRadius:"1.5px"});go(e,[{transform:T(2*s,-18*s,.6,0),opacity:0,easing:E.in},{transform:T(2*s,-12*s,1,40),opacity:1,offset:.2,easing:E.in},{transform:T(2*s,-1*s,1,90),opacity:1,offset:.55,easing:SPS},{transform:T(2*s,-2*s,0,90),opacity:0}],900,"linear")},
+  buzz(box,svg,c="accent"){const s=sz(box);[-1,1].forEach(d=>[0,1].forEach(j=>{const e=span(box,1.6,(j?3.5:5.5)*s,{background:col(c),borderRadius:"2px"});const x=d*(12+j*3)*s;go(e,[{transform:T(x,0),opacity:0},{transform:T(x+d*s,0),opacity:1,offset:.2},{transform:T(x,0),opacity:.2,offset:.45},{transform:T(x+d*s,0),opacity:1,offset:.7},{transform:T(x+d*2*s,0),opacity:0}],650,"linear",j*60)}))},
+  tint(box,svg,c="hot"){const from=getComputedStyle(svg).color,to=col(c);svg.animate([{color:from},{color:to,offset:.25},{color:to,offset:.75},{color:from}],{duration:1200,easing:E.sm})},
+  scanline(box,svg,c="accent"){const s=sz(box),e=span(box,28*s,2,{background:col(c),borderRadius:"2px"});go(e,[{transform:T(0,-12*s),opacity:0},{transform:T(0,-10*s),opacity:1,offset:.1},{transform:T(0,11*s),opacity:1,offset:.5},{transform:T(0,-10*s),opacity:1,offset:.9},{transform:T(0,-12*s),opacity:0}],1200,E.sm)},
+  bubbles(box,svg,c="accent"){const s=sz(box);for(let k=0;k<3;k++){const z=(2.6+k)*s,x0=(k-1)*4*s;const e=span(box,z,z,{border:`1.2px solid ${col(c)}`});go(e,[{transform:T(x0,-2*s,.4),opacity:0},{transform:T(x0+2*s,-8*s,1),opacity:1,offset:.3},{transform:T(x0-1*s,-18*s,1),opacity:0}],950,E.o,k*130)}},
+  typing(box,svg,y=12){[8,12,16].forEach((x,k)=>{const e=svgEl(svg,"circle",{cx:x,cy:y,r:1.15,fill:"currentColor",stroke:"none"});e.classList.add("dot");e.style.transformBox="fill-box";goS(e,[{opacity:0,transform:"translateY(1px) scale(.5)"},{opacity:1,transform:"translateY(0) scale(1)",offset:.15,easing:E.sm},{transform:"translateY(-1.8px)",offset:.3,easing:E.sm},{transform:"translateY(0)",offset:.45,easing:E.sm},{transform:"translateY(-1.2px)",offset:.6,easing:E.sm},{transform:"translateY(0)",opacity:1,offset:.8},{opacity:0,transform:"scale(.5)"}],1300,{dl:k*110})})},
+  mercury(box,svg){const e=svgEl(svg,"line",{x1:12,y1:17.5,x2:12,y2:6,stroke:col("hot"),"stroke-width":2.2,"stroke-linecap":"round",pathLength:1});goS(e,[{strokeDasharray:"1 1",strokeDashoffset:1,opacity:1,easing:E.o},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:1,offset:.55},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:1,offset:.8},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:0}],1300)},
+  screen(box,svg,[x,y,w,h]){const e=svgEl(svg,"rect",{x,y,width:w,height:h,rx:1,fill:"currentColor",stroke:"none"});goS(e,[{opacity:0},{opacity:.3,offset:.35,easing:E.sm},{opacity:0}],900)},
+  rec(box,svg){const e=svgEl(svg,"circle",{cx:6,cy:10,r:1.4,fill:col("hot"),stroke:"none"});goS(e,[{opacity:0},{opacity:1},{opacity:.15},{opacity:1},{opacity:0}],1100,{e:E.sm})},
+  slash(box,svg){const e=svgEl(svg,"line",{x1:13.5,y1:5,x2:10.5,y2:19,pathLength:1});goS(e,[{strokeDasharray:"1 1",strokeDashoffset:1,opacity:1,easing:E.o},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:1,offset:.4},{strokeDashoffset:0,strokeDasharray:"1 1",opacity:1,offset:.75},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:0}],1000)},
+  scribble(box,svg){const e=svgEl(svg,"path",{d:"M6 23c1.2-1.3 2.4 1.3 3.6 0s2.4 1.3 3.6 0 2.4 1.3 3.6 0",pathLength:1,"stroke-width":1.5});goS(e,[{strokeDasharray:"1 1",strokeDashoffset:1,opacity:1,easing:E.sm},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:1,offset:.7},{strokeDasharray:"1 1",strokeDashoffset:0,opacity:0}],1200)}
+};
+
+let STYLE="outline";
+const STN={outline:"خطي",light:"رفيع",bold:"عريض",sharp:"حاد",duo:"ثنائي اللون",solid:"مصمت"};
+const SW={outline:1.75,light:1.2,bold:2.5,sharp:1.75,duo:1.75,solid:1.75};
+const FB=()=>({duo:.25,solid:1})[STYLE]||0;
+function fixFill(p){const b=FB();if(!b)return p;const[t,fr,e,o]=p;return[t,fr.map(f=>"fillOpacity"in f?{...f,fillOpacity:+(b+(1-b)*f.fillOpacity).toFixed(3)}:f),e,o]}
+function isClosed(e){const tg=e.tagName;if(/^(circle|rect|ellipse|polygon)$/.test(tg))return true;if(tg!=="path")return false;const d=e.getAttribute("d")||"";if(/z\s*$/i.test(d))return true;try{const L=e.getTotalLength();if(L<6)return false;const a=e.getPointAtLength(0),b=e.getPointAtLength(L);return Math.hypot(a.x-b.x,a.y-b.y)<1.2}catch(_){return false}}
+function inside(a,b){return a.x>=b.x-.6&&a.y>=b.y-.6&&a.x+a.width<=b.x+b.width+.6&&a.y+a.height<=b.y+b.height+.6}
+function centerIn(e,bb){try{return e.isPointInFill(new DOMPoint(bb.x+bb.width/2,bb.y+bb.height/2))}catch(_){return true}}
+function classify(svg){
+  const info=[...svg.children].map(e=>{let bb={x:0,y:0,width:0,height:0};try{bb=e.getBBox()}catch(_){}return{e,bb,closed:isClosed(e),area:bb.width*bb.height}});
+  info.forEach(o=>{const cont=info.find(p=>p!==o&&p.closed&&p.area>20&&p.area>o.area*1.3&&inside(o.bb,p.bb)&&centerIn(p.e,o.bb));if(cont)o.e.classList.add(o.closed?"ish":"iln");else if(o.closed&&o.area>6)o.e.classList.add("sh")});
+}
+function initSvg(svg,name,fresh){
+  if(!fresh)return;
+  svg.classList.add("ic");[...svg.children].forEach((e,k)=>e.setAttribute("data-o",k+1));classify(svg);{const ch=[...svg.children];ch.forEach((e,k)=>{if(e.classList.contains("sh")&&ch.slice(0,k).some(x=>x.classList.contains("iln")||x.classList.contains("ish")))svg.insertBefore(e,svg.firstElementChild)})}[...svg.children].forEach(c=>c.setAttribute("pathLength","1"));
+  const r=R[name];if(r&&r.fill)r.fill.forEach(n=>svg.querySelector(`:scope>[data-o="${n}"]`).classList.add("tf"));
+}
+function exportStyle(s){
+  s.setAttribute("stroke-width",SW[STYLE]);
+  if(STYLE==="sharp"){s.setAttribute("stroke-linecap","square");s.setAttribute("stroke-linejoin","miter")}
+  [...s.children].forEach(c=>{const cl=c.classList;
+    if(!cl.contains("tf")){
+      if(STYLE==="duo"&&cl.contains("sh"))c.setAttribute("style","fill:var(--icon-tone,#3D5AFE);fill-opacity:.25");
+      if(STYLE==="solid"){if(cl.contains("sh"))c.setAttribute("style","fill:currentColor");if(cl.contains("ish"))c.setAttribute("style","fill:var(--icon-bg,#fff);stroke:var(--icon-bg,#fff)");if(cl.contains("iln"))c.setAttribute("style","stroke:var(--icon-bg,#fff)")}
+    }
+    c.removeAttribute("class");c.removeAttribute("data-o");
+  });
+}
+const JELLY=[{transform:"scale(1,1)"},{offset:.3,transform:"scale(1.2,.82)"},{offset:.45,transform:"scale(.86,1.14)"},{offset:.6,transform:"scale(1.06,.95)"},{offset:.75,transform:"scale(.98,1.02)"},{transform:"scale(1)"}].map(f=>({...f,easing:E.sm}));
+const AUTO={};
+function rec(name,svg){return R[name]||AUTO[name]||(AUTO[name]=auto(name,svg))}
+function recI(i){return rec(I[i][0],tiles[i].querySelector("svg"))}
+function auto(n,svg){
+  const kids=[...svg.children].filter(e=>!e.classList.contains("fxel")),c=kids.length,all=kids.map(e=>+e.dataset.o),rest=k=>all.slice(k);
+  const w=n.split("-"),dx=(w.includes("right")?1:0)-(w.includes("left")?1:0),dy=(w.includes("down")?1:0)-(w.includes("up")?1:0);
+  const se=kids.find(e=>{const d=(e.getAttribute("d")||"").trim();return/^m2 2 20 20/i.test(d)||(e.tagName==="line"&&e.getAttribute("x1")==="2"&&e.getAttribute("y1")==="2")}),slash=se?+se.dataset.o:0;
+  if(n==="arrow-up-down")return{t:"السهمين بيتحركوا عكس بعض",p:[[[1,2],NUDGE("translateY(3px)"),"lin",{d:900}],[[3,4],NUDGE("translateY(-3px)"),"lin",{d:900}]]};
+  if(n==="arrow-left-right")return{t:"السهمين بيتحركوا عكس بعض",p:[[[1,2],NUDGE("translateX(-3px)"),"lin",{d:900}],[[3,4],NUDGE("translateX(3px)"),"lin",{d:900}]]};
+  if(n==="chevrons-up-down")return{t:"بيتفتح ويتقفل",p:[[1,NUDGE("translateY(2.5px)"),"lin",{d:900}],[2,NUDGE("translateY(-2.5px)"),"lin",{d:900}]]};
+  if(/^arrow-/.test(n)&&(dx||dy))return{t:"السهم بيعدّي في اتجاهه",p:[[0,OUT(dx*7,dy*7),"lin",{d:900}]],fx:[["trail",[dx,dy],250]]};
+  if(/^chevrons?-/.test(n)&&(dx||dy))return{t:"بيشد لورا ويندفع في اتجاهه",p:[[c>1?all:0,PUSH(dx*3.2,dy*3.2,.4),"lin",{d:900,st:80}]]};
+  if(/^circle-arrow-/.test(n))return{t:"السهم بيعدّي جوه الدايرة",p:[[1,POP(.85),"sps",{}],[rest(1),OUT(dx*5,dy*5),"lin",{d:900}]]};
+  if(/^(undo|redo|reply|forward)/.test(n)&&c===2){const s=/undo|reply/.test(n)?-1:1;return{t:"راس السهم بيقود والذيل بيتبعه",p:[[1,PUSH(s*3.4,0,.4),"lin",{d:950}],[2,PUSH(s*1.6,0,.4,`rotate(${-s*4}deg)`),"lin",{d:950,dl:70}]]}}
+  if(/^(corner-|undo|redo|reply|forward)/.test(n)){const s=/undo|reply|left/.test(n)?-1:1;return{t:"بيشد ويرجع",p:[[0,NUDGE(`translateX(${s*3}px) rotate(${-s*8}deg)`),"lin",{d:900}]]}}
+  if(/^(rotate-|iteration|repeat|refresh|history)/.test(n))return{t:"بيلف لفة كاملة",p:[[0,K("rotate(0)",`rotate(${/ccw|history/.test(n)?-360:360}deg)`),E.ant,{d:1000}]]};
+  if(/^(trending-|chart-line|chart-spline|chart-area)/.test(n))return{t:"الخط بيترسم",p:[[all,DRAW,E.o,{d:600,st:150}]],fx:[["sparkle","accent",600]]};
+  if(n==="chart-pie")return{t:"النسب بتتجمع",p:[[0,K("rotate(-90deg) scale(.7)","rotate(0) scale(1)"),"sp",{}],[2,NUDGE("translate(1.5px,1.5px)"),"lin",{d:900,dl:200}]]};
+  if(/^chart-/.test(n)){const h=n==="chart-bar";return{t:"الأعمدة بتطلع واحد ورا التاني",p:[[1,DRAW,E.o,{d:500}],[rest(1),[{transform:h?"scaleX(0)":"scaleY(0)"},{transform:"scale(1)"}],"spb",{st:90,dl:150,o:h?"0% 50%":"50% 100%"}]]}}
+  if(/^(align-|list|text-|heading|baseline|pilcrow|type|strikethrough|underline|spell)/.test(n))return{t:"السطور بتترسم",p:[[all,DRAW,E.o,{d:380,st:70}]]};
+  if(/^calendar/.test(n))return{t:"الورقة بتتقلب وتظهر",p:[[0,[{transform:"perspective(70px) rotateX(-70deg)",opacity:0},{transform:"perspective(70px) rotateX(0)",opacity:1}],"sp",{o:"50% 0%"}],[[1,2],HOP(2),"lin",{d:600,dl:250,st:80}]].concat(c>4?[[rest(4),DRAW,E.o,{d:450,st:100,dl:300}]]:[])};
+  if(/^cloud-(snow|drizzle)/.test(n))return{t:"المطر بينزل",p:[[rest(1),[{transform:"translateY(0)",opacity:1},{offset:.5,transform:"translateY(4px)",opacity:0},{offset:.51,transform:"translateY(-3px)",opacity:0},{transform:"translateY(0)",opacity:1}],"linear",{d:650,st:90,it:2}],[1,W(x=>`translateY(${x}px)`,[0,-1,0,-1,0]),"lin",{d:1400}]]};
+  if(n==="cloud-sun")return{t:"الشمس بتطلع من ورا الغيم",p:[[[1,2,3,4,5],FADEPOP,"spb",{st:60}],[6,tx([0,-2,1.5,0]),"lin",{d:1100}]]};
+  if(slash)return{t:"الشرطة بتترسم وتقفله",p:[[all.filter(i=>i!==slash),tx([0,-1.2,1.2,-.6,0]),"lin",{d:600}],[slash,DRAW,E.o,{d:450,dl:200}]]};
+  if(/^(circle|square|badge|shield|octagon|triangle)-/.test(n)&&c>1){const bad=/x|alert|ban/.test(n),good=/check/.test(n);return{t:"الإطار بينطّ والرمز بيترسم",p:[[1,POP(.75),"sp",{}],[rest(1),DRAW,E.o,{d:400,st:110,dl:150}]].concat(bad?[[0,tx([0,0,0,-2,2,-1.5,1,0]),"lin",{d:900}]]:[]),fx:good?[["ripple","ok",450],["burst","ok",460]]:bad?[["ripple","hot",300]]:[["sparkle","accent",400]]}}
+  if(/^(file|folder)-/.test(n)&&c>2)return{t:"الملف بينطّ والتفاصيل بتظهر",p:[[[1,2],HOP(2.5),"lin",{d:800}],[rest(2),DRAW,E.o,{d:380,st:110,dl:200}]]};
+  if(/^users?-/.test(n))return{t:"بينطّ والتفاصيل بتظهر",p:[[0,J(2.5),"lin",{d:850,o:"50% 100%"}]].concat(c>2?[[rest(2),FADEPOP,"spb",{st:80,dl:300}]]:[])};
+  if(/^(battery|wifi|rss)/.test(n))return{t:"الأشرطة بتظهر واحدة واحدة",p:[[all,FADEPOP,"spb",{st:90}]]};
+  if(/^(laugh|frown|meh|angry|smile-plus|baby)$/.test(n))return{t:"الوش بيتمايل والملامح بتتنطط",p:[[1,rot([0,-10,8,-4,0]),"lin",{d:950}],[rest(1),HOP(2),"lin",{d:950,st:40}]]};
+  const h=[...n].reduce((a,ch)=>a+ch.charCodeAt(0),0)%7;
+  return[
+    {t:"بيترسم ويتجمع",p:[[all,DRAW,E.o,{d:450,st:Math.min(90,Math.round(500/c))}],[0,POP(.9),"sps",{}]]},
+    {t:"بينطّ وبيتضغط",p:[[0,J(3),"lin",{d:850,o:"50% 100%"}]]},
+    {t:"قطعه بتظهر ورا بعض",p:[[all,FADEPOP,"spb",{st:Math.min(70,Math.round(420/c))}]]},
+    {t:"بيتمايل",p:[[0,rot([0,-12,10,-6,3,0]),"lin",{d:1000}]]},
+    {t:"بيتمط زي الجيلي",p:[[0,JELLY,"lin",{d:850}]]},
+    {t:"بيميل بحماس",p:[[0,NUDGE("rotate(-14deg) scale(1.1)"),"lin",{d:950}]],fx:[["sparkle","accent",300]]},
+    {t:"بيتقلب",p:[[0,K("perspective(80px) rotateY(0)","perspective(80px) rotateY(360deg)"),E.io,{d:1000}]]}
+  ][h];
+}
+
+function play(box,i,opt={}){
+  const r=recI(i),svg=box.querySelector("svg");if(!svg)return;
+  if(box._busy){if(!opt.soft)box._again=opt;return}
+  box.querySelectorAll(".fx").forEach(e=>e.remove());svg.querySelectorAll(".fxel").forEach(e=>e.remove());
+  let parts=r.p;
+  if(r.tog){box._on=!box._on;parts=box._on?r.on:r.off;box.classList.toggle("on",box._on);box.style.setProperty("--c",`var(--${r.c||"accent"})`)}
+  const anims=run(svg,parts.map(fixFill),!!r.tog);box._anims=anims;box._busy=true;box.classList.add("busy");
+  if(opt.fx!==false&&r.fx&&!(r.tog&&!box._on)&&!RM)r.fx.forEach(([f,arg,dl])=>setTimeout(()=>FX[f](box,svg,arg??undefined),dl||0));
+  Promise.all(anims.map(a=>a.finished.catch(()=>{}))).then(()=>{if(box._anims===anims){box._busy=false;box.classList.remove("busy");if(box._again){const o=box._again;box._again=null;requestAnimationFrame(()=>play(box,i,o))}}});
+}
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const grid=document.getElementById("grid"),chips=document.getElementById("chips");
+let cat="all",sel=-1;
+chips.innerHTML=`<button class="chip" data-c="all" aria-pressed="true">الكل<b>${ar(I.length)}</b></button>`+Object.entries(C).map(([k,v])=>`<button class="chip" data-c="${k}" aria-pressed="false">${v}<b>${ar(I.filter(x=>x[2]===k).length)}</b></button>`).join("");
+grid.innerHTML=I.map((x,i)=>`<button class="tile" data-i="${i}" aria-pressed="false" aria-label="${x[1]}"><span class="ico"><i data-lucide="${x[0]}"></i></span><span class="nm">${x[1]}</span></button>`).join("")+`<p class="empty" hidden>مفيش أيقونة بالاسم ده. جرّب كلمة تانية أو اختار «الكل».</p>`;
+const CUSTOM={
+ArabEgypt:[["path",{d:"M2 21h20"}],["path",{d:"M3 21v-3.5A2.5 2.5 0 0 1 5.5 15H13"}],["path",{d:"M12.6 15 14 8.2c.2-.8.9-1.2 1.6-1.2h1.8c.7 0 1.4.4 1.6 1.2l1.4 6.8z"}],["path",{d:"M15.6 10.2v2.3h1.8v-2.3"}],["path",{d:"M14 21v-3h7"}],["path",{d:"M5 18.5h5"}]],
+ArabSaudi:[["path",{d:"M5 22h14"}],["path",{d:"M7.5 22 9.2 8.5C9.8 4.6 10.8 2.5 12 2.5s2.2 2.1 2.8 6L16.5 22"}],["path",{d:"M10.3 10.5c.4-2.8 1-4.4 1.7-4.4s1.3 1.6 1.7 4.4z"}],["path",{d:"M9.9 12.8h4.2"}],["path",{d:"M12 15.5v4"}]],
+ArabUae:[["path",{d:"M3 21h18"}],["path",{d:"M7 21V3"}],["path",{d:"M7 4c5.5 2.2 9.5 7.6 9.5 17"}],["path",{d:"M7 9.5h5.2M7 13.5h7.4M7 17.5h8.8"}],["path",{d:"M7 6.5H4.2"}]],
+ArabKuwait:[["path",{d:"M4 22h17"}],["path",{d:"M9.5 22v-9"}],["circle",{cx:"9.5",cy:"10",r:"3"}],["path",{d:"M9.5 7V5.6"}],["circle",{cx:"9.5",cy:"4",r:"1.6"}],["path",{d:"M15.5 22v-6.5"}],["circle",{cx:"15.5",cy:"13.5",r:"2"}],["path",{d:"M15.5 11.5V9.5"}],["path",{d:"M19.5 22V8"}]],
+ArabQatar:[["path",{d:"M2 21h20"}],["path",{d:"M4 21v-8h3.5V9.5h3V5.5h3v4h3V13H20v8"}],["path",{d:"M10.5 21v-3.5a1.5 1.5 0 0 1 3 0V21"}],["path",{d:"M11 7.5h2"}],["path",{d:"M5.5 16h1M17.5 16h1"}]],
+ArabBahrain:[["path",{d:"M3 21h18"}],["path",{d:"M4.5 21c1.4-5.5 3.8-9.8 6.3-12.6"}],["path",{d:"M19.5 21c-1.4-5.5-3.8-9.8-6.3-12.6"}],["path",{d:"M9 21c.4-4.2 1.4-7.7 2.6-10"}],["path",{d:"M15 21c-.4-4.2-1.4-7.7-2.6-10"}],["circle",{cx:"12",cy:"6",r:"2.6"}]],
+ArabOman:[["path",{d:"M10 2.5h4l-.6 3.5h-2.8z"}],["path",{d:"M8 6.5h8"}],["path",{d:"M10 6.5v7a7 7 0 0 0 10.3 6.2l-1.1-1.6A5 5 0 0 1 14 13.6V6.5"}],["path",{d:"M10 9.5h4M10 12h4"}]],
+ArabYemen:[["path",{d:"M2 21h20"}],["path",{d:"M3.5 21V10.5L5.8 9.5l2.2 1V21"}],["path",{d:"M8 21V5.5l3-1.5 3 1.5V21"}],["path",{d:"M14 21V8.5l3-1 3 1V21"}],["path",{d:"M10.3 9h1.4M10.3 13h1.4M10.3 17h1.4"}],["path",{d:"M16.3 12h1.4M16.3 16h1.4M5.2 14h1.2"}]],
+ArabJordan:[["path",{d:"M3 21h18"}],["path",{d:"M6 21v-6.5M10 21v-6.5M14 21v-6.5M18 21v-6.5"}],["path",{d:"M4 14.5h16"}],["path",{d:"m8 14.5 4-2.5 4 2.5"}],["path",{d:"M5 10h14"}],["path",{d:"M7 10V5M17 10V5"}],["path",{d:"M10 10V6.8a2 2 0 0 1 4 0V10"}],["path",{d:"M12 4.8V3"}]],
+ArabPalestine:[["path",{d:"M2 21h20"}],["path",{d:"M3.5 21v-6h17v6"}],["path",{d:"M3 15l2-2h14l2 2"}],["path",{d:"M8 13a4 4 0 0 1 8 0"}],["path",{d:"M12 9V6.5"}],["path",{d:"M12.9 4.1a1.2 1.2 0 1 1-1.3-1.6 1 1 0 0 0 1.3 1.6z"}],["path",{d:"M10.5 21v-2a1.5 1.5 0 0 1 3 0v2"}],["path",{d:"M6.5 18v-1M17.5 18v-1"}]],
+ArabLebanon:[["path",{d:"M8.5 22h7"}],["path",{d:"M12 18.5V22"}],["path",{d:"M2.5 18.5h19l-3.4-2.8H5.9z"}],["path",{d:"M5 14h14l-3-2.6H8z"}],["path",{d:"M7.6 9.6h8.8l-2.4-2.4h-4z"}],["path",{d:"M10.4 5.4h3.2L12 3z"}]],
+ArabSyria:[["path",{d:"M2 21h20"}],["path",{d:"M3.5 21V9h17v12"}],["path",{d:"M2.5 9h19M5 9V6.5h14V9"}],["path",{d:"M9 21v-5.5a3 3 0 0 1 6 0V21"}],["path",{d:"M5.5 21v-3a1.25 1.25 0 0 1 2.5 0v3"}],["path",{d:"M16 21v-3a1.25 1.25 0 0 1 2.5 0v3"}]],
+ArabIraq:[["path",{d:"M3 21h18"}],["path",{d:"M5 21 9.7 4.5h4.6L19 21"}],["path",{d:"M5.8 18.2l12.1-3"}],["path",{d:"M7.1 13.6l9.4-2.4"}],["path",{d:"M8.4 9.1l6.8-1.7"}],["path",{d:"M10.2 4.5V2.5h3.6v2"}]],
+ArabMorocco:[["path",{d:"M5 21h14"}],["path",{d:"M8 21V8h8v13"}],["path",{d:"M7.5 8h9"}],["path",{d:"M10.2 8V4.5h3.6V8"}],["path",{d:"M12 4.5V2"}],["path",{d:"M10.5 15v-2a1.5 1.5 0 0 1 3 0v2"}],["path",{d:"M10 18.5h4"}]],
+ArabAlgeria:[["path",{d:"M3 21h18"}],["path",{d:"M5 21c.4-7.2 3-13.4 7-18.5-1.4 6.2-1.9 12.4-1 18.5z"}],["path",{d:"M19 21c-.4-7.2-3-13.4-7-18.5 1.4 6.2 1.9 12.4 1 18.5z"}],["path",{d:"M9.2 21v-2h5.6v2"}],["path",{d:"M8.8 10.5h6.4"}]],
+ArabTunisia:[["path",{d:"M3 21h18"}],["path",{d:"M5 21V10a7 7 0 0 1 14 0v11"}],["path",{d:"M8 21V11a4 4 0 0 1 8 0v10"}],["path",{d:"M12 7v14"}],["path",{d:"M10 13.5h.01M14 13.5h.01M10 17h.01M14 17h.01"}]],
+ArabLibya:[["path",{d:"M2 21h20"}],["path",{d:"M4 21V8h16v13"}],["path",{d:"M3 8h18M5 8V5h14v3"}],["path",{d:"M8.5 21v-7a3.5 3.5 0 0 1 7 0v7"}],["path",{d:"M6 21V11M18 21V11"}]],
+ArabSudan:[["path",{d:"M2 21h20"}],["path",{d:"M3 21 8 4.5 13 21"}],["path",{d:"M12.6 19.7 16.5 9l4.5 12"}],["path",{d:"M5.5 21v-2.5h5V21"}],["path",{d:"M7 10.5h2"}]],
+ArabMauritania:[["path",{d:"M4 21h16"}],["path",{d:"M8 21 9 8h6l1 13"}],["path",{d:"M8.5 8V6h7v2"}],["circle",{cx:"9.6",cy:"4.4",r:".6"}],["circle",{cx:"12",cy:"4.4",r:".6"}],["circle",{cx:"14.4",cy:"4.4",r:".6"}],["path",{d:"M11 21v-3h2v3"}],["path",{d:"M11.4 12.5h1.2"}]],
+ArabSomalia:[["path",{d:"M2 20h20"}],["path",{d:"M3.5 20a8.5 8.5 0 0 1 17 0"}],["path",{d:"M5.6 14.5c4.3 1.4 8.5 1.4 12.8 0"}],["path",{d:"M8.2 10.4c2.6.9 5 .9 7.6 0"}],["path",{d:"M10 20v-3a2 2 0 0 1 4 0v3"}],["path",{d:"m12 3 .7 1.5 1.6.2-1.2 1.1.3 1.6-1.4-.8-1.4.8.3-1.6-1.2-1.1 1.6-.2z"}]],
+ArabDjibouti:[["path",{d:"M2 21h20"}],["path",{d:"m3.5 21 2.3-9.5L8 21"}],["path",{d:"M8 21l2.7-12.5L13.5 21"}],["path",{d:"m14 21 2.5-8 2.5 8"}],["path",{d:"M10.7 6.5c-.8-.9.8-1.8 0-2.8"}],["path",{d:"M16.5 11c-.8-.9.8-1.8 0-2.8"}]],
+ArabComoros:[["path",{d:"M15.5 3.2a8.8 8.8 0 1 0 0 17.6 7 7 0 0 1 0-17.6z"}],["path",{d:"m15.5 5.6.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4z"}],["path",{d:"m17 9.5.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4z"}],["path",{d:"m17 13.6.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4z"}],["path",{d:"m15.5 17.5.4.9.9.4-.9.4-.4.9-.4-.9-.9-.4.9-.4z"}]],
+Lantern:[["path",{d:"M12 2v2"}],["path",{d:"M8 7l4-3 4 3"}],["path",{d:"M8 7h8l2 4v4l-2 4H8l-2-4v-4z"}],["path",{d:"M10 19l2 3 2-3"}],["path",{d:"M12 11.9c.6.7.9 1.2.9 1.7a.9.9 0 0 1-1.8 0c0-.5.3-1 .9-1.7z"}],["path",{d:"M6 11h12"}],["path",{d:"M6 15h12"}]],
+PrayerRug:[["path",{d:"M6 3h12a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"}],["path",{d:"M9 16v-5a3 3 0 0 1 6 0v5"}],["path",{d:"M9 16h6"}],["path",{d:"M7.5 20v2M10.5 20v2M13.5 20v2M16.5 20v2"}],["path",{d:"M7.5 3V1.5M10.5 3V1.5M13.5 3V1.5M16.5 3V1.5"}]],
+Quran:[["path",{d:"M12 6.5C10.5 5.5 8.5 5 6 5v9c2.5 0 4.5.5 6 1.5"}],["path",{d:"M12 6.5c1.5-1 3.5-1.5 6-1.5v9c-2.5 0-4.5.5-6 1.5"}],["path",{d:"M12 6.5v9"}],["path",{d:"M6 21l6-5.5 6 5.5"}]],
+Kaaba:[["path",{d:"M12 3 3 6.5 12 10l9-3.5z"}],["path",{d:"M3 6.5V17l9 4V10"}],["path",{d:"M21 6.5V17l-9 4"}],["path",{d:"M3 9.5l9 3.5 9-3.5"}],["path",{d:"M15 19.8v-4.6l3-1.2v4.6"}]],
+Pyramids:[["path",{d:"M1 20h22"}],["path",{d:"M2 20 9.5 6l7.5 14"}],["path",{d:"M9.5 6 11 20"}],["path",{d:"M15.2 16.6 17.5 13l4.5 7"}],["circle",{cx:"19",cy:"6",r:"2"}]],
+Camel:[["path",{d:"M3 12.5c.5-2.5 2-4 3.5-4s2 2 3 2 1.5-3 3.5-3 2.5 2.5 3 4l1.5-4.5c.2-.8.8-1.3 1.6-1.3H21l1 1.5-2 .5-2 6"}],["path",{d:"M3 12.5c0 .6.2 1.1.5 1.5 2.5 1.2 10 1.6 14.5-.3"}],["path",{d:"M5.5 14.8V21M8.5 15.3V21M13.5 15.4V21M16.5 14.6V21"}],["path",{d:"M3 12.5 2 16"}],["path",{d:"M20 6.6h.01"}]],
+Dallah:[["path",{d:"M12 2v1.5"}],["path",{d:"M9.5 6a2.5 2.5 0 0 1 5 0"}],["path",{d:"M9 6h6"}],["path",{d:"M9.5 6 9 9c-2 1-3 3-3 5.5 0 2 1 3.5 2 4.5h8c1-1 2-2.5 2-4.5 0-2.5-1-4.5-3-5.5l-.5-3"}],["path",{d:"M8 19h8l.5 2h-9z"}],["path",{d:"M6.7 12 2.5 8l.4-.9"}],["path",{d:"M17.6 10.5c2 0 3.4 1.4 3.4 3.2s-1.3 3.2-3 3.5"}]],
+CarShield:[["path",{d:"M2 18v-4l1.6-3.6A2 2 0 0 1 5.4 9h5.2a2 2 0 0 1 1.8 1.2L14 14v4"}],["path",{d:"M2 18h12"}],["path",{d:"M4.5 18v2M11.5 18v2"}],["path",{d:"M3.6 13h8.8"}],["path",{d:"M18 2.5l3.5 1.5v3c0 2.3-1.5 3.8-3.5 4.5-2-.7-3.5-2.2-3.5-4.5V4z"}],["path",{d:"m16.6 6.8 1 1 1.9-2"}]],
+HouseShield:[["path",{d:"M3 21v-8l5-4 5 4v8z"}],["path",{d:"M6.5 21v-3.5h3V21"}],["path",{d:"M18 2.5l3.5 1.5v3c0 2.3-1.5 3.8-3.5 4.5-2-.7-3.5-2.2-3.5-4.5V4z"}],["path",{d:"m16.6 6.8 1 1 1.9-2"}]],
+HeartShield:[["path",{d:"M8.5 20.5S2.5 17 2.5 13.3A3 3 0 0 1 8.5 12a3 3 0 0 1 6 1.3c0 3.7-6 7.2-6 7.2z"}],["path",{d:"M18 2.5l3.5 1.5v3c0 2.3-1.5 3.8-3.5 4.5-2-.7-3.5-2.2-3.5-4.5V4z"}],["path",{d:"M18 5v3M16.5 6.5h3"}]],
+GlobeShield:[["circle",{cx:"8",cy:"15",r:"6"}],["path",{d:"M8 9a9 9 0 0 0 0 12 9 9 0 0 0 0-12"}],["path",{d:"M2 15h12"}],["path",{d:"M18 2.5l3.5 1.5v3c0 2.3-1.5 3.8-3.5 4.5-2-.7-3.5-2.2-3.5-4.5V4z"}],["path",{d:"m16.6 6.8 1 1 1.9-2"}]],
+FileClaim:[["path",{d:"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h5"}],["path",{d:"M14 2v4a2 2 0 0 0 2 2h4"}],["path",{d:"M20 8v4"}],["path",{d:"M8 9h2M8 13h4.5M8 17h2"}],["circle",{cx:"17.5",cy:"17.5",r:"4.5"}],["path",{d:"M17.5 19.6v-4.2M15.7 17.2l1.8-1.8 1.8 1.8"}]],
+FilePolicy:[["path",{d:"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4"}],["path",{d:"M14 2v4a2 2 0 0 0 2 2h4"}],["path",{d:"M20 8v4"}],["path",{d:"M8 9h2M8 13h4"}],["circle",{cx:"16",cy:"16",r:"3.5"}],["path",{d:"m14 19-1 3.5 3-1.3 3 1.3-1-3.5"}]],
+Mosque:[["path",{d:"M12.268 2a2 2 0 0 0 3.465 2"}],["path",{d:"M14 5v3"}],["path",{d:"M16 22v-3a2 2 0 0 0-4 0v3"}],["path",{d:"M21 13c-.662-1.497-1.666-2.753-2.9-3.63C16.825 8.47 15.422 8 14 8s-2.826.47-4.1 1.37C8.668 10.248 7.663 11.504 7 13z"}],["path",{d:"M3 9h4"}],["path",{d:"M7 22V6a5 5 0 0 0-2-4 5 5 0 0 0-2 4v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"}]],
+SaudiRiyal:[["path",{d:"m20 19.5-5.5 1.2"}],["path",{d:"M14.5 4v11.22a1 1 0 0 0 1.242.97L20 15.2"}],["path",{d:"m2.978 19.351 5.549-1.363A2 2 0 0 0 10 16V2"}],["path",{d:"M20 10 4 13.5"}]],
+CirclePoundSterling:[["circle",{cx:"12",cy:"12",r:"10"}],["path",{d:"M10 16V9.5a1 1 0 0 1 5 0"}],["path",{d:"M8 12h4"}],["path",{d:"M8 16h7"}]]
+};
+const ICONS={...lucide.icons},DEFA=lucide.icons.Heart[1];for(const k in CUSTOM)ICONS[k]=["svg",DEFA,CUSTOM[k]];
+lucide.createIcons({icons:ICONS});
+const ST=["outline","light","bold","sharp","duo","solid"];
+document.body.classList.add("st-outline");
+document.getElementById("h1").textContent=`${ar(I.length)} أيقونة بتتحرك`;
+const stWrap=document.getElementById("styles");
+stWrap.innerHTML=ST.map(k=>`<button class="stb" data-st="${k}" aria-pressed="${k===STYLE}"><i data-lucide="heart"></i>${STN[k]}</button>`).join("");
+lucide.createIcons({icons:ICONS});
+stWrap.querySelectorAll("svg").forEach((s,k)=>{classify(s);s.classList.add("pv-"+ST[k])});
+stWrap.addEventListener("click",e=>{const b=e.target.closest(".stb");if(b)setStyle(b.dataset.st)});
+function resetBox(box){const svg=box&&box.querySelector("svg");if(!svg)return;svg.getAnimations({subtree:true}).forEach(a=>a.cancel());[svg,...svg.children].forEach(e=>{["transform","fill-opacity","opacity"].forEach(p=>e.style.removeProperty(p))});box._on=false;box._busy=false;box._again=null;box.classList.remove("on","busy")}
+function setStyle(st){
+  STYLE=st;ST.forEach(k=>document.body.classList.toggle("st-"+k,k===st));
+  stWrap.querySelectorAll(".stb").forEach(b=>b.setAttribute("aria-pressed",b.dataset.st===st));
+  tiles.forEach(t=>resetBox(t.querySelector(".ico")));resetBox(prev);
+  if(sel>=0){code.textContent=cssOf(sel);refreshPane()}
+  if(!RM){let k=0;tiles.forEach(t=>{if(!inView(t))return;t.querySelector("svg").animate([{transform:"scale(.55)",opacity:.2},{transform:"scale(1)",opacity:1}],{duration:SP.sps.d,easing:SP.sps.e,delay:(k++)*14})})}
+}
+
+const tiles=[...grid.querySelectorAll(".tile")];
+tiles.forEach((t,i)=>{
+  const box=t.querySelector(".ico");initSvg(box.querySelector("svg"),I[i][0],true);
+  t.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse"&&!recI(i).tog)play(box,i,{soft:1})});
+  t.addEventListener("click",()=>{play(box,i);pick(i)});
+});
+
+tiles.forEach((t,i)=>recI(i));
+/* most-used first: core UI, then insurance, health and travel. DOM order changes; tiles[i] still maps to I[i]. */
+const TOP="house search user settings bell menu x check plus minus heart star bookmark trash-2 pencil copy share-2 download upload filter eye lock log-in log-out refresh-cw info circle-alert circle-check circle-x loader-circle ellipsis external-link arrow-right arrow-left chevron-down chevron-right chevron-left mail phone message-circle send calendar clock map-pin camera image file file-text folder link globe shopping-cart credit-card wallet saudi-riyal gift tag users user-plus shield shield-check key fingerprint qr-code thumbs-up smile sparkles zoom-in play pause mic car-shield house-shield heart-shield globe-shield file-claim file-policy heart-pulse stethoscope ambulance car plane".split(" ");
+const RANK=n=>{const k=TOP.indexOf(n);return k<0?1e4:k};
+const secTop=Object.assign(document.createElement("p"),{className:"sec",textContent:"الأكثر استخدامًا"}),secRest=Object.assign(document.createElement("p"),{className:"sec",textContent:"باقي المكتبة"});
+{const sorted=tiles.map((t,i)=>[t,i]).sort((x,y)=>RANK(I[x[1]][0])-RANK(I[y[1]][0])||x[1]-y[1]);const firstRest=sorted.findIndex(([,i])=>RANK(I[i][0])>=1e4);
+ grid.prepend(secTop);let prevEl=secTop;sorted.forEach(([t],k)=>{if(k===firstRest){prevEl.after(secRest);prevEl=secRest}prevEl.after(t);prevEl=t});}
+function filter(){
+  const q=document.getElementById("q").value.trim().toLowerCase();let n=0;
+  tiles.forEach((t,i)=>{const x=I[i];const ok=(cat==="all"||x[2]===cat)&&(!q||x[1].includes(q)||x[0].includes(q)||recI(i).t.includes(q));t.hidden=!ok;if(ok)n++});
+  grid.querySelector(".empty").hidden=n>0;
+  secTop.hidden=secRest.hidden=!(cat==="all"&&!q);
+}
+document.getElementById("q").addEventListener("input",filter);
+chips.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;chips.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));filter()});
+
+let loopT=null,tick=0;
+const loopBtn=document.getElementById("loop");
+function inView(t){if(t.hidden)return false;const r=t.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight}
+loopBtn.addEventListener("click",()=>{
+  const on=!loopT;loopBtn.setAttribute("aria-pressed",on);loopBtn.querySelector("span").textContent=on?"وقّف الكل":"شغّل الكل";
+  if(!on){clearInterval(loopT);loopT=null;return}
+  const step=()=>{tick++;tiles.forEach((t,i)=>{if(!inView(t))return;const box=t.querySelector(".ico"),r=recI(i);
+    setTimeout(()=>{if(!loopT)return;if(r.tog){if(!box._on){play(box,i,{fx:false});setTimeout(()=>{if(box._on)play(box,i,{fx:false})},1400)}}else play(box,i,{fx:i%3===tick%3})},(i%10)*90+Math.floor(i/10)%3*60)})};
+  step();loopT=setInterval(step,2600);
+});
+
+const sheet=document.getElementById("sheet"),prev=document.getElementById("prev"),code=document.getElementById("code");
+function cleanSvg(i,keepLen,display){const s=tiles[i].querySelector("svg").cloneNode(true);s.querySelectorAll(".fxel").forEach(e=>e.remove());s.removeAttribute("style");[...s.children].forEach(c=>{c.removeAttribute("style");if(!keepLen)c.removeAttribute("pathLength")});if(!display)exportStyle(s);s.setAttribute("class","icon");return s}
+function svgOf(i){return cleanSvg(i,false).outerHTML.replace(/></g,">\n  <").replace(/\n  <\/svg>/,"\n</svg>")}
+const kebab=s=>s.replace(/[A-Z]/g,m=>"-"+m.toLowerCase());
+function offsets(fr){const n=fr.length,o=fr.map((f,k)=>f.offset!=null?f.offset:(k===0?0:k===n-1?1:null));let a=0;for(let k=1;k<n;k++){if(o[k]!=null){for(let j=a+1;j<k;j++)o[j]=o[a]+(o[k]-o[a])*(j-a)/(k-a);a=k}}return o}
+function posOf(i,n){return[...tiles[i].querySelector("svg").children].filter(e=>!e.classList.contains("fxel")).findIndex(e=>e.dataset.o==n)+1}
+function cssOf(i){
+  const[name,label]=I[i],r=recI(i),parts=(r.tog?r.on:r.p).map(fixFill),slug=name.replace(/[^a-z0-9]/g,"");
+  const uses=parts.some(p=>p[1].some(f=>"strokeDashoffset"in f));
+  let kf="",rules="",base=`.icon{width:28px;height:28px;overflow:visible}\n.icon *{transform-box:fill-box}\n`;
+  if(r.fill)r.fill.forEach(n=>base+=`.icon > :nth-child(${posOf(i,n)}){fill:currentColor;fill-opacity:${FB()}}\n`);
+  parts.forEach(([t,fr,e,o={}],j)=>{
+    const nm=`${slug}-${j+1}`,off=offsets(fr);
+    kf+=`@keyframes ${nm}{\n`+fr.map((f,k)=>{const props=Object.entries(f).filter(([p])=>p!=="offset"&&p!=="easing").map(([p,v])=>`${kebab(p)}:${v}`);if(f.easing)props.push(`animation-timing-function:${f.easing}`);return`  ${+(off[k]*100).toFixed(2)}%{${props.join(";")}}`}).join("\n")+`\n}\n`;
+    const els=t===0?[0]:(Array.isArray(t)?t:[t]);
+    els.forEach((n,k)=>{const sel=n===0?".icon":`.icon > :nth-child(${posOf(i,n)})`;const org=n===0?"":`transform-box:${o.box||"fill-box"};`;
+      rules+=`${sel}{${org}transform-origin:${o.o||"50% 50%"}}\n.icon-btn:hover ${sel},.icon-btn.play ${sel}{animation:${nm} ${du(e,o)}ms ${ez(e)} ${(o.dl||0)+k*(o.st||0)}ms ${o.it||1} both}\n`});
+  });
+  const svg=cleanSvg(i,uses).outerHTML.replace(/></g,">\n    <").replace(/\n    <\/svg>/,"\n  </svg>");
+  return `<!-- ${label} (${name}): ${r.t}، ستايل ${STN[STYLE]} -->\n<button class="icon-btn" aria-label="${label}">\n  ${svg}\n</button>\n\n<style>\n${base}${rules}${kf}</style>\n<!-- الجزيئات واللمعة اللي حوالين الأيقونة في الصفحة متعملة بـ JS ومش داخلة في الكود ده -->`;
+}
+function pick(i){
+  sel=i;const x=I[i];tiles.forEach((t,j)=>t.setAttribute("aria-pressed",j===i));
+  const s=cleanSvg(i,true,true);s.setAttribute("class","ic");prev.innerHTML="";prev.appendChild(s);initSvg(s,x[0]);prev._on=false;prev.classList.remove("on");prev._busy=false;
+  document.getElementById("pName").textContent=x[1];document.getElementById("pAnim").textContent=recI(i).t;document.getElementById("pId").textContent=x[0];
+  code.textContent=cssOf(i);bulk.classList.remove("open");sheet.classList.add("open");refreshPane();
+  setTimeout(()=>play(prev,i),250);
+}
+prev.addEventListener("click",()=>sel>=0&&play(prev,sel));
+document.getElementById("close").addEventListener("click",()=>{sheet.classList.remove("open");tiles.forEach(t=>t.setAttribute("aria-pressed","false"))});
+document.getElementById("tgCode").addEventListener("click",e=>{code.hidden=!code.hidden;e.currentTarget.textContent=code.hidden?"اعرض الكود":"اخفي الكود"});
+async function copy(txt,btn){
+  const old=btn.textContent;let ok=false;
+  try{await navigator.clipboard.writeText(txt);ok=true}catch(_){const ta=document.createElement("textarea");ta.value=txt;ta.style.position="absolute";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{ok=document.execCommand("copy")}catch(__){}ta.remove()}
+  btn.textContent=ok?"اتنسخ":"النسخ مش متاح هنا";if(!ok){code.hidden=false;document.getElementById("tgCode").textContent="اخفي الكود"}
+  setTimeout(()=>btn.textContent=old,1600);
+}
+document.getElementById("cpCss").addEventListener("click",e=>sel>=0&&copy(cssOf(sel),e.currentTarget));
+document.getElementById("cpSvg").addEventListener("click",e=>sel>=0&&copy(svgOf(sel),e.currentTarget));
+
+const stage=document.getElementById("stage"),stageName=document.getElementById("stageName");
+const reel=["rocket","heart","bell","gift","send","sun","message-circle","download","star","map-pin","flame","music"].map(n=>I.findIndex(x=>x[0]===n));
+let r=0;
+function showStage(i){
+  const x=I[i],old=stage.querySelector("svg");stage._again=null;
+  old.animate([{opacity:1,transform:"scale(1)"},{opacity:0,transform:"scale(.6) rotate(-8deg)"}],{duration:220,easing:E.in,fill:"forwards"}).finished.catch(()=>{}).then(()=>{
+  const s=cleanSvg(i,true,true);s.setAttribute("class","ic");old.replaceWith(s);initSvg(s,x[0]);
+  stage._on=false;stage._busy=false;stage.querySelectorAll(".fx").forEach(e=>e.remove());stageName.textContent=x[1];
+  s.animate([{opacity:0,transform:"scale(.6)"},{opacity:1,transform:"scale(1)"}],{duration:SP.sps.d,easing:SP.sps.e}).finished.then(()=>play(stage,i)).catch(()=>{});
+  });
+}
+stage.addEventListener("click",()=>{r=(r+1)%reel.length;showStage(reel[r])});
+showStage(reel[0]);
+if(!RM)setInterval(()=>{if(document.hidden)return;r=(r+1)%reel.length;showStage(reel[r])},2600);
+/* ===== export: Figma / Lottie / GIF ===== */
+const EX={ink:"#1A1D3D",tone:"#3D5AFE",bg:"white"};
+const KO="#FFFFFF",LK=4;
+const IN_CLAUDE=!!(window.claude&&window.claude.use);
+let DL=null;
+const canSave=()=>!!DL||!IN_CLAUDE;
+function refreshDL(){document.querySelectorAll("[data-dl]").forEach(b=>{if(!b.dataset.wait)b.hidden=!canSave()})}
+(async()=>{if(IN_CLAUDE){try{DL=await window.claude.use("downloads")}catch(_){DL=null}}refreshDL()})();
+function flash(btn,txt){if(!btn)return;const o=btn.dataset.lbl||(btn.dataset.lbl=btn.textContent);btn.textContent=txt;clearTimeout(btn._t);btn._t=setTimeout(()=>btn.textContent=o,1700)}
+async function saveFile(name,data,btn){
+  if(DL){try{await DL.save({filename:name,data});flash(btn,"اتحفظ")}catch(e){flash(btn,e&&e.code==="declined"?"اتلغى":"مش متاح")}return}
+  if(IN_CLAUDE){flash(btn,"التحميل مش متاح هنا");return}
+  const blob=data instanceof Blob?data:new Blob([data]),u=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);flash(btn,"اتحمّل")}
+async function copyText(txt,btn){let ok=false;try{await navigator.clipboard.writeText(txt);ok=true}catch(_){const ta=document.createElement("textarea");ta.value=txt;ta.style.position="absolute";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{ok=document.execCommand("copy")}catch(__){}ta.remove()}
+  if(ok)flash(btn,"اتنسخ");else{code.textContent=txt;code.hidden=false;flash(btn,"انسخه من المربع")}return ok}
+const slug=i=>I[i][0];
+const hexRGB=h=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255,1]};
+
+/* --- static SVG with explicit colors (Figma) --- */
+function staticSvg(i,o={}){
+  const ko=o.ko||KO,s=tiles[i].querySelector("svg").cloneNode(true);
+  s.querySelectorAll(".fxel").forEach(e=>e.remove());
+  ["class","style","data-lucide"].forEach(a=>s.removeAttribute(a));
+  s.setAttribute("xmlns","http://www.w3.org/2000/svg");s.setAttribute("width","24");s.setAttribute("height","24");
+  s.setAttribute("stroke",EX.ink);s.setAttribute("stroke-width",SW[STYLE]);s.setAttribute("fill","none");
+  s.setAttribute("stroke-linecap",STYLE==="sharp"?"square":"round");s.setAttribute("stroke-linejoin",STYLE==="sharp"?"miter":"round");
+  [...s.children].forEach(c=>{const cl=c.classList;
+    if(o.keepLen&&cl.contains("tf")&&STYLE!=="duo"&&STYLE!=="solid"){c.setAttribute("fill",EX.ink);c.setAttribute("fill-opacity","0")}
+    if(STYLE==="duo"&&(cl.contains("sh")||cl.contains("tf"))){c.setAttribute("fill",EX.tone);c.setAttribute("fill-opacity",".25")}
+    if(STYLE==="solid"){if(cl.contains("sh")||cl.contains("tf"))c.setAttribute("fill",EX.ink);if(cl.contains("ish")){c.setAttribute("fill",ko);c.setAttribute("stroke",ko)}if(cl.contains("iln"))c.setAttribute("stroke",ko)}
+    c.removeAttribute("style");c.removeAttribute("class");c.removeAttribute("data-o");if(!o.keepLen)c.removeAttribute("pathLength");
+  });
+  return s;
+}
+const svgText=s=>new XMLSerializer().serializeToString(s);
+
+/* --- sampler: plays the real animation paused and reads every frame --- */
+function parseM(t){if(!t||t==="none")return[1,0,0,1,0,0];const is3=t.startsWith("matrix3d"),v=t.slice(t.indexOf("(")).match(/-?[\d.]+(?:e-?\d+)?/g).map(Number);if(!is3)return v;
+  /* perspective → affine: Jacobian of the projective map at the transform origin (exact at the pivot, good across a 24px icon) */
+  const w=v[15]||1,ex=v[12]/w,ey=v[13]/w;return[(v[0]-ex*v[3])/w,(v[1]-ey*v[3])/w,(v[4]-ex*v[7])/w,(v[5]-ey*v[7])/w,ex,ey]}
+function sample(i,fps){
+  const r=recI(i),parts=(r.tog?r.on:r.p).map(fixFill),lab=document.getElementById("lab");
+  lab.innerHTML="";const svg=cleanSvg(i,true,true);svg.setAttribute("class","ic");svg.style.width=svg.style.height="24px";lab.appendChild(svg);
+  const anims=run(svg,parts,!!r.tog);anims.forEach(a=>a.pause());
+  const T=Math.max(1,...anims.map(a=>a.effect.getComputedTiming().endTime||0));
+  const els=[svg,...[...svg.children]];
+  const info=els.map(el=>{const cs=getComputedStyle(el);const[ox,oy]=cs.transformOrigin.split(" ").map(parseFloat);let O=[ox,oy];
+    if(el!==svg&&cs.transformBox!=="view-box"){const bb=el.getBBox();O=[bb.x+ox,bb.y+oy]}return{el,O,f:[]}});
+  const n=Math.ceil(T/1000*fps)+1;
+  for(let k=0;k<n;k++){const t=Math.min(T,k*1000/fps);anims.forEach(a=>a.currentTime=t);
+    info.forEach(o=>{const cs=getComputedStyle(o.el);const da=cs.strokeDasharray,d=parseFloat(cs.strokeDashoffset)||0;
+      o.f.push({m:parseM(cs.transform),op:+cs.opacity,fo:+cs.fillOpacity,tr:(da&&da!=="none")?(d>=0?[0,Math.max(0,1-d)]:[Math.min(1,-d),1]):null})})}
+  anims.forEach(a=>a.cancel());lab.innerHTML="";
+  return{n,T,root:info[0],kids:info.slice(1)};
+}
+const fullM=(m,O)=>[m[0],m[1],m[2],m[3],O[0]+m[4]-(m[0]*O[0]+m[2]*O[1]),O[1]+m[5]-(m[1]*O[0]+m[3]*O[1])];
+
+/* --- SVG path → Lottie bezier shapes --- */
+function arcToCubics(x1,y1,rx,ry,phi,fa,fs,x2,y2){
+  const out=[];if(!rx||!ry){out.push([x1,y1,x2,y2,x2,y2]);return out}
+  rx=Math.abs(rx);ry=Math.abs(ry);const p=phi*Math.PI/180,cp=Math.cos(p),sp=Math.sin(p);
+  const dx=(x1-x2)/2,dy=(y1-y2)/2,x1p=cp*dx+sp*dy,y1p=-sp*dx+cp*dy;let L=x1p*x1p/(rx*rx)+y1p*y1p/(ry*ry);if(L>1){rx*=Math.sqrt(L);ry*=Math.sqrt(L)}
+  const sgn=fa===fs?-1:1,num=rx*rx*ry*ry-rx*rx*y1p*y1p-ry*ry*x1p*x1p,den=rx*rx*y1p*y1p+ry*ry*x1p*x1p;const co=sgn*Math.sqrt(Math.max(0,num/den));
+  const cxp=co*rx*y1p/ry,cyp=-co*ry*x1p/rx,cx=cp*cxp-sp*cyp+(x1+x2)/2,cy=sp*cxp+cp*cyp+(y1+y2)/2;
+  const ang=(ux,uy,vx,vy)=>{const a=Math.atan2(ux*vy-uy*vx,ux*vx+uy*vy);return a};
+  let t1=ang(1,0,(x1p-cxp)/rx,(y1p-cyp)/ry),dt=ang((x1p-cxp)/rx,(y1p-cyp)/ry,(-x1p-cxp)/rx,(-y1p-cyp)/ry);
+  if(!fs&&dt>0)dt-=2*Math.PI;if(fs&&dt<0)dt+=2*Math.PI;
+  const segs=Math.ceil(Math.abs(dt)/(Math.PI/2)),d=dt/segs,al=4/3*Math.tan(d/4);
+  const pt=t=>[cx+rx*Math.cos(t)*cp-ry*Math.sin(t)*sp,cy+rx*Math.cos(t)*sp+ry*Math.sin(t)*cp];
+  const dv=t=>[-rx*Math.sin(t)*cp-ry*Math.cos(t)*sp,-rx*Math.sin(t)*sp+ry*Math.cos(t)*cp];
+  for(let k=0;k<segs;k++){const a=t1+k*d,b=a+d,P1=pt(a),P2=pt(b),D1=dv(a),D2=dv(b);out.push([P1[0]+al*D1[0],P1[1]+al*D1[1],P2[0]-al*D2[0],P2[1]-al*D2[1],P2[0],P2[1]])}
+  return out;
+}
+function elToD(e){const g=n=>parseFloat(e.getAttribute(n)||0);switch(e.tagName){
+  case"path":return e.getAttribute("d");
+  case"circle":{const cx=g("cx"),cy=g("cy"),r=g("r");return`M${cx-r} ${cy}A${r} ${r} 0 1 0 ${cx+r} ${cy}A${r} ${r} 0 1 0 ${cx-r} ${cy}Z`}
+  case"ellipse":{const cx=g("cx"),cy=g("cy"),rx=g("rx"),ry=g("ry");return`M${cx-rx} ${cy}A${rx} ${ry} 0 1 0 ${cx+rx} ${cy}A${rx} ${ry} 0 1 0 ${cx-rx} ${cy}Z`}
+  case"rect":{const x=g("x"),y=g("y"),w=g("width"),h=g("height");let rx=g("rx")||g("ry"),ry=g("ry")||rx;rx=Math.min(rx,w/2);ry=Math.min(ry,h/2);
+    return rx?`M${x+rx} ${y}H${x+w-rx}A${rx} ${ry} 0 0 1 ${x+w} ${y+ry}V${y+h-ry}A${rx} ${ry} 0 0 1 ${x+w-rx} ${y+h}H${x+rx}A${rx} ${ry} 0 0 1 ${x} ${y+h-ry}V${y+ry}A${rx} ${ry} 0 0 1 ${x+rx} ${y}Z`:`M${x} ${y}H${x+w}V${y+h}H${x}Z`}
+  case"line":return`M${g("x1")} ${g("y1")}L${g("x2")} ${g("y2")}`;
+  case"polyline":case"polygon":{const p=(e.getAttribute("points")||"").trim().split(/[\s,]+/).map(Number);let d="M"+p[0]+" "+p[1];for(let k=2;k<p.length;k+=2)d+="L"+p[k]+" "+p[k+1];return d+(e.tagName==="polygon"?"Z":"")}
+  default:return""}}
+function dToSubs(d){
+  let i=0;const subs=[];let cur=null,x=0,y=0,sx=0,sy=0,lc=null,lq=null,cmd="";
+  const ws=()=>{while(i<d.length&&/[\s,]/.test(d[i]))i++};
+  const num=()=>{ws();const re=/[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/y;re.lastIndex=i;const m=re.exec(d);if(!m)throw 0;i=re.lastIndex;return+m[0]};
+  const flag=()=>{ws();const c=d[i++];return c==="1"?1:0};
+  const start=(px,py)=>{cur={v:[[px,py]],i:[[0,0]],o:[[0,0]],c:false};subs.push(cur)};
+  const cub=(c1x,c1y,c2x,c2y,px,py)=>{const L=cur.v.length-1;cur.o[L]=[c1x-cur.v[L][0],c1y-cur.v[L][1]];cur.v.push([px,py]);cur.i.push([c2x-px,c2y-py]);cur.o.push([0,0])};
+  const line=(px,py)=>{cur.v.push([px,py]);cur.i.push([0,0]);cur.o.push([0,0])};
+  while(i<d.length){ws();if(i>=d.length)break;if(/[a-zA-Z]/.test(d[i]))cmd=d[i++];const rel=cmd===cmd.toLowerCase(),C=cmd.toUpperCase(),bx=rel?x:0,by=rel?y:0;
+    if(C==="M"){x=bx+num();y=by+num();sx=x;sy=y;start(x,y);cmd=rel?"l":"L";lc=lq=null;continue}
+    if(C==="Z"){if(cur){const L=cur.v.length-1;if(L>0&&Math.hypot(cur.v[L][0]-cur.v[0][0],cur.v[L][1]-cur.v[0][1])<1e-3){cur.i[0]=cur.i[L];cur.v.pop();cur.i.pop();cur.o.pop()}cur.c=true}x=sx;y=sy;cur=null;lc=lq=null;continue}
+    if(!cur)start(x,y);
+    if(C==="L"){x=bx+num();y=by+num();line(x,y);lc=lq=null}
+    else if(C==="H"){x=(rel?x:0)+num();line(x,y);lc=lq=null}
+    else if(C==="V"){y=(rel?y:0)+num();line(x,y);lc=lq=null}
+    else if(C==="C"){const a=bx+num(),b=by+num(),c=bx+num(),e=by+num();x=bx+num();y=by+num();cub(a,b,c,e,x,y);lc=[c,e];lq=null}
+    else if(C==="S"){const a=lc?2*x-lc[0]:x,b=lc?2*y-lc[1]:y,c=bx+num(),e=by+num();x=bx+num();y=by+num();cub(a,b,c,e,x,y);lc=[c,e];lq=null}
+    else if(C==="Q"||C==="T"){let qx,qy;if(C==="Q"){qx=bx+num();qy=by+num()}else{qx=lq?2*x-lq[0]:x;qy=lq?2*y-lq[1]:y}const px=bx+num(),py=by+num();cub(x+2/3*(qx-x),y+2/3*(qy-y),px+2/3*(qx-px),py+2/3*(qy-py),px,py);x=px;y=py;lq=[qx,qy];lc=null}
+    else if(C==="A"){const rx=num(),ry=num(),ph=num(),fa=flag(),fs=flag(),px=bx+num(),py=by+num();arcToCubics(x,y,rx,ry,ph,fa,fs,px,py).forEach(s=>cub(...s));x=px;y=py;lc=lq=null}
+    else break;}
+  return subs;
+}
+const shapesOf=el=>dToSubs(elToD(el)).map(s=>({ty:"sh",ks:{a:0,k:{i:s.i.map(p=>[p[0]*LK,p[1]*LK]),o:s.o.map(p=>[p[0]*LK,p[1]*LK]),v:s.v.map(p=>[p[0]*LK,p[1]*LK]),c:s.c}}}));
+
+/* --- Lottie --- */
+const LOFF=4*LK;
+const mulM=(F,G)=>[F[0]*G[0]+F[2]*G[1],F[1]*G[0]+F[3]*G[1],F[0]*G[2]+F[2]*G[3],F[1]*G[2]+F[3]*G[3],F[0]*G[4]+F[2]*G[5]+F[4],F[1]*G[4]+F[3]*G[5]+F[5]];
+function decF(F,A){const[a,b,c,d,e,f]=F,sx=Math.hypot(a,b)||1e-6,sh=(a*c+b*d)/sx,sy=(a*d-b*c)/sx;
+  return{p:[(a*A[0]+c*A[1]+e)*LK+LOFF,(b*A[0]+d*A[1]+f)*LK+LOFF],s:[sx*100,sy*100],r:Math.atan2(b,a)*180/Math.PI,sk:Math.abs(sy)>1e-6?Math.atan(sh/sy)*180/Math.PI:0}}
+function prop(vals){
+  const same=(p,q)=>p.every((v,k)=>Math.abs(v-q[k])<1e-3);
+  if(vals.every(v=>same(v,vals[0])))return{a:0,k:vals[0].length===1?+vals[0][0].toFixed(3):vals[0].map(v=>+v.toFixed(3))};
+  const keep=[0];for(let k=1;k<vals.length-1;k++){const p=vals[keep[keep.length-1]],q=vals[k],nx=vals[k+1];const lin=q.every((v,j)=>Math.abs(v-(p[j]+nx[j])/2)<.02);if(!lin)keep.push(k)}keep.push(vals.length-1);
+  return{a:1,k:keep.map((k,j)=>{const o={t:k,s:vals[k].map(v=>+v.toFixed(3))};if(j<keep.length-1){o.i={x:[1],y:[1]};o.o={x:[0],y:[0]}}return o})};
+}
+function unwrap(a){for(let k=1;k<a.length;k++){while(a[k]-a[k-1]>180)a[k]-=360;while(a[k]-a[k-1]<-180)a[k]+=360}return a}
+function lottieOf(i){
+  const S=sample(i,60),hold=18,op=S.n+hold,ink=hexRGB(EX.ink),tone=hexRGB(EX.tone),ko=hexRGB(KO);
+  const R=S.root,rootF=R.f.map(x=>fullM(x.m,R.O)),rootOp=R.f.map(x=>x.op);
+  const layers=S.kids.map((o,k)=>{
+    const cl=o.el.classList,shapes=shapesOf(o.el);
+    if(o.f.some(x=>x.tr))shapes.push({ty:"tm",s:prop(o.f.map(x=>[(x.tr?x.tr[0]:0)*100])),e:prop(o.f.map(x=>[(x.tr?x.tr[1]:1)*100])),o:{a:0,k:0},m:1});
+    const knock=STYLE==="solid"&&(cl.contains("ish")||cl.contains("iln"));
+    shapes.push({ty:"st",c:{a:0,k:knock?ko:ink},o:{a:0,k:100},w:{a:0,k:SW[STYLE]*LK},lc:STYLE==="sharp"?3:2,lj:STYLE==="sharp"?1:2,ml:4});
+    let fc=null;if(cl.contains("tf"))fc=ink;else if(STYLE==="duo"&&cl.contains("sh"))fc=tone;else if(STYLE==="solid"&&cl.contains("sh"))fc=ink;else if(STYLE==="solid"&&cl.contains("ish"))fc=ko;
+    if(fc)shapes.push({ty:"fl",c:{a:0,k:fc},o:prop(o.f.map(x=>[x.fo*100])),r:1});
+    shapes.push({ty:"tr",p:{a:0,k:[0,0]},a:{a:0,k:[0,0]},s:{a:0,k:[100,100]},r:{a:0,k:0},o:{a:0,k:100},sk:{a:0,k:0},sa:{a:0,k:0}});
+    const D=o.f.map((x,j)=>decF(mulM(rootF[j],fullM(x.m,o.O)),o.O)),rr=unwrap(D.map(x=>x.r));
+    const ks={o:prop(o.f.map((x,j)=>[x.op*rootOp[j]*100])),r:prop(rr.map(v=>[v])),p:prop(D.map(x=>x.p)),a:{a:0,k:[o.O[0]*LK,o.O[1]*LK]},s:prop(D.map(x=>x.s)),sk:prop(D.map(x=>[-x.sk])),sa:{a:0,k:0}};
+    return{ddd:0,ind:k+1,ty:4,nm:"part "+(k+1),sr:1,ks,ao:0,shapes:[{ty:"gr",nm:"g",it:shapes}],ip:0,op,st:0,bm:0};
+  }).reverse();
+  return{v:"5.7.4",fr:60,ip:0,op,w:32*LK,h:32*LK,nm:slug(i),ddd:0,assets:[],layers};
+}
+
+/* --- GIF --- */
+const BGS={white:"#FFFFFF",dark:"#10122A",transparent:null};
+async function gifOf(i,bgKey,size=256,onProg){
+  const fps=100/3,S=sample(i,fps),bg=BGS[bgKey],base=staticSvg(i,{keepLen:true,ko:bg||KO}),kids=[...base.children];
+  const tf=kids.map(c=>c.getAttribute("fill")&&c.getAttribute("fill")!=="none");
+  const cv=document.createElement("canvas");cv.width=cv.height=size;const ctx=cv.getContext("2d",{willReadFrequently:true});const frames=[];
+  for(let k=0;k<S.n;k++){
+    kids.forEach((c,j)=>{const o=S.kids[j],x=o.f[k];c.setAttribute("transform",`matrix(${fullM(x.m,o.O).map(v=>+v.toFixed(4)).join(" ")})`);c.setAttribute("opacity",+x.op.toFixed(3));
+      if(tf[j])c.setAttribute("fill-opacity",+x.fo.toFixed(3));
+      if(x.tr){c.setAttribute("stroke-dasharray",`${+(x.tr[1]-x.tr[0]).toFixed(4)} 2`);c.setAttribute("stroke-dashoffset",+(-x.tr[0]).toFixed(4))}else{c.removeAttribute("stroke-dasharray");c.removeAttribute("stroke-dashoffset")}});
+    const R=S.root.f[k];base.setAttribute("viewBox","-4 -4 32 32");base.setAttribute("width",size);base.setAttribute("height",size);
+    const inner=kids.map(c=>svgText(c)).join("");const open=svgText(base).replace(/>[\s\S]*<\/svg>$/,">");
+    const str=open+(bg?`<rect x="-4" y="-4" width="32" height="32" fill="${bg}" stroke="none"/>`:"")+`<g transform="matrix(${fullM(R.m,S.root.O).map(v=>+v.toFixed(4)).join(" ")})" opacity="${+R.op.toFixed(3)}">${inner}</g></svg>`;
+    const img=new Image();img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(str);await img.decode();
+    ctx.clearRect(0,0,size,size);ctx.drawImage(img,0,0,size,size);frames.push(ctx.getImageData(0,0,size,size).data);
+    if(onProg)onProg((k+1)/S.n*.8);if(k%6===5)await new Promise(r=>setTimeout(r));
+  }
+  return encodeGIF(frames,size,size,3,!bg,30);
+}
+function encodeGIF(frames,w,h,delay,transp,endHold){
+  const cnt=new Map();
+  frames.forEach(px=>{for(let p=0;p<px.length;p+=4){if(transp&&px[p+3]<128)continue;const key=(px[p]>>3)<<10|(px[p+1]>>3)<<5|(px[p+2]>>3);cnt.set(key,(cnt.get(key)||0)+1)}});
+  const max=transp?255:256,pal=[...cnt.entries()].sort((a,b)=>b[1]-a[1]).slice(0,max).map(([k])=>[(k>>10&31)<<3|4,(k>>5&31)<<3|4,(k&31)<<3|4]);
+  while(pal.length<256)pal.push([0,0,0]);const ti=transp?255:-1,near=new Map();
+  const idx=(r,g,b)=>{const key=(r>>3)<<10|(g>>3)<<5|(b>>3);let v=near.get(key);if(v!==undefined)return v;let best=0,bd=1e9;for(let k=0;k<(transp?255:256);k++){const q=pal[k],dd=(q[0]-r)**2+(q[1]-g)**2+(q[2]-b)**2;if(dd<bd){bd=dd;best=k}}near.set(key,best);return best};
+  const out=[];const b=(...a)=>a.forEach(v=>out.push(v&255)),w16=v=>b(v,v>>8);
+  "GIF89a".split("").forEach(c=>b(c.charCodeAt(0)));w16(w);w16(h);b(0xF7,0,0);pal.forEach(c=>b(...c));
+  b(0x21,0xFF,11);"NETSCAPE2.0".split("").forEach(c=>b(c.charCodeAt(0)));b(3,1,0,0,0);
+  frames.forEach((px,f)=>{const d=f===frames.length-1?delay+endHold:delay;b(0x21,0xF9,4,(transp?(2<<2)|1:0),d,d>>8,transp?ti:0,0);b(0x2C);w16(0);w16(0);w16(w);w16(h);b(0);
+    const ind=new Uint8Array(w*h);for(let p=0,q=0;q<ind.length;p+=4,q++)ind[q]=transp&&px[p+3]<128?ti:idx(px[p],px[p+1],px[p+2]);
+    const data=lzw(ind,8);b(8);for(let k=0;k<data.length;k+=255){const ch=data.slice(k,k+255);b(ch.length);ch.forEach(v=>out.push(v))}b(0)});
+  b(0x3B);return new Uint8Array(out);
+}
+function lzw(ind,min){
+  const clear=1<<min,eoi=clear+1,out=[];let size=min+1,next=eoi+1,table=new Map(),cur=0,bits=0;
+  const emit=c=>{cur|=c<<bits;bits+=size;while(bits>=8){out.push(cur&255);cur>>>=8;bits-=8}};
+  emit(clear);let code=ind[0];
+  for(let k=1;k<ind.length;k++){const v=ind[k],key=code<<8|v,hit=table.get(key);
+    if(hit!==undefined){code=hit;continue}
+    emit(code);
+    if(next===4096){emit(clear);next=eoi+1;size=min+1;table=new Map()}else{if(next>=(1<<size))size++;table.set(key,next++)}
+    code=v}
+  emit(code);emit(eoi);if(bits>0)out.push(cur&255);return out;
+}
+const b64=u8=>{let s="";for(let k=0;k<u8.length;k+=32768)s+=String.fromCharCode.apply(null,u8.subarray(k,k+32768));return btoa(s)};
+
+/* --- lazy libs --- */
+const libs={};
+function lib(url,glob){return libs[url]||(libs[url]=new Promise((res,rej)=>{if(window[glob])return res(window[glob]);const s=document.createElement("script");s.src=url;s.onload=()=>res(window[glob]);s.onerror=rej;document.head.appendChild(s)}))}
+const LOTTIE_URL="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js",ZIP_URL="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
+
+/* --- sheet UI --- */
+let TAB="figma",lotAnim=null,lastLottie=null,lastGif=null;
+const $=id=>document.getElementById(id);
+function setTab(t){TAB=t;document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));document.querySelectorAll(".pane").forEach(p=>p.hidden=p.dataset.pane!==t);
+  $("colors").hidden=t==="css";if(t!=="css")code.hidden=true;refreshPane()}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
+function refreshPane(){if(sel<0)return;lastLottie=null;
+  if(TAB==="lottie")renderLottie();
+  if(TAB==="gif"){lastGif=null;$("gifImg").hidden=true;$("gifDl").hidden=true;$("gifDl").dataset.wait="1";$("gifHint").textContent="بيتعمل على المتصفح بتاعك، بياخد ثانيتين."}
+  if(TAB==="figma")$("fgInfo").textContent=`الصقها في فيجما بـ ⌘V أو Ctrl+V وهتتحول لفيكتور قابل للتعديل بستايل «${STN[STYLE]}». للحركة جوه فيجما استخدم ملف Lottie مع بلجن LottieFiles.`;
+}
+async function renderLottie(){
+  const box=$("lotPrev");box.innerHTML="";lastLottie=lottieOf(sel);const kb=(JSON.stringify(lastLottie).length/1024).toFixed(1);
+  $("ltInfo").textContent=`ملف Lottie ‏${ar(kb)} كيلوبايت، ٦٠ فريم في الثانية. شغال في After Effects (Bodymovin) والويب والموبايل وبلجن LottieFiles في فيجما. الجزيئات اللي حوالين الأيقونة مش داخلة فيه.`;
+  try{const L=await lib(LOTTIE_URL,"lottie");if(lotAnim)lotAnim.destroy();lotAnim=L.loadAnimation({container:box,renderer:"svg",loop:true,autoplay:true,animationData:JSON.parse(JSON.stringify(lastLottie))})}catch(_){box.textContent=""}
+}
+["cInk","cTone","bInk","bTone"].forEach(id=>$(id).addEventListener("input",e=>{EX[id.endsWith("Ink")?"ink":"tone"]=e.target.value;$("cInk").value=$("bInk").value=EX.ink;$("cTone").value=$("bTone").value=EX.tone;clearTimeout(window._rp);window._rp=setTimeout(refreshPane,250)}));
+$("fgCopy").addEventListener("click",e=>sel>=0&&copyText(svgText(staticSvg(sel)),e.currentTarget));
+$("fgSvg").addEventListener("click",e=>sel>=0&&saveFile(slug(sel)+".svg",svgText(staticSvg(sel)),e.currentTarget));
+$("ltCopy").addEventListener("click",e=>{if(sel<0)return;copyText(JSON.stringify(lastLottie||lottieOf(sel)),e.currentTarget)});
+$("ltDl").addEventListener("click",e=>{if(sel<0)return;saveFile(slug(sel)+".json",JSON.stringify(lastLottie||lottieOf(sel)),e.currentTarget)});
+document.querySelectorAll("#gifBg .chip").forEach(c=>c.addEventListener("click",()=>{EX.bg=c.dataset.bg;document.querySelectorAll("#gifBg .chip").forEach(x=>x.setAttribute("aria-pressed",x===c));refreshPane()}));
+$("gifMake").addEventListener("click",async e=>{if(sel<0)return;const btn=e.currentTarget;btn.disabled=true;btn.textContent="بيتعمل…";
+  try{lastGif=await gifOf(sel,EX.bg,256,p=>btn.textContent=`بيتعمل ${ar(Math.round(p*100))}٪`);const img=$("gifImg");img.src="data:image/gif;base64,"+b64(lastGif);img.hidden=false;
+    delete $("gifDl").dataset.wait;refreshDL();$("gifHint").textContent=`جاهز، ${ar((lastGif.length/1024).toFixed(0))} كيلوبايت. على الموبايل تقدر تدوس مطوّل على الصورة وتحفظها.`}
+  catch(err){$("gifHint").textContent="معرفتش أعمل الـ GIF في المتصفح ده."}
+  btn.disabled=false;btn.textContent="اعمل GIF"});
+$("gifDl").addEventListener("click",e=>lastGif&&saveFile(slug(sel)+".gif",new Blob([lastGif]),e.currentTarget));
+
+/* --- bulk --- */
+const bulk=$("bulk");
+function visibleIdx(){return tiles.map((t,i)=>t.hidden?-1:i).filter(i=>i>=0)}
+function openBulk(){sheet.classList.remove("open");bulk.classList.add("open");const v=visibleIdx();$("bInfo").textContent=`${ar(v.length)} أيقونة من «${cat==="all"?"الكل":C[cat]}» بستايل «${STN[STYLE]}». الفلتر والبحث بيحددوا إيه اللي يتصدّر.`}
+$("exportBtn").addEventListener("click",openBulk);
+$("bClose").addEventListener("click",()=>bulk.classList.remove("open"));
+function figmaSheet(ids){
+  const cols=10,cell=72,rows=Math.ceil(ids.length/cols),W=cols*cell,H=rows*cell;let out=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
+  ids.forEach((i,k)=>{const x=(k%cols)*cell+24,y=Math.floor(k/cols)*cell+14,s=staticSvg(i);const attrs=["stroke","stroke-width","stroke-linecap","stroke-linejoin","fill"].map(a=>`${a}="${s.getAttribute(a)}"`).join(" ");
+    out+=`<g id="${slug(i)}" transform="translate(${x} ${y})" ${attrs}>${[...s.children].map(svgText).join("")}</g><text x="${x+12}" y="${y+46}" font-size="9" font-family="IBM Plex Sans Arabic, sans-serif" text-anchor="middle" fill="${EX.ink}" stroke="none">${I[i][1]}</text>`});
+  return out+"</svg>";
+}
+const prog=p=>{$("bBar").style.width=Math.round(p*100)+"%"};
+$("bFigma").addEventListener("click",e=>copyText(figmaSheet(visibleIdx()),e.currentTarget));
+async function zipAll(kind,btn){
+  const ids=visibleIdx();if(!ids.length)return;btn.disabled=true;const JSZip=await lib(ZIP_URL,"JSZip").catch(()=>null);if(!JSZip){flash(btn,"مش متاح");btn.disabled=false;return}
+  const z=new JSZip();for(let k=0;k<ids.length;k++){const i=ids[k];$("bStatus").textContent=`${ar(k+1)} من ${ar(ids.length)}: ${I[i][1]}`;
+    if(kind==="svg")z.file(slug(i)+".svg",svgText(staticSvg(i)));
+    if(kind==="lottie")z.file(slug(i)+".json",JSON.stringify(lottieOf(i)));
+    if(kind==="gif")z.file(slug(i)+".gif",await gifOf(i,EX.bg,256));
+    prog((k+1)/ids.length);if(k%4===3||kind==="gif")await new Promise(r=>setTimeout(r))}
+  $("bStatus").textContent="بيتضغط…";const blob=await z.generateAsync({type:"blob"});$("bStatus").textContent="";prog(0);btn.disabled=false;
+  saveFile(`icons-${kind}-${STYLE}.zip`,blob,btn);
+}
+$("bSvg").addEventListener("click",e=>zipAll("svg",e.currentTarget));
+$("bLottie").addEventListener("click",e=>zipAll("lottie",e.currentTarget));
+$("bGif").addEventListener("click",e=>zipAll("gif",e.currentTarget));
+
+</script>
+</body>
+</html>
