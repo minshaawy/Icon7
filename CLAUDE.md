@@ -3,20 +3,27 @@
 This project started in a claude.ai chat and moved here. Read this file before changing anything.
 
 ## Talk to the user
-- Reply in Egyptian Arabic. Keep UI copy in Egyptian Arabic (RTL page).
+- Reply in Egyptian Arabic. The page is bilingual: English is the default (LTR), Arabic (Egyptian, RTL) is one click away.
 - The user is a designer-minded manager: show results (screenshots, previews) before long explanations.
 - When the user drops files in `references/`, study them first and match their timing/easing/feel. Use paid libraries (e.g. Lordicon) only as style/timing references; never copy their drawings or exact animations.
 
 ## What it is
-A single self-contained page, `index.html` (~185 KB), that hosts a library of **574 animated icons** in **25 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
+A single self-contained page, `index.html` (~250 KB), that hosts a library of **657 animated icons** in **25 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
 
 - Icons: Lucide **0.460.0** (UMD from jsDelivr, pinned) + a `CUSTOM` object of extra icons:
   - from Lucide 1.59.0 (copied node data, ISC): `Mosque`, `SaudiRiyal` (official 2025 symbol), `CirclePoundSterling`
   - hand-drawn on the 24×24 Lucide grid: `Lantern`, `PrayerRug`, `Quran`, `Kaaba`, `Pyramids`, `Camel`, `Dallah`, and the insurance set `CarShield`, `HouseShield`, `HeartShield`, `GlobeShield`, `FileClaim`, `FilePolicy`
   - hand-drawn Arab-countries set (category `arab`, one landmark per country, 22): `ArabEgypt` (Sphinx), `ArabSaudi` (Kingdom Centre), `ArabUae` (Burj Al Arab), `ArabKuwait` (Kuwait Towers), `ArabQatar` (Museum of Islamic Art), `ArabBahrain` (Pearl Monument), `ArabOman` (khanjar), `ArabYemen` (Shibam), `ArabJordan` (Petra Treasury), `ArabPalestine` (Dome of the Rock), `ArabLebanon` (cedar), `ArabSyria` (Palmyra arch), `ArabIraq` (Malwiya), `ArabMorocco` (Koutoubia), `ArabAlgeria` (Maqam Echahid), `ArabTunisia` (Sidi Bou Said door), `ArabLibya` (Arch of Marcus Aurelius), `ArabSudan` (Meroë pyramids), `ArabMauritania` (Chinguetti minaret), `ArabSomalia` (aqal hut), `ArabDjibouti` (Lake Abbé chimneys), `ArabComoros` (crescent + 4 stars). Labels are the country names; the landmark name is in the recipe `t` so search finds it.
+  - 83 more Lucide icons were added using the Phosphor Icons catalogue (phosphoricons.com) as a list of missing concepts. Phosphor drawings themselves are NOT used: they are single filled compound paths (256 grid), which break the stroke styles, DRAW trim paths and part articulation. Pick concepts from Phosphor, draw/animate them with Lucide-style stroked parts.
   - custom icons are merged with `lucide.icons` and passed to `lucide.createIcons({icons: ICONS})` (also for the second call in the style UI).
 - Fonts: IBM Plex Sans Arabic (UI) + Lalezar (headline) from Google Fonts.
 - Lazy libs (cdnjs, pinned): lottie-web 5.12.2 (Lottie preview), JSZip 3.10.1 (bulk ZIP).
+
+## Language (i18n)
+- `LANG` (default `"en"`, `?lang=ar|en`, remembered in localStorage `lang`). `loc(key,...args)` reads the `UI.en` / `UI.ar` dictionary (do NOT name it `tx`: that is the translateX motion helper).
+- Static markup uses `data-t` (text), `data-t-aria`, `data-t-ph`, `data-t-alt`; `applyLang()` re-labels everything in place, flips `dir`, and runs `filter()`. The `#langBtn` toggles.
+- Data stays Arabic-first. English comes from `CAT_EN` (categories), `STN_EN` (styles), `LBL_EN` + `human(name)` (icon labels; `lbl(i)`), and `TEN` (Arabic recipe `t` → English; `desc(t)`). Every new recipe needs a `TEN` entry; missing ones fall back to Arabic.
+- `ar(n)` prints Arabic-Indic digits only in Arabic mode.
 
 ## Data model
 - `CATS = [[key, arabicName, "lucide-name:Arabic label,..."], ...]` → parsed into `I = [[name, label, catKey], ...]`.
@@ -54,6 +61,7 @@ Duo colours: the `#duo` row (visible only in duo) sets stroke + tone via `setCol
 5. Downloads: inside claude.ai the page uses the `downloads` runtime capability; when self-hosted it falls back to normal browser downloads.
 
 ## Gotchas already solved (don't reintroduce)
+- The visible credit line was removed at the user's request; the Lucide ISC notice stays as an HTML comment in `<main>` and in README. Keep it.
 - `parseM` must strip the `matrix3d(` prefix before matching numbers (the "3" used to shift every value) and project perspective with the Jacobian at the origin. Before the fix every `perspective()` icon (cards, coins, calendars, laptop, book, fridge, door) exported broken to Lottie/GIF.
 - `transform-box: fill-box` must be scoped to `svg.ic *`. A global `svg *` rule breaks lottie-web's own transforms.
 - Elements with `display: flex/grid` ignore `[hidden]`: add explicit `[hidden]{display:none}` rules.
