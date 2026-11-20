@@ -348,6 +348,7 @@ h1 .hl{background:linear-gradient(100deg,var(--accent),#7C4DFF 60%,var(--hot));-
 .tile:hover{border-color:var(--accent)}
 .nsearch .search::placeholder{color:var(--muted);opacity:1}
 .nsearch kbd{color:var(--muted);border-color:var(--line-strong)}
+.nsearch .search:not(:placeholder-shown)~kbd{display:none}
 :root[data-theme="dark"] .act.pri{color:#0F1130}
 </style>
 </head>
@@ -458,7 +459,7 @@ const UI={
   lottieInfo:kb=>`Lottie file, ${kb} KB, 60 fps. Works in After Effects (Bodymovin), on the web, on mobile and in the LottieFiles plugin for Figma. The particles around the icon aren't included.`,
   gifMaking:"Working…",gifProg:p=>`Working ${p}%`,gifReady:kb=>`Ready, ${kb} KB. On mobile, long-press the image to save it.`,gifFail:"Couldn't make the GIF in this browser.",
   bulkInfo:(n,c,st)=>`${n} icons from “${c}” in the “${st}” style. The filter and search decide what gets exported.`,bulkProg:(k,n,l)=>`${k} of ${n}: ${l}`,zipping:"Compressing…",
-  styleSep:", style ",brand:"Animated Icons",catsTitle:"Categories",themeAria:"Toggle dark mode",sizeAria:"Icon size",madeWith:"Made with",madeBy:"by",love:"love",cssNote:"The particles and glow around the icon on the page are made with JS and aren't part of this code"},
+  styleSep:", style ",results:(q,n)=>`Results for “${q}” · ${n}`,closest:q=>`No exact match for “${q}”. Closest icons:`,brand:"Animated Icons",catsTitle:"Categories",themeAria:"Toggle dark mode",sizeAria:"Icon size",madeWith:"Made with",madeBy:"by",love:"love",cssNote:"The particles and glow around the icon on the page are made with JS and aren't part of this code"},
  ar:{title:"مكتبة أيقونات متحركة",stageAria:"شغّل الحركة",
   lede:"كل أيقونة ليها حركة معمولة بإيد، بـ ٦ ستايلات، ومعاهم معلم لكل دولة من الـ٢٢ دولة عربية وطقم كامل للتأمين. دوس على أي أيقونة وانسخها لفيجما أو نزّلها Lottie أو GIF.",eyebrow:"مكتبة أيقونات متحركة ببلاش",stIcons:"أيقونة",stCats:"قسم",stStyles:"ستايلات",stFormats:"صيغ تصدير",browse:"اتفرج على الأيقونات",ctaExport:"صدّر مجموعة",nowPlaying:"شغالة دلوقتي",
   h1:()=>`أيقونات <span class="hl">بتتحرك</span>.`,searchPh:"جرس، قلب، download…",searchAria:"ابحث في الأيقونات",playAll:"شغّل الكل",stopAll:"وقّف الكل",export:"تصدير",exportAria:"تصدير المجموعة",lang:"English",
@@ -471,7 +472,7 @@ const UI={
   lottieInfo:kb=>`ملف Lottie ‏${kb} كيلوبايت، ٦٠ فريم في الثانية. شغال في After Effects (Bodymovin) والويب والموبايل وبلجن LottieFiles في فيجما. الجزيئات اللي حوالين الأيقونة مش داخلة فيه.`,
   gifMaking:"بيتعمل…",gifProg:p=>`بيتعمل ${p}٪`,gifReady:kb=>`جاهز، ${kb} كيلوبايت. على الموبايل تقدر تدوس مطوّل على الصورة وتحفظها.`,gifFail:"معرفتش أعمل الـ GIF في المتصفح ده.",
   bulkInfo:(n,c,st)=>`${n} أيقونة من «${c}» بستايل «${st}». الفلتر والبحث بيحددوا إيه اللي يتصدّر.`,bulkProg:(k,n,l)=>`${k} من ${n}: ${l}`,zipping:"بيتضغط…",
-  styleSep:"، ستايل ",brand:"أيقونات متحركة",catsTitle:"الأقسام",themeAria:"الوضع الليلي",sizeAria:"حجم الأيقونات",madeWith:"اتعمل بحب",madeBy:"على إيد",love:"حب",cssNote:"الجزيئات واللمعة اللي حوالين الأيقونة في الصفحة متعملة بـ JS ومش داخلة في الكود ده"}
+  styleSep:"، ستايل ",results:(q,n)=>`نتايج «${q}» · ${n}`,closest:q=>`مفيش تطابق لـ«${q}»، دي أقرب أيقونات:`,brand:"أيقونات متحركة",catsTitle:"الأقسام",themeAria:"الوضع الليلي",sizeAria:"حجم الأيقونات",madeWith:"اتعمل بحب",madeBy:"على إيد",love:"حب",cssNote:"الجزيئات واللمعة اللي حوالين الأيقونة في الصفحة متعملة بـ JS ومش داخلة في الكود ده"}
 };
 const loc=(k,...a)=>{const v=UI[LANG][k]??UI.en[k];return typeof v==="function"?v(...a):v};
 const CAT_EN={local:"Local & Arabic",arab:"Arab countries",insurance:"Insurance",ui:"Interface",arrows:"Arrows",status:"Alerts",text:"Text & editing",layout:"Layout & shapes",talk:"Communication",people:"People & emotions",media:"Media",files:"Files",shop:"Commerce & money",biz:"Business & data",time:"Time",nature:"Nature & animals",tech:"Devices",dev:"Development",travel:"Travel & transport",home:"Home & living",food:"Food & drink",health:"Health",sport:"Sports & games",edu:"Education",security:"Security"};
@@ -1367,13 +1368,78 @@ const RANK=n=>{const k=TOP.indexOf(n);return k<0?1e4:k};
 const secTop=Object.assign(document.createElement("p"),{className:"sec",textContent:loc("secTop")}),secRest=Object.assign(document.createElement("p"),{className:"sec",textContent:loc("secRest")});
 {const sorted=tiles.map((t,i)=>[t,i]).sort((x,y)=>RANK(I[x[1]][0])-RANK(I[y[1]][0])||x[1]-y[1]);const firstRest=sorted.findIndex(([,i])=>RANK(I[i][0])>=1e4);
  grid.prepend(secTop);let prevEl=secTop;sorted.forEach(([t],k)=>{if(k===firstRest){prevEl.after(secRest);prevEl=secRest}prevEl.after(t);prevEl=t});}
+/* ── smart search: normalised Arabic/English, synonyms, typo tolerance, ranked results ── */
+const nrm=s=>(s||"").toLowerCase().normalize("NFKD").replace(/[̀-ًͯ-ٰٟـ]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/ؤ/g,"و").replace(/ئ/g,"ي").replace(/[^\p{L}\p{N}]+/gu," ").trim();
+const CONCEPTS=[
+ ["money cash pay payment price cost finance فلوس دفع كاش مال سعر فلوسي","banknote wallet coins credit-card circle-dollar-sign dollar-sign saudi-riyal circle-pound-sterling hand-coins piggy-bank receipt badge-percent ins-premium wallet-cards"],
+ ["delete remove bin trash erase حذف امسح مسح شيل","trash-2 x minus circle-x eraser"],
+ ["settings config configuration preferences options gear اعدادات ضبط تظبيط","settings settings-2 sliders-horizontal user-cog"],
+ ["profile account person me avatar حساب بروفايل شخص انا","user circle-user user-round contact id-card user-check"],
+ ["notification notify alert alarm reminder اشعار اشعارات تنبيه منبه","bell bell-ring bell-dot bell-plus circle-alert triangle-alert siren alarm-clock"],
+ ["home main start بيت رئيسيه الرئيسيه منزل","house house-shield building-2 ins-fire ins-flood"],
+ ["car vehicle auto motor driving سياره عربيه موتور سواقه","car car-shield ins-car-crash ins-tow-truck ins-windshield car-taxi-front bus truck"],
+ ["health medical doctor hospital clinic صحه طبي دكتور مستشفي علاج","heart-pulse stethoscope hospital ambulance pill syringe heart-shield ins-health-card ins-med-approval ins-hospital ins-dental ins-eye ins-maternity bandage"],
+ ["travel trip flight vacation سفر رحله طياره اجازه","plane plane-takeoff plane-landing luggage globe-shield ins-flight-delay ins-luggage map compass"],
+ ["insurance insure policy cover coverage protect protection safe تامين وثيقه حمايه تغطيه امان","shield shield-check shield-plus car-shield house-shield heart-shield globe-shield file-policy file-claim umbrella ins-family ins-life ins-health-card ins-med-approval ins-hospital ins-dental ins-eye ins-maternity ins-car-crash ins-tow-truck ins-windshield ins-fire ins-flood ins-valuables ins-flight-delay ins-luggage ins-phone ins-pet ins-business ins-cyber ins-marine ins-claim-ok ins-renewal ins-premium ins-support"],
+ ["claim accident مطالبه حادث","file-claim ins-claim-ok ins-car-crash ins-tow-truck"],
+ ["chat message talk conversation sms رساله رسائل شات محادثه كلام","message-circle message-square messages-square message-circle-more send mail"],
+ ["edit write pen modify تعديل اكتب كتابه","pencil pen pencil-line notebook-pen signature"],
+ ["save keep favorite حفظ احفظ مفضله","bookmark download star heart"],
+ ["share send forward شارك ارسال ابعت","share-2 send link forward"],
+ ["calendar date appointment schedule event موعد تاريخ تقويم مناسبه","calendar calendar-check calendar-days calendar-plus calendar-clock calendar-heart calendar-x calendar-minus"],
+ ["time clock hour watch وقت ساعه زمن","clock timer alarm-clock watch hourglass history"],
+ ["lock secure security password private قفل امان باسورد سري","lock lock-keyhole key key-round shield fingerprint rectangle-ellipsis vault ins-cyber"],
+ ["photo picture image camera gallery صوره صور كاميرا","image images camera aperture"],
+ ["location map place address pin موقع مكان خريطه عنوان","map-pin map navigation locate-fixed compass route map-pin-plus ins-hospital"],
+ ["weather طقس جو","sun moon cloud cloud-rain cloud-sun cloud-lightning snowflake wind umbrella thermometer"],
+ ["food eat restaurant meal اكل طعام مطعم وجبه","utensils utensils-crossed pizza sandwich soup salad coffee cooking-pot chef-hat"],
+ ["love like favourite favorite حب لايك اعجاب","heart thumbs-up star heart-handshake"],
+ ["team group people users فريق ناس مجموعه","users users-round user-plus handshake ins-family"],
+ ["family kids child baby عيله اسره اطفال طفل بيبي","ins-family baby users ins-maternity"],
+ ["phone call mobile contact تليفون موبايل اتصال مكالمه","phone phone-call phone-outgoing smartphone ins-phone ins-support headset"],
+ ["support help service customer دعم مساعده خدمه عملاء","ins-support headset circle-help phone-call message-circle"],
+ ["upload رفع ارفع","upload cloud-upload"],
+ ["download تحميل نزل","download cloud-download"],
+ ["islam islamic ramadan eid prayer religious رمضان عيد صلاه اسلامي ديني","mosque lantern moon-star kaaba quran prayer-rug"],
+ ["saudi ksa riyadh سعوديه الرياض","arab-saudi saudi-riyal dallah tree-palm camel"],
+ ["egypt cairo مصر القاهره","arab-egypt pyramids circle-pound-sterling"],
+ ["document file paper doc ملف مستند ورقه","file file-text files file-check file-plus file-policy file-claim clipboard"],
+ ["success done ok approve تم نجاح موافقه","check circle-check badge-check ins-claim-ok ins-med-approval"],
+ ["error fail wrong خطا فشل غلط","circle-x x octagon-alert triangle-alert"],
+ ["loading wait progress تحميل انتظار","loader-circle hourglass refresh-cw"],
+ ["menu hamburger nav قائمه منيو","menu ellipsis layout-grid"],
+ ["play video media تشغيل فيديو ميديا","play circle-play video film monitor-play"],
+ ["music audio sound song صوت موسيقي اغنيه","music volume-2 headphones mic radio"],
+ ["business work office company شغل شركه مكتب","briefcase building-2 ins-business factory warehouse"],
+ ["fire flame burn حريق نار","flame flame-kindling ins-fire fire-extinguisher"],
+ ["water flood rain مياه سيول مطر","droplet ins-flood cloud-rain waves"]
+];
+const TAGS={};CONCEPTS.forEach(([w,names])=>names.split(" ").forEach(n=>{TAGS[n]=(TAGS[n]||"")+" "+w}));
+let IDX=null;
+function buildIdx(){IDX=I.map((x,i)=>{const t=recI(i).t,en=LBL_EN[x[0]]||human(x[0]);const sp=a=>[...new Set(nrm(a).split(" ").filter(Boolean))];
+  return{full:nrm(x[0].replace(/-/g," ")),fullEn:nrm(en),fullAr:nrm(x[1]),name:sp(x[0].replace(/-/g," ")),en:sp(en),ar:sp(x[1]),tag:sp(TAGS[x[0]]),desc:sp((TEN[t]||"")+" "+t),cat:sp((CAT_EN[x[2]]||"")+" "+(C[x[2]]||""))}})}
+function dist(a,b){if(Math.abs(a.length-b.length)>2)return 9;const m=a.length,n=b.length,d=[...Array(m+1)].map((_,i)=>[i,...Array(n).fill(0)]);for(let j=1;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1)}return d[m][n]}
+function tokScore(t,ix){let best=0;const tol=t.length>=7?2:t.length>=4?1:0;
+  /* exact word > start of a word > close typo > inside a word. Descriptions count whole words only (Egyptian verbs all start with بي…) */
+  const W=(arr,base,exactOnly)=>{for(const w of arr){let s=0;if(w===t)s=base;else if(exactOnly)continue;else if(w.startsWith(t))s=base-8-Math.min(12,w.length-t.length);else if(tol&&Math.min(dist(t,w),w.length>t.length?dist(t,w.slice(0,t.length)):9)<=tol)s=base-30-8*Math.min(dist(t,w),w.length>t.length?dist(t,w.slice(0,t.length)):9);else if(t.length>=3&&w.includes(t))s=base-44;if(s>best)best=s}};
+  W(ix.name,100);W(LANG==="en"?ix.en:ix.ar,95);W(LANG==="en"?ix.ar:ix.en,85);W(ix.tag,72);W(ix.desc,40,true);W(ix.cat,30,true);return best}
 function filter(){
-  const q=document.getElementById("q").value.trim().toLowerCase();let n=0;
-  tiles.forEach((t,i)=>{const x=I[i];const ok=(cat==="all"||x[2]===cat)&&(!q||x[1].includes(q)||x[0].includes(q)||recI(i).t.includes(q)||lbl(i).toLowerCase().includes(q)||desc(recI(i).t).toLowerCase().includes(q));t.hidden=!ok;if(ok)n++});
+  if(!IDX)buildIdx();
+  const raw=document.getElementById("q").value.trim(),q=nrm(raw),toks=q.split(" ").filter(Boolean);let n=0;
+  const inCat=i=>cat==="all"||I[i][2]===cat;
+  if(!toks.length){tiles.forEach((t,i)=>{t.style.order="";const ok=inCat(i);t.hidden=!ok;if(ok)n++});grid.querySelector(".empty").hidden=n>0;secTop.style.order="";secTop.textContent=loc("secTop");secTop.hidden=secRest.hidden=cat!=="all";return}
+  const strict=[],loose=[];
+  tiles.forEach((t,i)=>{t.hidden=true;t.style.order="";if(!inCat(i))return;const ix=IDX[i];let sum=0,all=true,any=false;
+    for(const tk of toks){const s=tokScore(tk,ix);if(s>0)any=true;else all=false;sum+=s}
+    if(q===ix.full||q===ix.fullEn||q===ix.fullAr)sum+=60;else if(ix.full.startsWith(q)||ix.fullEn.startsWith(q))sum+=20;
+    if(all)strict.push([i,sum]);else if(any)loose.push([i,sum*.6])});
+  const exact=strict.length>0,res=(exact?strict:loose.sort((a,b)=>b[1]-a[1]).slice(0,36)).sort((a,b)=>b[1]-a[1]||RANK(I[a[0]][0])-RANK(I[b[0]][0])||a[0]-b[0]);
+  res.forEach(([i],k)=>{tiles[i].hidden=false;tiles[i].style.order=k+1});n=res.length;
+  secRest.hidden=true;secTop.hidden=!n;secTop.style.order="-1";secTop.textContent=exact?loc("results",raw,ar(n)):loc("closest",raw);
   grid.querySelector(".empty").hidden=n>0;
-  secTop.hidden=secRest.hidden=!(cat==="all"&&!q);
 }
-document.getElementById("q").addEventListener("input",filter);
+document.getElementById("q").addEventListener("input",()=>{filter();if(document.getElementById("q").value.trim()&&grid.getBoundingClientRect().top>innerHeight*.55){const y=grid.getBoundingClientRect().top+scrollY-document.querySelector(".nav").offsetHeight-document.getElementById("tools").offsetHeight+2;scrollTo({top:y,behavior:RM?"auto":"smooth"})}});
 chips.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;cat=b.dataset.c;chips.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));filter()});
 
 let loopT=null,tick=0;
@@ -1735,7 +1801,7 @@ function applyLang(){
   $("h1").innerHTML=loc("h1");$("stN").textContent=ar(I.length);$("stC").textContent=ar(Object.keys(C).length);$("stS").textContent=ar(ST.length);$("stF").textContent=ar(3);showBoxes.forEach(b=>{if(b._i!=null)b.setAttribute("aria-label",lbl(b._i))});edges(chips);edges(stWrap);
   chips.querySelectorAll(".chip").forEach(c=>{const k=c.dataset.c;c.firstChild.textContent=k==="all"?loc("all"):catName(k);c.querySelector("b").textContent=ar(k==="all"?I.length:I.filter(x=>x[2]===k).length)});
   tiles.forEach((t,i)=>{const l=lbl(i);t.setAttribute("aria-label",l);t.querySelector(".nm").textContent=l});
-  grid.querySelector(".empty").textContent=loc("empty");secTop.textContent=loc("secTop");secRest.textContent=loc("secRest");
+  grid.querySelector(".empty").textContent=loc("empty");secTop.textContent=loc("secTop");secRest.textContent=loc("secRest");IDX=null;
   stWrap.querySelectorAll(".stb").forEach(b=>{const n=[...b.childNodes].reverse().find(x=>x.nodeType===3);if(n)n.textContent=stn(b.dataset.st)});
   $("duoSw").querySelectorAll(".sw").forEach((w,k)=>{const n=LANG==="en"?DUO[k][4]:DUO[k][3];w.title=n;w.setAttribute("aria-label",n)});
   loopBtn.querySelector("span").textContent=loopT?loc("stopAll"):loc("playAll");

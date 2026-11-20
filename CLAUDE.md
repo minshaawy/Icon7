@@ -28,6 +28,10 @@ A single self-contained page, `index.html` (~250 KB), that hosts a library of **
 - Share preview: `og.png` (1200×630, rendered from an HTML mock), Open Graph + Twitter tags in `<head>`, `favicon.svg`, `apple-touch-icon.png`. Re-render `og.png` when the icon count changes. WhatsApp caches previews per URL.
 - Local preview: `../.claude/launch.json` runs a tiny Node static server (macOS blocks Xcode's python from Downloads).
 
+## Search
+- `filter()` ranks, it does not just match: `nrm()` normalises (lowercase, strips diacritics/tatweel, أإآ→ا, ة→ه, ى→ي), each token is scored against name words (100), current-language label (95), other-language label (85), `CONCEPTS` synonym tags (72, e.g. "money/فلوس" → wallet, card, riyal…), descriptions (40, whole words only: Egyptian verbs all start with بي…) and category (30). Order: exact > word prefix > typo (Damerau-Levenshtein ≤1 for 4+ letters, ≤2 for 7+) > inside a word.
+- All tokens must match; otherwise the closest partial matches are shown with a "closest" heading. Results are ordered with CSS `order` on the tiles; the heading shows the count; typing scrolls the grid into view. Add new synonyms to `CONCEPTS`.
+
 ## Language (i18n)
 - `LANG` (default `"en"`, `?lang=ar|en`, remembered in localStorage `lang`). `loc(key,...args)` reads the `UI.en` / `UI.ar` dictionary (do NOT name it `tx`: that is the translateX motion helper).
 - Static markup uses `data-t` (text), `data-t-aria`, `data-t-ph`, `data-t-alt`; `applyLang()` re-labels everything in place, flips `dir`, and runs `filter()`. The `#langBtn` toggles.
