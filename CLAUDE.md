@@ -8,13 +8,15 @@ This project started in a claude.ai chat and moved here. Read this file before c
 - When the user drops files in `references/`, study them first and match their timing/easing/feel. Use paid libraries (e.g. Lordicon) only as style/timing references; never copy their drawings or exact animations.
 
 ## What it is
-A single self-contained page, `index.html` (~250 KB), that hosts a library of **682 animated icons** in **25 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
+A single self-contained page, `index.html` (~250 KB), that hosts a library of **748 animated icons** in **30 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
 
 - Icons: Lucide **0.460.0** (UMD from jsDelivr, pinned) + a `CUSTOM` object of extra icons:
   - from Lucide 1.59.0 (copied node data, ISC): `Mosque`, `SaudiRiyal` (official 2025 symbol), `CirclePoundSterling`
   - hand-drawn on the 24×24 Lucide grid: `Lantern`, `PrayerRug`, `Quran`, `Kaaba`, `Pyramids`, `Camel`, `Dallah`, and the insurance set `CarShield`, `HouseShield`, `HeartShield`, `GlobeShield`, `FileClaim`, `FilePolicy`
   - hand-drawn insurance set v2 (25, `ins-*` names, `Ins*` keys): family, life, health card, medical approval, hospital network, dental, vision, maternity, car crash, tow truck, windshield, house fire, flood, valuables, flight delay, lost luggage, phone, pet, business, cyber, marine, claim approved, renewal, premium, 24/7 support. Many share the small top-right shield badge (pop + check DRAW).
   - hand-drawn Arab-countries set (category `arab`, one landmark per country, 22): `ArabEgypt` (Sphinx), `ArabSaudi` (Kingdom Centre), `ArabUae` (Burj Al Arab), `ArabKuwait` (Kuwait Towers), `ArabQatar` (Museum of Islamic Art), `ArabBahrain` (Pearl Monument), `ArabOman` (khanjar), `ArabYemen` (Shibam), `ArabJordan` (Petra Treasury), `ArabPalestine` (Dome of the Rock), `ArabLebanon` (cedar), `ArabSyria` (Palmyra arch), `ArabIraq` (Malwiya), `ArabMorocco` (Koutoubia), `ArabAlgeria` (Maqam Echahid), `ArabTunisia` (Sidi Bou Said door), `ArabLibya` (Arch of Marcus Aurelius), `ArabSudan` (Meroë pyramids), `ArabMauritania` (Chinguetti minaret), `ArabSomalia` (aqal hut), `ArabDjibouti` (Lake Abbé chimneys), `ArabComoros` (crescent + 4 stars). Labels are the country names; the landmark name is in the recipe `t` so search finds it.
+  - insurance journeys (`jr-*`, 21: quote, compare, coverage, add driver/member, instalments, policy active/expiring/expired/cancel, claim photo/upload/track/review/rejected, damage, ID scan, selfie, OTP, secure login, tap to pay) and screen states (`state-*`, 8: offline, server down, no results, empty, maintenance, session expired, update, sync), all hand-drawn.
+  - sets for partner apps: `design` (Canva-like editor: 15 Lucide + `ds-bg-remove`, `ds-magic-resize`), `nfc` (digital NFC cards: 6 Lucide + `dc-nfc-card`, `dc-tap-share`, `dc-business-card`, `dc-profile-qr`), `delivery` (food delivery: 6 Lucide + `fd-scooter`, `fd-food-bag`, `fd-burger`, `fd-order-track`). `XCAT` adds existing icons to a set without duplicating them in "All" (`inSet`, `catCount`).
   - 83 more Lucide icons were added using the Phosphor Icons catalogue (phosphoricons.com) as a list of missing concepts. Phosphor drawings themselves are NOT used: they are single filled compound paths (256 grid), which break the stroke styles, DRAW trim paths and part articulation. Pick concepts from Phosphor, draw/animate them with Lucide-style stroked parts.
   - custom icons are merged with `lucide.icons` and passed to `lucide.createIcons({icons: ICONS})` (also for the second call in the style UI).
 - Fonts: IBM Plex Sans Arabic (UI) + Lalezar (headline) from Google Fonts.
@@ -31,6 +33,9 @@ A single self-contained page, `index.html` (~250 KB), that hosts a library of **
 ## Search
 - `filter()` ranks, it does not just match: `nrm()` normalises (lowercase, strips diacritics/tatweel, أإآ→ا, ة→ه, ى→ي), each token is scored against name words (100), current-language label (95), other-language label (85), `CONCEPTS` synonym tags (72, e.g. "money/فلوس" → wallet, card, riyal…), descriptions (40, whole words only: Egyptian verbs all start with بي…) and category (30). Order: exact > word prefix > typo (Damerau-Levenshtein ≤1 for 4+ letters, ≤2 for 7+) > inside a word.
 - All tokens must match; otherwise the closest partial matches are shown with a "closest" heading. Results are ordered with CSS `order` on the tiles; the heading shows the count; typing scrolls the grid into view. Add new synonyms to `CONCEPTS`.
+
+## Hover (desktop)
+- Every icon and control reacts to the mouse (`@media (hover:hover) and (pointer:fine)`): tiles play their recipe; toggle icons (heart, star, menu…) get `peek()`, a wiggle that never flips their state; the hero stage and the sheet preview play too; UI icons use small CSS keyframes (`ui-flip`, `ui-turn`, `ui-drop`, `ui-twinkle`, `ui-beat`, `ui-x`, `ui-wiggle`, `ui-pop`). All off under reduced motion.
 
 ## Language (i18n)
 - `LANG` (default `"en"`, `?lang=ar|en`, remembered in localStorage `lang`). `loc(key,...args)` reads the `UI.en` / `UI.ar` dictionary (do NOT name it `tx`: that is the translateX motion helper).
