@@ -10,7 +10,7 @@ This project started in a claude.ai chat and moved here. Read this file before c
 ## What it is
 A single self-contained page, `index.html` (~250 KB), that hosts a library of **1191 animated icons** in **23 categories** and **6 styles**, with per-icon and bulk export to **Figma (SVG), Lottie (JSON) and GIF**.
 
-- Icons: Lucide **0.460.0** (UMD from jsDelivr, pinned) + a `CUSTOM` object of extra icons:
+- Icons: Lucide **0.460.0** (UMD, vendored as `lucide.min.js` next to `index.html`; jsDelivr is only a `document.write` fallback, and if both fail the grid shows a "refresh" message) + a `CUSTOM` object of extra icons:
   - from Lucide 1.59.0 (copied node data, ISC): `Mosque`, `SaudiRiyal` (official 2025 symbol), `CirclePoundSterling`
   - hand-drawn on the 24×24 Lucide grid: `Lantern`, `PrayerRug`, `Quran`, `Kaaba`, `Pyramids`, `Camel`, `Dallah`, and the insurance set `CarShield`, `HouseShield`, `HeartShield`, `GlobeShield`, `FileClaim`, `FilePolicy`
   - hand-drawn insurance set v2 (25, `ins-*` names, `Ins*` keys): family, life, health card, medical approval, hospital network, dental, vision, maternity, car crash, tow truck, windshield, house fire, flood, valuables, flight delay, lost luggage, phone, pet, business, cyber, marine, claim approved, renewal, premium, 24/7 support. Many share the small top-right shield badge (pop + check DRAW).
@@ -27,6 +27,8 @@ A single self-contained page, `index.html` (~250 KB), that hosts a library of **
   - custom icons are merged with `lucide.icons` and passed to `lucide.createIcons({icons: ICONS})` (also for the second call in the style UI).
 - Fonts: IBM Plex Sans Arabic (UI) + Lalezar (headline) from Google Fonts.
 - Lazy libs (cdnjs, pinned): lottie-web 5.12.2 (Lottie preview), JSZip 3.10.1 (bulk ZIP).
+- Startup performance: grid tiles are prepared with `initAll()` — `initPre` (cheap writes) for every icon, then `clsPlan` (all `getBBox`/`isPointInFill` reads), then `initPost` (classes, reorder, `pathLength`). Never interleave geometry reads with DOM writes per icon: that forced a full relayout per icon (~1 s on desktop, ~8 s on a mid-range phone). `pw/stab.mjs` measures long tasks, heap and FPS.
+- Escape: blurs search first, otherwise closes the icon sheet or the bulk-export panel.
 
 ## Page frame and design (v3)
 - Inspired by the big icon sites (Lucide, Phosphor, Tabler, Lordicon): sticky `.nav` (brand, ⌘K / "/" search `#q`, `#langBtn`, `#themeBtn`, GitHub), hero with dotted backdrop and the animated showcase card, then `.layout` = sticky `.side` (categories `#chips` as a vertical list with counts) + `.content` (sticky `.tools`: segmented `#styles`, `#size` slider → `--ico` on `#grid`, play all, export, `#duo` row) and the grid.

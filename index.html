@@ -476,7 +476,8 @@ svg.ic .kon{transition:stroke .25s}
 </aside>
 <div id="lab" aria-hidden="true"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script src="lucide.min.js"></script>
+<script>window.lucide||document.write('<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"><\/script>')</script>
 <script>
 /* ── i18n: English is the default, Arabic is one click away. Data stays Arabic-first; English comes from these maps. ── */
 let LANG=(()=>{try{const q=new URLSearchParams(location.search).get("lang");if(q==="ar"||q==="en")return q;const v=localStorage.getItem("lang");return v==="ar"?"ar":"en"}catch(_){return"en"}})();
@@ -1781,13 +1782,18 @@ function fixFill(p){const b=FB();if(!b)return p;const[t,fr,e,o]=p;return[t,fr.ma
 function isClosed(e){const tg=e.tagName;if(/^(circle|rect|ellipse|polygon)$/.test(tg))return true;if(tg!=="path")return false;const d=e.getAttribute("d")||"";if(/z\s*$/i.test(d))return true;try{const L=e.getTotalLength();if(L<6)return false;const a=e.getPointAtLength(0),b=e.getPointAtLength(L);return Math.hypot(a.x-b.x,a.y-b.y)<1.2}catch(_){return false}}
 function inside(a,b){return a.x>=b.x-.6&&a.y>=b.y-.6&&a.x+a.width<=b.x+b.width+.6&&a.y+a.height<=b.y+b.height+.6}
 function centerIn(e,bb){try{return e.isPointInFill(new DOMPoint(bb.x+bb.width/2,bb.y+bb.height/2))}catch(_){return true}}
-function classify(svg){
+/* classification is split into a read-only plan and a write step so the grid can measure every icon first and
+   write afterwards: interleaving getBBox with DOM writes forced ~1200 full-page relayouts on load. */
+function clsPlan(svg){
   const info=[...svg.children].map(e=>{let bb={x:0,y:0,width:0,height:0};try{bb=e.getBBox()}catch(_){}return{e,bb,closed:isClosed(e),area:bb.width*bb.height}});
-  info.forEach(o=>{const cont=info.find(p=>p!==o&&p.closed&&p.area>20&&p.area>o.area*1.3&&inside(o.bb,p.bb)&&centerIn(p.e,o.bb));if(cont)o.e.classList.add(o.closed?"ish":"iln");else if(o.closed&&o.area>6)o.e.classList.add("sh")});
+  return info.map(o=>{const cont=info.find(p=>p!==o&&p.closed&&p.area>20&&p.area>o.area*1.3&&inside(o.bb,p.bb)&&centerIn(p.e,o.bb));return[o.e,cont?(o.closed?"ish":"iln"):(o.closed&&o.area>6?"sh":"")]});
 }
-function initSvg(svg,name,fresh){
-  if(!fresh)return;
-  svg.classList.add("ic");[...svg.children].forEach((e,k)=>e.setAttribute("data-o",k+1));classify(svg);{const ch=[...svg.children];ch.forEach((e,k)=>{if(e.classList.contains("sh")&&ch.slice(0,k).some(x=>x.classList.contains("iln")||x.classList.contains("ish")))svg.insertBefore(e,svg.firstElementChild)})}[...svg.children].forEach(c=>c.setAttribute("pathLength","1"));
+function classify(svg,plan){(plan||clsPlan(svg)).forEach(([e,c])=>{if(c)e.classList.add(c)})}
+function initPre(svg){svg.classList.add("ic");[...svg.children].forEach((e,k)=>e.setAttribute("data-o",k+1))}
+function initSvg(svg,name,fresh){if(!fresh)return;initPre(svg);initPost(svg,name,clsPlan(svg))}
+function initAll(svgs,names){svgs.forEach(initPre);const plans=svgs.map(clsPlan);svgs.forEach((s,i)=>initPost(s,names[i],plans[i]))}
+function initPost(svg,name,plan){
+  classify(svg,plan);{const ch=[...svg.children];ch.forEach((e,k)=>{if(e.classList.contains("sh")&&ch.slice(0,k).some(x=>x.classList.contains("iln")||x.classList.contains("ish")))svg.insertBefore(e,svg.firstElementChild)})}[...svg.children].forEach(c=>c.setAttribute("pathLength","1"));
   const r=R[name];if(r&&r.fill)r.fill.forEach(n=>svg.querySelector(`:scope>[data-o="${n}"]`).classList.add("tf"));if(r&&r.kon)r.kon.forEach(n=>svg.querySelector(`:scope>[data-o="${n}"]`).classList.add("kon"));
 }
 function exportStyle(s){
@@ -2351,8 +2357,9 @@ function setStyle(st){
 }
 
 const tiles=[...grid.querySelectorAll(".tile")];
+initAll(tiles.map(t=>t.querySelector(".ico svg")),I.map(x=>x[0]));
 tiles.forEach((t,i)=>{
-  const box=t.querySelector(".ico");initSvg(box.querySelector("svg"),I[i][0],true);
+  const box=t.querySelector(".ico");
   t.addEventListener("pointerenter",e=>{if(e.pointerType!=="mouse")return;if(!recI(i).tog)play(box,i,{soft:1});else peek(box)});
   t.addEventListener("click",()=>{play(box,i);pick(i)});
 });
@@ -2787,7 +2794,7 @@ dragRow(chips);dragRow(stWrap);
 /* ── v3 controls: theme toggle, ⌘K / "/" to search, icon size ── */
 $("themeBtn").addEventListener("click",()=>{const r=document.documentElement,cur=r.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),next=cur==="dark"?"light":"dark";r.dataset.theme=next;try{sessionStorage.setItem("theme",next)}catch(_){}});
 $("kbd").textContent=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent)?"⌘K":"Ctrl K";
-addEventListener("keydown",e=>{const typing=/INPUT|TEXTAREA/.test(document.activeElement.tagName);if(((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k")||(e.key==="/"&&!typing)){e.preventDefault();$("q").focus();$("q").select()}else if(e.key==="Escape"&&document.activeElement===$("q")){$("q").blur()}});
+addEventListener("keydown",e=>{const typing=/INPUT|TEXTAREA/.test(document.activeElement.tagName);if(((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k")||(e.key==="/"&&!typing)){e.preventDefault();$("q").focus();$("q").select()}else if(e.key==="Escape"){if(document.activeElement===$("q"))$("q").blur();else if(sheet.classList.contains("open"))$("close").click();else if(bulk.classList.contains("open"))$("bClose").click()}});
 {const sz=$("size"),setSz=v=>{grid.style.setProperty("--ico",v+"px");try{localStorage.setItem("icoSize",v)}catch(_){}};let v=28;try{v=+localStorage.getItem("icoSize")||28}catch(_){}sz.value=v;grid.style.setProperty("--ico",v+"px");sz.addEventListener("input",()=>setSz(sz.value))}
 /* ── language switch: re-labels everything in place, flips direction, remembers the choice ── */
 function applyLang(){
@@ -2815,5 +2822,6 @@ if(stage._i==null)stage._i=I.findIndex(x=>x[0]==="rocket");
 applyLang();
 
 </script>
+<script>if(!window.lucide){var g=document.getElementById("grid");if(g)g.innerHTML='<p class="empty">'+(document.documentElement.lang==="ar"?"الأيقونات ما اتحمّلتش. اعمل ريفرش للصفحة.":"The icons could not load. Please refresh the page.")+'</p>'}</script>
 </body>
 </html>
